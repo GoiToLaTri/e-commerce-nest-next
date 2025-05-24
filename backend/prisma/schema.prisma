@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  first_name String
+  last_name  String
+  email      String    @unique
+  password   String
+  avatar     String?   @default("https://brandlogos.net/wp-content/uploads/2024/01/aorus-logo_brandlogos.net_cckqq-768x807.png")
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  Session    Session[]
+  Role       Role?     @relation(fields: [roleId], references: [id])
+  roleId     String?   @db.ObjectId
+}
+
+model Role {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String @unique
+  users User[]
+}
+
+model Session {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String   @db.ObjectId
+  user       User     @relation(fields: [user_id], references: [id])
+  session_id String   @unique
+  expires_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

@@ -1,0 +1,36 @@
+"use client";
+
+import { ReactNode } from "react";
+//------------------------------- FIX ANT DESIGN v5 on React 19 -------------------------------
+//source: https://github.com/ant-design/v5-patch-for-react-19
+import { unstableSetRender } from "antd";
+import { createRoot } from "react-dom/client";
+import { AntdThemeConfig } from "@/common/configs";
+
+type RenderType = Parameters<typeof unstableSetRender>[0];
+type ContainerType = Parameters<RenderType>[1] & {
+  _reactRoot?: ReturnType<typeof createRoot>;
+};
+
+unstableSetRender((node, container: ContainerType) => {
+  container._reactRoot ||= createRoot(container);
+  const root: ReturnType<typeof createRoot> = container._reactRoot;
+  root.render(node);
+
+  return () =>
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        root.unmount();
+        resolve();
+      }, 0);
+    });
+});
+//--------------------------------------------------------------------------------
+
+export interface AppProviderProps {
+  children: ReactNode;
+}
+
+export default function AppProvider({ children }: AppProviderProps) {
+  return <AntdThemeConfig>{children}</AntdThemeConfig>;
+}
