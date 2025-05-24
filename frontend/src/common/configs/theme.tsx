@@ -1,3 +1,4 @@
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider, theme, type ThemeConfig } from "antd";
 import { ReactNode } from "react";
 
@@ -10,5 +11,10 @@ const config: ThemeConfig = {
 };
 
 export function AntdThemeConfig({ children }: ThemeConfigProps) {
-  return <ConfigProvider theme={config}>{children}</ConfigProvider>;
+  return (
+    <ConfigProvider theme={config}>
+      {/* Fix delay antd style */}
+      <AntdRegistry>{children}</AntdRegistry>
+    </ConfigProvider>
+  );
 }
