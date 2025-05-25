@@ -8,7 +8,10 @@ import { createRoot } from "react-dom/client";
 import { AntdThemeConfig } from "@/common/configs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-type RenderType = Parameters<typeof unstableSetRender>[0];
+// type RenderType = Parameters<typeof unstableSetRender>[0];
+
+// Fix render type for React 19
+type RenderType = NonNullable<Parameters<typeof unstableSetRender>[0]>;
 type ContainerType = Parameters<RenderType>[1] & {
   _reactRoot?: ReturnType<typeof createRoot>;
 };
