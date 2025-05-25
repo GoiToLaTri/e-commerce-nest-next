@@ -1,11 +1,12 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 //------------------------------- FIX ANT DESIGN v5 on React 19 -------------------------------
 //source: https://github.com/ant-design/v5-patch-for-react-19
 import { unstableSetRender } from "antd";
 import { createRoot } from "react-dom/client";
 import { AntdThemeConfig } from "@/common/configs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 type RenderType = Parameters<typeof unstableSetRender>[0];
 type ContainerType = Parameters<RenderType>[1] & {
@@ -32,5 +33,10 @@ export interface AppProviderProps {
 }
 
 export default function AppProvider({ children }: AppProviderProps) {
-  return <AntdThemeConfig>{children}</AntdThemeConfig>;
+  const [queryClient] = useState(() => new QueryClient());
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AntdThemeConfig>{children}</AntdThemeConfig>
+    </QueryClientProvider>
+  );
 }
