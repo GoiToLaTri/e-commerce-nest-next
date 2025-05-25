@@ -1,17 +1,22 @@
+"use client";
+
 import { DropdownMenu, GlobalContainer, ZwindLogo } from "@/components/ui";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { customerNavItem } from "./customer-nav-item";
+import { usePathname } from "next/navigation";
 
 export interface NavigationBarProps {
   children: ReactNode;
 }
 
 export function NavigationBar() {
+  const pathName = usePathname();
+  console.log(pathName);
   return (
-    <header className="w-full pt-[1.5rem] pb-[1rem] fixed z-[99] my-0 mx-auto">
+    <header className="customer-navigation-bar w-full pt-[1.5rem] pb-[1rem] fixed z-[99] my-0 mx-auto">
       <GlobalContainer>
         <div className="bg-[rgba(26,14,46,.4)] !border-[1.5px] border-solid border-[rgba(86,67,115,.2)] rounded-[4rem] flex items-center justify-between py-[1rem] px-[1.25rem]">
           <Link href="/" className="flex items-center no-underline">
@@ -32,7 +37,7 @@ export function NavigationBar() {
                   >
                     <Button
                       type="text"
-                      className="!text-[1rem] !rounded-[4rem] flex items-center gap-[0.5rem]"
+                      className={`!text-[1rem]!rounded-[4rem] flex items-center gap-[0.5rem]`}
                     >
                       {item.label}
                       <CaretDownOutlined />
@@ -47,7 +52,9 @@ export function NavigationBar() {
                   >
                     <Button
                       type="text"
-                      className="!text-[1rem] !rounded-[4rem]"
+                      className={`!text-[1rem] !rounded-[4rem]  ${
+                        pathName === item.href ? "!text-[#0984e3] !font-bold" : ""
+                      }`}
                     >
                       {item.label}
                     </Button>
