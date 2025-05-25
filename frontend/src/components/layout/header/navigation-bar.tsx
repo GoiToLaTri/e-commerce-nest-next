@@ -37,7 +37,7 @@ export function NavigationBar() {
                   >
                     <Button
                       type="text"
-                      className={`!text-[1rem]!rounded-[4rem] flex items-center gap-[0.5rem]`}
+                      className={`!text-[1rem] !rounded-[4rem] flex items-center gap-[0.5rem]`}
                     >
                       {item.label}
                       <CaretDownOutlined />
@@ -53,7 +53,9 @@ export function NavigationBar() {
                     <Button
                       type="text"
                       className={`!text-[1rem] !rounded-[4rem]  ${
-                        pathName === item.href ? "!text-[#0984e3] !font-bold" : ""
+                        pathName === item.href
+                          ? "!text-[#0984e3] !font-bold"
+                          : ""
                       }`}
                     >
                       {item.label}
@@ -64,13 +66,15 @@ export function NavigationBar() {
             </div>
           </nav>
           <div className="flex items-center gap-[1rem]">
-            <Button
-              type="primary"
-              size="large"
-              className="!text-[1rem] !rounded-[4rem] !bg-gradient-to-r !from-purple-600 !to-blue-600 !border-0 !shadow-lg hover:!from-blue-600 hover:!to-purple-600 transition-all duration-300"
-            >
-              Signup/Signin
-            </Button>
+            <Link href="/auth/signup" passHref legacyBehavior>
+              <Button
+                type="primary"
+                size="large"
+                className="!text-[1rem] !rounded-[4rem] !bg-gradient-to-r !from-purple-600 !to-blue-600 !border-0 !shadow-lg hover:!from-blue-600 hover:!to-purple-600 transition-all duration-300"
+              >
+                Signup/Signin
+              </Button>
+            </Link>
           </div>
         </div>
       </GlobalContainer>
