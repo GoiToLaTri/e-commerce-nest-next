@@ -4,7 +4,7 @@ import { DropdownMenu, GlobalContainer, ZwindLogo } from "@/components/ui";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { customerNavItem } from "./customer-nav-item";
 import { usePathname } from "next/navigation";
 
@@ -14,11 +14,24 @@ export interface NavigationBarProps {
 
 export function NavigationBar() {
   const pathName = usePathname();
-  console.log(pathName);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header className="customer-navigation-bar w-full pt-[1.5rem] pb-[1rem] fixed z-[99] my-0 mx-auto">
       <GlobalContainer>
-        <div className="bg-[rgba(26,14,46,.4)] !border-[1.5px] border-solid border-[rgba(86,67,115,.2)] rounded-[4rem] flex items-center justify-between py-[1rem] px-[1.25rem]">
+        <div
+          className={`bg-[rgba(26,14,46,.4)] !border-[1.5px] border-solid border-[rgba(86,67,115,.2)] rounded-[4rem] flex items-center justify-between py-[1rem] px-[1.25rem] transition-all duration-300 ${
+            isScrolled ? "backdrop-blur-md bg-[rgba(26,14,46,.8)]" : ""
+          }`}
+        >
           <Link href="/" className="flex items-center no-underline">
             <ZwindLogo />
           </Link>

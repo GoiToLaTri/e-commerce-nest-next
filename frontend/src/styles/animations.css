@@ -11,6 +11,16 @@
 }
 
 /* Usage */
-.customer-navigation-bar {
-    animation: enterFromTop 0.6s ease-out;
+.customer-navigation-bar, .zwind-content {
+    animation: enterFromTop 0.6s forwards;
+}
+
+.zwind-subtitle {
+    opacity: 0;
+    animation: enterFromTop 1.2s .6s forwards;
+}
+
+.zwind-buttons {
+    opacity: 0;
+    animation: enterFromTop 1.2s 1.2s forwards;
 }

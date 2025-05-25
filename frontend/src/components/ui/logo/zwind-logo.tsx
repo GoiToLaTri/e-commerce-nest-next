@@ -10,7 +10,13 @@ export function ZwindLogo() {
   return (
     <div className="flex gap-4 items-end">
       <div className="relative w-[40px] h-[40px]">
-        <Image src={vercelIcon} alt="Logo" fill className="object-contain" />
+        <Image
+          src={vercelIcon}
+          alt="Logo"
+          fill
+          className="object-contain"
+          priority
+        />
       </div>
       <div>
         <div className="font-bold tracking-[1.6] text-2xl">ZWIND</div>
