@@ -11,6 +11,13 @@ export class RoleService {
     });
   }
 
+  grantRole(id: string, role: string) {
+    return this.prisma.user.update({
+      where: { id },
+      data: { Role: { connect: { name: role } } },
+    });
+  }
+
   findAll() {
     return `This action returns all role`;
   }
