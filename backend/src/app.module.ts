@@ -9,6 +9,8 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SessionModule } from './modules/session/session.module';
 import { RedisModule } from './modules/redis/redis.module';
+import { RoleModule } from './modules/role/role.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { RedisModule } from './modules/redis/redis.module';
     AuthModule,
     SessionModule,
     RedisModule,
+    RoleModule,
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

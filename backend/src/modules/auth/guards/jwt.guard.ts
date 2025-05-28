@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 export class JwtGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     // This guard is used to protect routes that require a valid JWT token
-    super();
+    super({
+      property: 'session_user', // The property where the user data will be stored in the request object
+    });
   }
 
   canActivate(

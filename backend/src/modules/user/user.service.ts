@@ -13,6 +13,7 @@ export class UserService {
         last_name: createUserDto.lastName,
         email: createUserDto.email,
         password: createUserDto.password,
+        Role: { connect: { name: 'USER' } },
       },
     });
   }
@@ -21,8 +22,11 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: { Role: true },
+    });
   }
 
   findOneByEmail(email: string) {
