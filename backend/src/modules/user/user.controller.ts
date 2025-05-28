@@ -20,7 +20,7 @@ import { Public } from '../auth/decorators';
 import { SessionData } from '../session/interfaces';
 
 @UseGuards(JwtGuard, RoleGuard)
-@Roles(Role.USER)
+@Roles(Role.USER, Role.ADMIN)
 @Controller({ path: 'user', version: '1' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -40,7 +40,6 @@ export class UserController {
 
   @Get('profile')
   profile(@Req() request: Request) {
-    console.log(request);
     const { session_user } = request as unknown as {
       session_user: SessionData;
     };
