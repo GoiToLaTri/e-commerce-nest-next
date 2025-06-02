@@ -7,6 +7,8 @@ import { unstableSetRender } from "antd";
 import { createRoot } from "react-dom/client";
 import { AntdThemeConfig } from "@/common/configs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/store";
+import { Toaster } from "sonner";
 
 // type RenderType = Parameters<typeof unstableSetRender>[0];
 
@@ -39,7 +41,10 @@ export default function AppProvider({ children }: AppProviderProps) {
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
-      <AntdThemeConfig>{children}</AntdThemeConfig>
+      <AuthProvider>
+        <Toaster position="top-center" theme="dark" richColors />
+        <AntdThemeConfig>{children}</AntdThemeConfig>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

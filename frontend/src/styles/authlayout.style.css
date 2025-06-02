@@ -1,0 +1,20 @@
+.auth-layout {
+    opacity: 0;
+    background: url('../../public/auth-background.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.auth-layout  {
+  animation: fadeIn 0.2s ease-in forwards;
+}

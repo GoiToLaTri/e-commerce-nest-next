@@ -76,7 +76,7 @@ export function CustomerFooter() {
               className="h-[1px] w-full mx-auto mb-[2rem]"
               style={{
                 background:
-                  "linear-gradient(90deg, rgba(234, 236, 240, 0), rgba(234, 236, 240, .12) 50%, rgba(234, 236, 240, 0));",
+                  "linear-gradient(90deg, rgba(234, 236, 240, 0), rgba(234, 236, 240, .12) 50%, rgba(234, 236, 240, 0))",
               }}
             />
             <div className="flex items-center justify-between gap-[2rem]">
