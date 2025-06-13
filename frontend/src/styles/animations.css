@@ -10,9 +10,20 @@
     }
 }
 
+@keyframes enterFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 /* Usage */
 .customer-navigation-bar, .zwind-content {
-    animation: enterFromTop 0.6s forwards;
+    animation: enterFromTop .6s forwards;
 }
 
 .zwind-subtitle {
@@ -23,4 +34,23 @@
 .zwind-buttons {
     opacity: 0;
     animation: enterFromTop 1.2s 1.2s forwards;
+}
+
+.admin-header {
+    opacity: 0;
+    animation: enterFromTop .6s .6s forwards;
+}
+
+.admin-side-bar {
+    animation: enterFromLeft .6s forwards;
+}
+
+.product-image-form {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.product-info-form {
+    opacity: 0;
+    animation: enterFromTop .6s .6s forwards;
 }

@@ -31,10 +31,11 @@ export async function POST(req: NextRequest) {
         path: "/",
       });
       console.log("Token:", access_token);
-      const data = await response.json();
-      return NextResponse.json(data, { status: response.status });
     }
-  } catch (error) {
+    const data = await response.json();
+    return NextResponse.json(data, { status: response.status });
+  } catch (error: any) {
+    console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

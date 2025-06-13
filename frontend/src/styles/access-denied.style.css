@@ -1,0 +1,7 @@
+.access-denied {
+    opacity: 0;
+    background: url('../../public/auth-background.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

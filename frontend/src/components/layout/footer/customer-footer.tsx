@@ -61,9 +61,7 @@ export function CustomerFooter() {
                     <ZwindLogo />
                   </Link>
                   <div className="mt-[24px] leading-[24px]">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Consequatur ipsum accusantium eligendi saepe! Natus adipisci
-                    repellendus sequi dolores quibusdam doloribus maiores
+                    Optimized technology solutions and high-quality laptops for individuals, businesses, and organizations. We offer genuine products along with fast, efficient consulting and implementation services.
                   </div>
                 </div>
               </div>

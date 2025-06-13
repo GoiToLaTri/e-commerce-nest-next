@@ -16,9 +16,7 @@ export async function handleProxy(
 
   const access_token = req.cookies.get("access_token")?.value;
 
-  if (access_token) {
-    headers.set("Authorization", `Bearer ${access_token}`);
-  }
+  if (access_token) headers.set("Authorization", `Bearer ${access_token}`);
 
   const fetchOptions: RequestInit = {
     method: req.method,

@@ -9,3 +9,6 @@ export * from "./wrap/global-container";
 
 // exporting all menu components
 export * from "./menu/dropdown-menu";
+
+// eporting all card components
+export * from "./cards/card";
