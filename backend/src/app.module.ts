@@ -11,6 +11,7 @@ import { SessionModule } from './modules/session/session.module';
 import { RedisModule } from './modules/redis/redis.module';
 import { RoleModule } from './modules/role/role.module';
 import { SharedModule } from './shared/shared.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SharedModule } from './shared/shared.module';
     RedisModule,
     RoleModule,
     SharedModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],
