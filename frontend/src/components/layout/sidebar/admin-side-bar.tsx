@@ -25,7 +25,6 @@ export default function AdminSideBar() {
               key={item.label}
               href={item.href ?? "#"}
               passHref
-              legacyBehavior
             >
               <Tooltip placement="right" title={item.label} arrow={false}>
                 <Button

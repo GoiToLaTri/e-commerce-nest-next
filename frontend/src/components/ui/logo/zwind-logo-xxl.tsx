@@ -15,7 +15,7 @@ export function ZwindLogoXXL() {
       </div>
       <div>
         <div className="font-bold tracking-[3.2] text-[3rem] leading-[4rem]">ZWIND</div>
-        <div className="text-[16px] tracking-[6.4] uppercase">zwind group</div>
+        <div className="text-[16px] tracking-[4.8] uppercase">zwind group</div>
       </div>
     </div>
   );

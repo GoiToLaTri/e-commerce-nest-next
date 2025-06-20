@@ -10,5 +10,8 @@ export * from "./wrap/global-container";
 // exporting all menu components
 export * from "./menu/dropdown-menu";
 
-// eporting all card components
+// exporting all card components
 export * from "./cards/card";
+
+// exporting all table components
+export * from "./tables/product-table";

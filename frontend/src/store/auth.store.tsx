@@ -52,11 +52,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const getIsAccess = async (roles: Role[]) => {
-    const sessionData = queryClient.getQueryData<{
-      session_user: IUserSession | undefined;
-    }>([queryKeys.USER_SESSION]);
-    const session_user = sessionData?.session_user;
-
+    const session_user = queryClient.getQueryData<IUserSession>([
+      queryKeys.USER_SESSION,
+    ]);
+    // const session_user = sessionData?.session_user;
     try {
       if (!session_user) {
         const response = await checkSession();

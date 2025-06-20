@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { uploadApi } from "@/api-client";
 import { PlusOutlined } from "@ant-design/icons";
 import { Upload, Image } from "antd";
 import type { UploadFile, UploadProps, GetProp } from "antd";
 import { sonnerError } from "../sonner/sonner";
+import { ImageResponsePayload } from "@/models";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -17,10 +18,22 @@ const getBase64 = (file: FileType): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-export default function UploadDescription() {
+export interface UploadDescriptionProps {
+  getImageList?: (listValue: ImageResponsePayload[]) => void;
+}
+
+export default function UploadDescription({
+  getImageList,
+}: UploadDescriptionProps) {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    const imagesResponse = fileList.map((item) => item.response);
+    getImageList?.(imagesResponse || []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileList]);
 
   const beforeUpload: UploadProps["beforeUpload"] = (file, newfileList) => {
     const currentTotal = newfileList.length + fileList.length;
@@ -44,6 +57,13 @@ export default function UploadDescription() {
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
     setFileList(newFileList);
 
+  const handleRemove: UploadProps["onRemove"] = async () => {
+    // console.log("file list", fileList);
+    // console.log("handle remove", file.response);
+
+    return true;
+  };
+
   const customRequest: UploadProps["customRequest"] = async (options) => {
     const { file, onSuccess, onError, onProgress } = options;
 
@@ -62,10 +82,26 @@ export default function UploadDescription() {
           }
         },
       });
+
+      const uploadedData = response.data;
+
+      // Update state: thêm response vào đúng file trong fileList
+      setFileList((prevList) =>
+        prevList.map((item) =>
+          item.uid === (file as UploadFile).uid
+            ? {
+                ...item,
+                response: uploadedData, //  lưu response tại đây
+                url: uploadedData.url, //  optional: để preview ảnh luôn
+              }
+            : item
+        )
+      );
+
       // Simulate progress as 100% after upload is done
       onProgress?.({ percent: 100 }, file);
-      onSuccess?.(response.data, file);
-      console.log(response);
+      onSuccess?.(uploadedData, file);
+      // console.log(response);
     } catch (err) {
       onError?.(err as Error);
     }
@@ -94,6 +130,7 @@ export default function UploadDescription() {
         onChange={handleChange}
         beforeUpload={beforeUpload}
         customRequest={customRequest}
+        onRemove={handleRemove}
         multiple
       >
         {fileList.length >= 8 ? null : uploadButton}

@@ -54,3 +54,18 @@
     opacity: 0;
     animation: enterFromTop .6s .6s forwards;
 }
+
+.product-table {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.product-images {
+    opacity: 0;
+    animation: enterFromTop .6s .2s forwards;
+}
+
+.product-info {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}

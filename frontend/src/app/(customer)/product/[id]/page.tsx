@@ -1,0 +1,120 @@
+import { productApi } from "@/api-client";
+import ProductImagePreview from "@/components/ui/preview/product-image-preview";
+import { IProduct } from "@/models";
+import { convertNumberToCurrency } from "@/utils/currency.util";
+import { Button, Descriptions, Image, Rate } from "antd";
+
+export interface ProductDetailProps {
+  params: { id: string };
+}
+
+export default async function ProductDetail({ params }: ProductDetailProps) {
+  const { id } = await params;
+  const res = await productApi.getDetailProduct(id);
+  const data = (await res.data) as IProduct;
+  console.log(data);
+  return (
+    <div className="flex gap-4 pb-[8rem]">
+      <div className="product-images">
+        <div>
+          <Image src={data.thumbnail} alt="thumbnail" width={400} />
+        </div>
+        <div className="max-w-[400px]">
+          <ProductImagePreview images={data.images} />
+        </div>
+      </div>
+      <div className="product-info">
+        <div className="w-full border-[1px] border-solid border-[rgba(160,145,184,.4784313725)] rounded-[12px]">
+          <div className="flex justify-between p-8">
+            <div className="w-[60%]">
+              <h2 className="font-semibold text-xl mb-1 text-white">
+                {data.model}
+              </h2>
+              <p className="text-balance text-[#7a7990] mt-[4px] leading-6">
+                {data.description}
+              </p>
+            </div>
+            <div className="flex items-end flex-col gap-4">
+              <div className="font-semibold text-4xl">
+                {convertNumberToCurrency(data.price)}
+              </div>
+              <div className="flex flex-col gap-4">
+                <Button
+                  type="primary"
+                  size="large"
+                  className="!bg-[#924dff] !rounded-[4rem] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300 !py-"
+                >
+                  Buy now
+                </Button>
+                <Button
+                  type="default"
+                  size="large"
+                  className="!rounded-[4rem] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] !bg-transparent !border !border-[#924dff] !text-[#924dff] hover:!bg-[#f5f0ff] transition-colors duration-300"
+                >
+                  Add to cart
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
+            <Descriptions
+              column={3}
+              styles={{
+                title: {
+                  fontSize: "20px",
+                  lineHeight: "1.75rem",
+                  fontWeight: 600,
+                  color: "#fff",
+                },
+                label: { fontSize: "16px" },
+                content: { fontSize: "16px" },
+              }}
+            >
+              <Descriptions.Item label="Rate">
+                <Rate allowHalf disabled defaultValue={4} />
+              </Descriptions.Item>
+              <Descriptions.Item label="View">
+                40.4k
+              </Descriptions.Item>
+              <Descriptions.Item label="Saled">
+                20.4k
+              </Descriptions.Item>
+            </Descriptions>
+          </div>
+          <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
+            <Descriptions
+              title="Product Specification"
+              column={1}
+              styles={{
+                title: {
+                  fontSize: "20px",
+                  lineHeight: "1.75rem",
+                  fontWeight: 600,
+                  color: "#fff",
+                },
+                label: { fontSize: "16px" },
+                content: { fontSize: "16px" },
+              }}
+            >
+              <Descriptions.Item label="Processor">
+                {data.Processor.model || "-"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Video Graphics">
+                {data.VideoGraphics.name || "-"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Display">
+                {data.Display.info || "-"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Memory">
+                {data.Memory.info || "-"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Storage">
+                {data.Storage.info || "-"}
+              </Descriptions.Item>
+            </Descriptions>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,6 +1,7 @@
 import {
   AppstoreAddOutlined,
   AppstoreOutlined,
+  InboxOutlined,
   ProductOutlined,
 } from "@ant-design/icons";
 
@@ -21,5 +22,10 @@ export const adminSideBarItem = [
     label: "Add Product",
     icon: <AppstoreAddOutlined style={{ fontSize: icon_size }} />,
     href: "/admin/product/add",
+  },
+  {
+    label: "Inventory",
+    icon: <InboxOutlined style={{ fontSize: icon_size }} />,
+    href: "/admin/inventory",
   },
 ];

@@ -9,6 +9,7 @@ import { AntdThemeConfig } from "@/common/configs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/store";
 import { Toaster } from "sonner";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // type RenderType = Parameters<typeof unstableSetRender>[0];
 
@@ -45,6 +46,7 @@ export default function AppProvider({ children }: AppProviderProps) {
         <Toaster position="top-center" theme="dark" richColors />
         <AntdThemeConfig>{children}</AntdThemeConfig>
       </AuthProvider>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }

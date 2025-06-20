@@ -45,3 +45,119 @@ model Session {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
+
+model Product {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  model            String         @unique
+  description      String
+  thumbnail        String
+  price            Int
+  quantity         Int
+  created_at       DateTime       @default(now())
+  updated_at       DateTime       @updatedAt
+  LaptopBrand      LaptopBrand?   @relation(fields: [brand_id], references: [id])
+  brand_id         String?        @db.ObjectId
+  Processor        Processor?     @relation(fields: [processor_id], references: [id])
+  processor_id     String?        @db.ObjectId
+  VideoGraphics    VideoGraphics? @relation(fields: [videographics_id], references: [id])
+  videographics_id String?        @db.ObjectId
+  Display          Display?       @relation(fields: [display_id], references: [id])
+  display_id       String?        @db.ObjectId
+  Memory           Memory?        @relation(fields: [memory_id], references: [id])
+  memory_id        String?        @db.ObjectId
+  Storage          Storage?       @relation(fields: [storage_id], references: [id])
+  storage_id       String?        @db.ObjectId
+  images           Images[]
+}
+
+model LaptopBrand {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String    @unique
+  product    Product[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+}
+
+model Processor {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  brand      String
+  family     String
+  series     String
+  generation Int
+  model      String    @unique
+  sku        String
+  suffix     String
+  product    Product[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+}
+
+model VideoGraphics {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  manufacturer String
+  brand        String
+  prefix       String
+  series       String
+  model        String    @unique
+  vram_gb      Int
+  memory_type  String
+  name         String    @unique
+  product      Product[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Display {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  size           String
+  ratio          String
+  panel_type     String
+  resolution     String
+  refresh_rate   String
+  response_time  String
+  color_coverage String
+  brightness     String
+  info           String    @unique
+  product        Product[]
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+}
+
+model Memory {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  capacity     String
+  max_capacity String
+  type         String
+  speed        String
+  slots        Int
+  sticks       Int
+  info         String    @unique
+  product      Product[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Storage {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  capacity     String
+  max_capacity String
+  type         String
+  interface    String
+  slots        Int
+  info         String    @unique
+  product      Product[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Images {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  url          String
+  public_id    String   @unique
+  is_thumbnail Boolean
+  is_temp      Boolean
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  Product      Product? @relation(fields: [productId], references: [id])
+  productId    String?  @db.ObjectId
+}

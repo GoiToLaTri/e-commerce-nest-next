@@ -1,0 +1,43 @@
+/* Áp dụng cho toàn bộ bảng của Ant Design */
+.ant-table {
+  background-color: #1e1035 !important;
+  color: #ffffff;
+  border: 1px solid #564373 !important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #1b1428 !important;
+  border-bottom: 1px solid #564373 !important;
+}
+
+.ant-table-tbody > tr > td {
+  background-color: #1e1035 !important;
+  color: #dcdcdc;
+  border-bottom: 1px solid #564373 !important;
+}
+
+/* Hover hàng */
+.ant-table-tbody > tr:hover > td {
+  background-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Pagination */
+.ant-pagination {
+  background-color: transparent;
+  color: #fff;
+}
+
+/* Nút view, edit nếu dùng ant-button */
+.ant-btn {
+  background-color: #2e2e2e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Khi hover vào nút */
+.ant-btn:hover,
+.ant-btn:focus {
+  background-color: #3a3a3a;
+  border-color: #666;
+  color: #fff;
+}

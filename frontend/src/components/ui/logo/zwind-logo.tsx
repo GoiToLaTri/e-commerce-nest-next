@@ -20,7 +20,7 @@ export function ZwindLogo() {
       </div>
       <div>
         <div className="font-bold tracking-[1.6] text-2xl">ZWIND</div>
-        <div className="text-[8px] tracking-[3.2] uppercase">zwind group</div>
+        <div className="text-[8px] tracking-[2.4] uppercase">zwind group</div>
       </div>
     </div>
   );

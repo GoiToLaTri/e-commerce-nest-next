@@ -12,6 +12,8 @@ import { RedisModule } from './modules/redis/redis.module';
 import { RoleModule } from './modules/role/role.module';
 import { SharedModule } from './shared/shared.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { ProductModule } from './modules/product/product.module';
+import { BrandModule } from './modules/brand/brand.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
     RoleModule,
     SharedModule,
     CloudinaryModule,
+    ProductModule,
+    BrandModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

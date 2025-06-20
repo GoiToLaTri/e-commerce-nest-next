@@ -18,10 +18,16 @@ export class CloudinaryController {
     const listImages: Array<IImage> = [];
     const imagesData = await this.cloudinaryService.upload(files, 'product');
     imagesData.forEach((image) => {
-      const { id, public_id, created_at, url } = image;
-      listImages.push({ id, public_id, created_at, url, isTemp: true });
+      const { id, public_id, url } = image;
+      listImages.push({
+        id,
+        public_id,
+        is_temp: true,
+        is_thumbnail: false,
+        url,
+      });
     });
-
+    await this.cloudinaryService.save(listImages);
     return { statusCode: HttpStatus.CREATED, images: listImages };
   }
 
@@ -33,10 +39,16 @@ export class CloudinaryController {
     const listImages: Array<IImage> = [];
     const imagesData = await this.cloudinaryService.upload(files, 'thumbnails');
     imagesData.forEach((image) => {
-      const { id, public_id, created_at, url } = image;
-      listImages.push({ id, public_id, created_at, url, isTemp: true });
+      const { id, public_id, url } = image;
+      listImages.push({
+        id,
+        public_id,
+        is_temp: true,
+        is_thumbnail: true,
+        url,
+      });
     });
-
+    await this.cloudinaryService.save(listImages);
     return { statusCode: HttpStatus.CREATED, images: listImages };
   }
 }

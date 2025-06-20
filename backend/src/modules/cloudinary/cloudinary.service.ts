@@ -2,10 +2,11 @@ import { appConfig } from '@/common/configs';
 import { Injectable } from '@nestjs/common';
 import { v2 as cloudinary } from 'cloudinary';
 import { IImage } from './interfaces';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CloudinaryService {
-  constructor() {
+  constructor(private readonly prisma: PrismaService) {
     cloudinary.config({
       cloud_name: appConfig.CLOUDINARY_CLOUD_NAME,
       api_key: appConfig.CLOUDINARY_API_KEY,
@@ -72,5 +73,26 @@ export class CloudinaryService {
         ? error
         : new Error('Image deletion failed. Please try again.'); // Ném lỗi với thông báo tùy chỉnh}
     }
+  }
+
+  save(images: IImage[]) {
+    return this.prisma.images.createMany({
+      data: images,
+    });
+  }
+
+  findByPublicIdAndUpdate(public_id: string, data: Partial<IImage>) {
+    console.log(public_id);
+    return this.prisma.images.update({
+      where: { public_id },
+      data: { ...data },
+    });
+  }
+
+  updateMany(public_ids: string[], data: Partial<IImage>) {
+    return this.prisma.images.updateMany({
+      where: { public_id: { in: public_ids } },
+      data: { ...data },
+    });
   }
 }

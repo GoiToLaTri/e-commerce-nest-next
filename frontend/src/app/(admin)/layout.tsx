@@ -1,4 +1,5 @@
 import { Role } from "@/common/enums";
+import { AdminFooter } from "@/components/layout/footer";
 import AdminHeader from "@/components/layout/header/admin-header";
 import AdminSideBar from "@/components/layout/sidebar/admin-side-bar";
 import { GlobalContainer } from "@/components/ui";
@@ -19,6 +20,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </div>
       <div className="pt-[8rem]">
         <GlobalContainer>{children}</GlobalContainer>
+      </div>
+
+      <div className="pt-[8rem]">
+        <GlobalContainer>
+          <AdminFooter />
+        </GlobalContainer>
       </div>
     </div>
     // </RoleAccess>

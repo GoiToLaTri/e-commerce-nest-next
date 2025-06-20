@@ -7,10 +7,8 @@ import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { customerNavItem } from "./customer-nav-item";
 import { usePathname } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { queryKeys } from "@/common/enums";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
-import { authApi } from "@/api-client";
+import { useUserSession } from "@/hooks/useUserSession";
 
 export interface NavigationBarProps {
   children: ReactNode;
@@ -19,13 +17,7 @@ export interface NavigationBarProps {
 export function NavigationBar() {
   const pathName = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
-  const { data, isLoading, error } = useQuery({
-    queryKey: [queryKeys.USER_SESSION],
-    queryFn: async () => {
-      const response = await authApi.getUserSession();
-      return response.data as { session_user: IUserSession };
-    },
-  });
+  const { data, isLoading } = useUserSession();
 
   console.log("isLoading", isLoading);
   console.log("data", data);
@@ -71,12 +63,7 @@ export function NavigationBar() {
                     </Button>
                   </DropdownMenu>
                 ) : (
-                  <Link
-                    key={item.label}
-                    href={item.href ?? "#"}
-                    passHref
-                    legacyBehavior
-                  >
+                  <Link key={item.label} href={item.href ?? "#"} passHref>
                     <Button
                       type="text"
                       className={`!text-[1rem] !rounded-[4rem]  ${
@@ -109,7 +96,7 @@ export function NavigationBar() {
               </div>
             )}
             {!isLoading && !data && (
-              <Link href="/auth/signup" passHref legacyBehavior>
+              <Link href="/auth/signup" passHref>
                 <Button
                   type="primary"
                   size="large"
