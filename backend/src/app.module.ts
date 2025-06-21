@@ -14,6 +14,11 @@ import { SharedModule } from './shared/shared.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { ProductModule } from './modules/product/product.module';
 import { BrandModule } from './modules/brand/brand.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
+import { StockImportModule } from './modules/stock-import/stock-import.module';
+import { StockExportModule } from './modules/stock-export/stock-export.module';
+import { StockAjustmentModule } from './modules/stock-ajustment/stock-ajustment.module';
+import { InventoryLogModule } from './modules/inventory-log/inventory-log.module';
 
 @Module({
   imports: [
@@ -31,6 +36,11 @@ import { BrandModule } from './modules/brand/brand.module';
     CloudinaryModule,
     ProductModule,
     BrandModule,
+    InventoryModule,
+    StockImportModule,
+    StockExportModule,
+    InventoryLogModule,
+    StockAjustmentModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

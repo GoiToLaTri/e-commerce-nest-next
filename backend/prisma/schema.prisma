@@ -47,27 +47,30 @@ model Session {
 }
 
 model Product {
-  id               String         @id @default(auto()) @map("_id") @db.ObjectId
-  model            String         @unique
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  model            String            @unique
   description      String
   thumbnail        String
   price            Int
-  quantity         Int
-  created_at       DateTime       @default(now())
-  updated_at       DateTime       @updatedAt
-  LaptopBrand      LaptopBrand?   @relation(fields: [brand_id], references: [id])
-  brand_id         String?        @db.ObjectId
-  Processor        Processor?     @relation(fields: [processor_id], references: [id])
-  processor_id     String?        @db.ObjectId
-  VideoGraphics    VideoGraphics? @relation(fields: [videographics_id], references: [id])
-  videographics_id String?        @db.ObjectId
-  Display          Display?       @relation(fields: [display_id], references: [id])
-  display_id       String?        @db.ObjectId
-  Memory           Memory?        @relation(fields: [memory_id], references: [id])
-  memory_id        String?        @db.ObjectId
-  Storage          Storage?       @relation(fields: [storage_id], references: [id])
-  storage_id       String?        @db.ObjectId
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
+  LaptopBrand      LaptopBrand?      @relation(fields: [brand_id], references: [id])
+  brand_id         String?           @db.ObjectId
+  Processor        Processor?        @relation(fields: [processor_id], references: [id])
+  processor_id     String?           @db.ObjectId
+  VideoGraphics    VideoGraphics?    @relation(fields: [videographics_id], references: [id])
+  videographics_id String?           @db.ObjectId
+  Display          Display?          @relation(fields: [display_id], references: [id])
+  display_id       String?           @db.ObjectId
+  Memory           Memory?           @relation(fields: [memory_id], references: [id])
+  memory_id        String?           @db.ObjectId
+  Storage          Storage?          @relation(fields: [storage_id], references: [id])
+  storage_id       String?           @db.ObjectId
   images           Images[]
+  Inventory        Inventory?
+  imports          StockImport[]
+  adjustments      StockAdjustment[]
+  InventoryLog     InventoryLog[]
 }
 
 model LaptopBrand {
@@ -160,4 +163,58 @@ model Images {
   updated_at   DateTime @updatedAt
   Product      Product? @relation(fields: [productId], references: [id])
   productId    String?  @db.ObjectId
+}
+
+model Inventory {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  quantity           Int
+  min_alert_quantity Int      @default(5)
+  cost               Int?
+  updated_at         DateTime @updatedAt
+  productId          String   @unique @db.ObjectId
+  product            Product  @relation(fields: [productId], references: [id])
+}
+
+model StockImport {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  quantity      Int
+  import_price  Int
+  supplier_name String?
+  note          String?
+  created_by    String?
+  created_at    DateTime @default(now())
+  Product       Product? @relation(fields: [productId], references: [id])
+  productId     String?  @db.ObjectId
+}
+
+// model StockExport {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   quantity  Int
+//   reason    String?
+//   orderId   String?
+//   note      String?
+//   created_by String?
+//   created_at DateTime @default(now())
+// }
+
+model StockAdjustment {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  old_quantity Int
+  new_quantity Int
+  reason       String?
+  created_by   String?
+  created_at   DateTime @default(now())
+  Product      Product? @relation(fields: [productId], references: [id])
+  productId    String?  @db.ObjectId
+}
+
+model InventoryLog {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  change_type     String // 'import', 'export', 'adjustment'
+  quantity_change Int
+  reference       String?  @db.ObjectId // id phiếu liên quan
+  created_by      String?
+  created_at      DateTime @default(now())
+  Product         Product? @relation(fields: [productId], references: [id])
+  productId       String?  @db.ObjectId
 }

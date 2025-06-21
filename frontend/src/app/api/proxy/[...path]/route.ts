@@ -9,7 +9,8 @@ export async function handleProxy(
 ) {
   console.log("Matching request to /api/proxy/[...path]");
   const { path } = await (await context).params;
-  const url = `${BACKEND_URL}/${path.join("/")}`;
+  const query = req.nextUrl.search;
+  const url = `${BACKEND_URL}/${path.join("/")}${query}`;
   const headers = new Headers(req.headers);
   headers.delete("host");
   headers.delete("cookie");

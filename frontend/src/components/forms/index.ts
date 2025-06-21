@@ -4,3 +4,4 @@ export * from "./upload-thumbnail";
 export * from "./product-image-form";
 export * from "./product-info-form";
 export * from "./quantity-and-price-form";
+export * from "./stock-import-form";

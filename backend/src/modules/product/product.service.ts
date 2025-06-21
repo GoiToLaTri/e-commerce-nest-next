@@ -19,6 +19,7 @@ import { Prisma } from 'generated/prisma';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { BrandService } from '../brand/brand.service';
 import { IProduct } from './interfaces/product.interface';
+import { InventoryService } from '../inventory/inventory.service';
 
 @Injectable()
 export class ProductService {
@@ -27,6 +28,7 @@ export class ProductService {
     private readonly redis: RedisService,
     private readonly cloudinary: CloudinaryService,
     private readonly brandService: BrandService,
+    private readonly inventoryService: InventoryService,
   ) {}
   create(createProductDto: CreateProductDto) {
     // console.log(createProductDto.display);
@@ -68,7 +70,7 @@ export class ProductService {
       const ramId = await this.transSaveRam(tx, ram);
       const storageId = await this.transSaveStorage(tx, storage);
 
-      console.log(createProductDto.thumbnail);
+      // console.log(createProductDto.thumbnail);
 
       const product = await tx.product.create({
         data: {
@@ -76,7 +78,6 @@ export class ProductService {
           description: createProductDto.description,
           thumbnail: createProductDto.thumbnail[0].url,
           price: createProductDto.pricing,
-          quantity: createProductDto.quantity,
           LaptopBrand: { connect: { id: brandId } },
           Processor: { connect: { id: cpuId } },
           VideoGraphics: { connect: { id: gpuId } },
@@ -85,6 +86,8 @@ export class ProductService {
           Storage: { connect: { id: storageId } },
         },
       });
+
+      await this.inventoryService.transCreate(tx, product.id);
 
       await this.cloudinary.findByPublicIdAndUpdate(
         createProductDto.thumbnail[0].public_id,
@@ -286,7 +289,7 @@ export class ProductService {
         brightness: display.brightness,
         color_coverage: display.color_coverage,
         ratio: display.ratio,
-        response_time: display.response_time,
+        response_time: display.response_time || '-',
       },
     });
 

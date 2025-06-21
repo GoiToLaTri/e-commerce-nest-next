@@ -12,22 +12,22 @@ export interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
-    // <RoleAccess roles={[Role.ADMIN]}>
-    <div className="h-screen">
-      <AdminHeader />
-      <div className="fixed top-[50%] translate-y-[-50%] left-4">
-        <AdminSideBar />
-      </div>
-      <div className="pt-[8rem]">
-        <GlobalContainer>{children}</GlobalContainer>
-      </div>
+    <RoleAccess roles={[Role.ADMIN]}>
+      <div className="h-screen">
+        <AdminHeader />
+        <div className="fixed top-[50%] translate-y-[-50%] left-4">
+          <AdminSideBar />
+        </div>
+        <div className="pt-[8rem]">
+          <GlobalContainer>{children}</GlobalContainer>
+        </div>
 
-      <div className="pt-[8rem]">
-        <GlobalContainer>
-          <AdminFooter />
-        </GlobalContainer>
+        <div className="pt-[8rem]">
+          <GlobalContainer>
+            <AdminFooter />
+          </GlobalContainer>
+        </div>
       </div>
-    </div>
-    // </RoleAccess>
+    </RoleAccess>
   );
 }

@@ -35,17 +35,6 @@ const columns: TableProps<IProduct>["columns"] = [
     render: (_, record) => record.LaptopBrand.name ?? "N/A",
   },
   {
-    title: "Quantity",
-    dataIndex: "quantity",
-    key: "model",
-  },
-  {
-    title: "Pricing",
-    dataIndex: "price",
-    key: "price",
-    render: (price) => convertNumberToCurrency(price),
-  },
-  {
     title: "Created at",
     dataIndex: "created_at",
     key: "created_at",

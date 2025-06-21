@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductTable } from "@/components/ui";
-import { useProducts } from "@/hooks/useProduct";
+import { useProducts } from "@/hooks/useProducts";
 
 export default function ProductManage() {
   const page = 1;

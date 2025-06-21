@@ -69,3 +69,18 @@
     opacity: 0;
     animation: enterFromTop .6s .4s forwards;
 }
+
+.stock-import-form {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.inventory-card {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.inventory-log-table {
+    opacity: 0;
+    animation: enterFromTop .6s .6s forwards;
+}

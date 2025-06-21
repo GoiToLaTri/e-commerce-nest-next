@@ -10,7 +10,7 @@ export interface ProductDetailProps {
 
 export default async function ProductDetail({ params }: ProductDetailProps) {
   const { id } = await params;
-  const res = await productApi.getDetailProduct(id);
+  const res = await productApi.getClientDetailProduct(id);
   const data = (await res.data) as IProduct;
   console.log(data);
   return (
@@ -73,12 +73,8 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
               <Descriptions.Item label="Rate">
                 <Rate allowHalf disabled defaultValue={4} />
               </Descriptions.Item>
-              <Descriptions.Item label="View">
-                40.4k
-              </Descriptions.Item>
-              <Descriptions.Item label="Saled">
-                20.4k
-              </Descriptions.Item>
+              <Descriptions.Item label="View">40.4k</Descriptions.Item>
+              <Descriptions.Item label="Saled">20.4k</Descriptions.Item>
             </Descriptions>
           </div>
           <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">

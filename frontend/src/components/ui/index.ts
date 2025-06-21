@@ -12,6 +12,8 @@ export * from "./menu/dropdown-menu";
 
 // exporting all card components
 export * from "./cards/card";
+export * from "./cards/inventory-card";
 
 // exporting all table components
 export * from "./tables/product-table";
+export * from "./tables/inventory-table";
