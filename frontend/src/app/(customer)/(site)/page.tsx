@@ -1,4 +1,5 @@
 import { GlobalContainer } from "@/components/ui";
+import PrupleButton from "@/components/ui/button/purple-button";
 import { Button } from "antd";
 
 export default function Home() {
@@ -16,13 +17,8 @@ export default function Home() {
             </p>
           </div>
           <div className="zwind-buttons flex justify-center items-center gap-4 mt-[2.5rem]">
-            <Button
-              type="primary"
-              size="large"
-              className="!bg-[#924dff] !rounded-[4rem] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300 !py-"
-            >
-              Explore Laptops
-            </Button>
+            <PrupleButton>Explore Laptops</PrupleButton>
+
             <Button
               type="default"
               size="large"

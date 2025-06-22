@@ -1,7 +1,22 @@
+@keyframes enterFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .access-denied {
-    opacity: 0;
     background: url('../../public/auth-background.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.access-deneid-card {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
 }

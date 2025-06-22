@@ -7,30 +7,31 @@ import GoogleIconSVG from "../../../public/google.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { sonnerLoading } from "../sonner/sonner";
+import { useSignin } from "@/hooks/useSignin";
+import { useRouter } from "next/navigation";
 import "@/styles/signin-form.style.css";
-import { authApi } from "@/api-client";
+
 // export interface SigninFormProps {}
 
-export const handleSignin = async (singinData: SigninPayload) => {
-  try {
-    await authApi.signin(singinData);
-    return "Login successful!";
-  } catch (error) {
-    throw error;
-  }
-};
-
 export function SigninForm() {
+  const signinMutation = useSignin();
+  const router = useRouter();
   const onFinish = (values: SigninPayload) => {
     sonnerLoading(
-      handleSignin(values)
-        .then((message) => ({ message }))
+      signinMutation
+        .mutateAsync({
+          ...values,
+        })
+        .then((message) => {
+          router.push("/");
+          return { message };
+        })
         .catch((error) => {
-          throw new Error(error.message || "Login failed!");
+          throw error.response.data.message || "Sign in failed!";
         })
     );
 
-    console.log("Received values:", values);
+    // console.log("Received values:", values);
   };
 
   return (
@@ -63,7 +64,7 @@ export function SigninForm() {
         <Button
           htmlType="submit"
           type="primary"
-          className="w-full bg-blue-900 hover:bg-blue-800 h-10 rounded-md"
+          className="!bg-[#924dff] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300 w-full"
         >
           Sign in
         </Button>

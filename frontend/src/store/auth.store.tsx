@@ -52,12 +52,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const getIsAccess = async (roles: Role[]) => {
-    const session_user = queryClient.getQueryData<IUserSession>([
-      queryKeys.USER_SESSION,
-    ]);
+    const data = queryClient.getQueryData<{
+      session_user: IUserSession;
+    }>([queryKeys.USER_SESSION]);
+    console.log("Get is access", data?.session_user);
     // const session_user = sessionData?.session_user;
     try {
-      if (!session_user) {
+      if (!data) {
         const response = await checkSession();
         if (response.status !== 200) {
           return {
@@ -82,8 +83,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Implement your logic to check access based on roles
-      console.log("_______", session_user);
-      const role = session_user.user.roleId as Role;
+      // console.log("_______", data);
+      const role = data.session_user.user.roleId as Role;
       if (!roles.includes(role)) {
         return {
           isLogin: true,

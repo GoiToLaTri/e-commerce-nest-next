@@ -5,20 +5,8 @@ import React, { useEffect } from "react";
 import { sonnerLoading } from "../sonner/sonner";
 import { Button, Form, Input, InputNumber } from "antd";
 import { useInventory } from "@/hooks/useInventory";
-import { inventoryApi } from "@/api-client/inventory.api";
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/common/enums";
 import { useStockImport } from "@/hooks/useStockImport";
-
-const handleImport = async (stockImportData: StockImportPayload) => {
-  try {
-    await inventoryApi.importStock(stockImportData);
-    return "Import stock successful!";
-  } catch (error) {
-    throw error;
-  }
-};
 
 export default function StockImportForm({ id }: { id: string }) {
   const [form] = Form.useForm();
@@ -45,7 +33,9 @@ export default function StockImportForm({ id }: { id: string }) {
           router.push("/admin/inventory");
           return { message };
         })
-        .catch((error) => error)
+        .catch((error) => {
+          throw error.response.data.message || "Stock import failed!";
+        })
     );
     // try {
     //   await stockImportMutation.mutateAsync({

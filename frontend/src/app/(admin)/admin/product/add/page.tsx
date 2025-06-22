@@ -36,14 +36,6 @@ export default function AddProduct() {
             </div>
           </Card>
         </div>
-        {/* <Card>
-          <div className="w-full">
-            <h2 className="font-semibold text-xl mb-1 text-white">
-              Quantity & Pricing
-            </h2>
-            <QuantityAndPrice onFinish={onFinish} />
-          </div>
-        </Card> */}
       </div>
 
       <div className="product-info-form w-[60%] h-full">

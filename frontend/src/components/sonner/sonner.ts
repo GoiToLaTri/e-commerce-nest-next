@@ -15,5 +15,5 @@ export const sonnerLoading = <T extends { message: string }>(
     success: (data: T) => {
       return `${data.message}`;
     },
-    error: (data: T) => `${data.message}`,
+    error: (data: T) => `${data}`,
   });

@@ -53,7 +53,7 @@ export default function ProductInfoForm({
       })
         .then((message) => ({ message }))
         .catch((error) => {
-          throw new Error(error.message || "Add product failed!");
+          throw error.response.data.message || "Add product failed!";
         })
     );
   };
@@ -139,22 +139,6 @@ export default function ProductInfoForm({
         <Input
           placeholder="2x 256GB PCIe Gen4x4 M.2 slot, up to 4TB PCIe NVMe M.2 SSD, 2x M.2 slots"
           className="py-2"
-        />
-      </Form.Item>
-      <h3 className="font-semibold text-lg">Quanity And Pricing</h3>
-
-      <Form.Item
-        label="Quantity"
-        name="quantity"
-        rules={[{ required: true, message: "Please input the quantity!" }]}
-        tooltip="Enter the available quantity (must be at least 1)"
-      >
-        <InputNumber
-          placeholder="Enter quantity"
-          className="py-2 !w-full"
-          min={1}
-          step={1}
-          type="number"
         />
       </Form.Item>
 

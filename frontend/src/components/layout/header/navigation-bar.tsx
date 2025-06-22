@@ -2,13 +2,15 @@
 
 import { DropdownMenu, GlobalContainer, ZwindLogo } from "@/components/ui";
 import { CaretDownOutlined } from "@ant-design/icons";
-import { Avatar, Button } from "antd";
+import { Button } from "antd";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { customerNavItem } from "./customer-nav-item";
 import { usePathname } from "next/navigation";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
 import { useUserSession } from "@/hooks/useUserSession";
+import AdminModal from "@/components/modals/admin-modal";
+import { Role } from "@/common/enums";
 
 export interface NavigationBarProps {
   children: ReactNode;
@@ -29,6 +31,9 @@ export function NavigationBar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const haveSession = !isLoading && data && data.session_user.user.avatar;
+  const isAdmin = haveSession && data.session_user.user.roleId === Role.ADMIN;
 
   return (
     <header className="customer-navigation-bar w-full pt-[1.5rem] pb-[1rem] fixed z-[99] my-0 mx-auto">
@@ -81,20 +86,7 @@ export function NavigationBar() {
           </nav>
           <div className="flex items-center gap-[1rem]">
             {isLoading && <SkeletonAvatar active size={40} />}
-            {!isLoading && data && data.session_user.user.avatar && (
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-white">
-                  {`${data.session_user.user.first_name} ${data.session_user.user.last_name} `}
-                </span>
-                <Avatar
-                  src={data.session_user.user.avatar}
-                  size={40}
-                  style={{
-                    backgroundColor: "#fff",
-                  }}
-                />
-              </div>
-            )}
+            {isAdmin && <AdminModal data={data} />}
             {!isLoading && !data && (
               <Link href="/auth/signup" passHref>
                 <Button

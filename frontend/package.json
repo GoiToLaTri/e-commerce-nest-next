@@ -21,6 +21,7 @@
     "qs": "^6.14.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "recharts": "^2.15.4",
     "sonner": "^2.0.3"
   },
   "devDependencies": {

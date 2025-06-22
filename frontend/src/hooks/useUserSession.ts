@@ -7,7 +7,7 @@ export const useUserSession = () => {
     queryKey: [queryKeys.USER_SESSION],
     queryFn: async () => {
       const res = await authApi.getUserSession();
-      return res.data; // chứa session_user
+      return res.data as { session_user: IUserSession }; // chứa session_user
     },
     staleTime: 1000 * 60 * 5, // 5 phút
     gcTime: 1000 * 60 * 60 * 24, // 1 ngày

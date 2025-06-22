@@ -36,9 +36,14 @@ const columns: TableProps<IInventory>["columns"] = [
     key: "quantity",
   },
   {
-    title: "Total imported",
+    title: "Imported",
     dataIndex: "total_imported",
     key: "total_imported",
+  },
+  {
+    title: "Exported",
+    dataIndex: "total_exported",
+    key: "total_exported",
   },
   {
     title: "Cost",
@@ -85,13 +90,36 @@ const columns: TableProps<IInventory>["columns"] = [
     render: (_, record) => (
       <div style={{ display: "flex", gap: 8 }}>
         <Link href={`/admin/inventory/${record.id}`}>
-          <Button type="primary">Detail</Button>
+          <Button
+            type="primary"
+            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+          >
+            Detail
+          </Button>
         </Link>
         <Link href={`/admin/inventory/${record.id}/import`}>
-          <Button type="primary">Import</Button>
+          <Button
+            type="primary"
+            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+          >
+            Import
+          </Button>
+        </Link>
+        <Link href={`/admin/inventory/${record.id}/import`}>
+          <Button
+            type="primary"
+            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+          >
+            Export
+          </Button>
         </Link>
         <Link href={`/admin/inventory/${record.id}/ajustment`}>
-          <Button>Ajustment</Button>
+          <Button
+            type="primary"
+            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+          >
+            Ajustment
+          </Button>
         </Link>
       </div>
     ),
@@ -99,6 +127,6 @@ const columns: TableProps<IInventory>["columns"] = [
 ];
 
 export function InventoryTable({ data }: InventoryTableProps) {
-  console.log(data)
+  console.log(data);
   return <Table<IInventory> rowKey="id" columns={columns} dataSource={data} />;
 }

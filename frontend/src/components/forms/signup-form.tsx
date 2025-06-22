@@ -24,7 +24,7 @@ export function SignupForm() {
       handleSignup(values)
         .then((message) => ({ message }))
         .catch((error) => {
-          throw new Error(error.message || "Login failed!");
+          throw error.response.data.message || "Sign up failed!";
         })
     );
 
@@ -82,7 +82,7 @@ export function SignupForm() {
         <Button
           htmlType="submit"
           type="primary"
-          className="w-full bg-blue-900 hover:bg-blue-800 h-10 rounded-md"
+          className="!bg-[#924dff] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300 w-full"
         >
           Sign up
         </Button>
