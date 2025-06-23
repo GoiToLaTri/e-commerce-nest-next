@@ -18,7 +18,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="fixed top-[50%] translate-y-[-50%] left-4">
           <AdminSideBar />
         </div>
-        <div className="pt-[8rem]">
+
+        <div className="pt-[8rem] min-h-full">
           <GlobalContainer>{children}</GlobalContainer>
         </div>
 

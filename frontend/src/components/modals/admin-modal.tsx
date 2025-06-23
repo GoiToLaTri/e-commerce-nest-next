@@ -90,6 +90,15 @@ export default function AdminModal({ data }: AdminModalProps) {
               Inventory
             </Button>
           </Link>
+          <Link href={"/admin/stock-history"}>
+            <Button
+              type="text"
+              className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
+              size="large"
+            >
+              Stock history
+            </Button>
+          </Link>
           <Divider />
           <Button
             type="text"

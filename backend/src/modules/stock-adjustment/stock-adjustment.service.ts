@@ -12,7 +12,8 @@ export class StockAdjustmentService {
     private readonly inventoryLogService: InventoryLogService,
   ) {}
   async create(stockAdjustment: StockAdjustmentDto) {
-    const { productId, actual_stock, system_stock, note } = stockAdjustment;
+    const { productId, actual_stock, system_stock, note, product } =
+      stockAdjustment;
     await this.redis.del('inventory-*');
 
     await this.prisma.$transaction(async (tx) => {
@@ -36,6 +37,7 @@ export class StockAdjustmentService {
         productId,
         quantity_change: delta,
         reference: adjustmentRecord.id,
+        product_name: product,
       });
 
       return adjustmentRecord;

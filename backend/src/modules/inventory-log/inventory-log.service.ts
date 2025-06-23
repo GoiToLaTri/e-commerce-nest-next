@@ -33,6 +33,8 @@ export class InventoryLogService {
         quantity_change: Math.abs(createInventoryLog.quantity_change),
         reference: createInventoryLog.reference,
         created_by: 'admin',
+        product_name: createInventoryLog.product_name,
+        supplier_name: createInventoryLog.supplier_name,
       },
     });
   }
@@ -49,6 +51,8 @@ export class InventoryLogService {
         quantity_change: -Math.abs(createInventoryLog.quantity_change),
         reference: createInventoryLog.reference,
         created_by: 'admin',
+        product_name: createInventoryLog.product_name,
+        supplier_name: createInventoryLog.supplier_name,
       },
     });
   }
@@ -65,6 +69,8 @@ export class InventoryLogService {
         quantity_change: createInventoryLog.quantity_change,
         reference: createInventoryLog.reference,
         created_by: 'admin',
+        product_name: createInventoryLog.product_name,
+        supplier_name: createInventoryLog.supplier_name,
       },
     });
   }

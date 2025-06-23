@@ -217,6 +217,8 @@ model InventoryLog {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   change_type     String // 'import', 'export', 'adjustment'
   quantity_change Int
+  product_name    String?
+  supplier_name   String?
   reference       String?  @db.ObjectId // id phiếu liên quan
   created_by      String?
   created_at      DateTime @default(now())

@@ -1,12 +1,12 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, Query, UseGuards } from '@nestjs/common';
 import { StockHistoryService } from './stock-history.service';
 import { Role } from 'src/enums/role.enum';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 
-// @UseGuards(JwtGuard, RoleGuard)
-// @Roles(Role.ADMIN)
+@UseGuards(JwtGuard, RoleGuard)
+@Roles(Role.ADMIN)
 @Controller({ path: 'stock-history', version: '1' })
 export class StockHistoryController {
   constructor(private readonly stockHistoryService: StockHistoryService) {}
@@ -18,6 +18,7 @@ export class StockHistoryController {
     @Query('sortField') sortField: string,
     @Query('sortOrder') sortOrder: string,
     @Query('changeType') changeTypeRaw: string | string[],
+    @Query('search') search: string,
   ) {
     const changeType = Array.isArray(changeTypeRaw)
       ? changeTypeRaw
@@ -31,6 +32,12 @@ export class StockHistoryController {
       sortField,
       sortOrder,
       changeType,
+      search,
     );
+  }
+
+  @Patch()
+  update() {
+    return this.stockHistoryService.update();
   }
 }
