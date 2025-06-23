@@ -15,17 +15,18 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  first_name String
-  last_name  String
-  email      String    @unique
-  password   String
-  avatar     String?   @default("https://brandlogos.net/wp-content/uploads/2024/01/aorus-logo_brandlogos.net_cckqq-768x807.png")
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  Session    Session[]
-  Role       Role      @relation(fields: [roleId], references: [id])
-  roleId     String    @db.ObjectId
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  first_name   String
+  last_name    String
+  email        String            @unique
+  password     String
+  avatar       String?           @default("https://brandlogos.net/wp-content/uploads/2024/01/aorus-logo_brandlogos.net_cckqq-768x807.png")
+  created_at   DateTime          @default(now())
+  updated_at   DateTime          @updatedAt
+  Session      Session[]
+  interactions UserInteraction[]
+  Role         Role              @relation(fields: [roleId], references: [id])
+  roleId       String            @db.ObjectId
 }
 
 model Role {
@@ -71,6 +72,8 @@ model Product {
   imports          StockImport[]
   adjustments      StockAdjustment[]
   InventoryLog     InventoryLog[]
+  StockExport      StockExport[]
+  interactions     UserInteraction[]
 }
 
 model LaptopBrand {
@@ -187,15 +190,17 @@ model StockImport {
   productId     String?  @db.ObjectId
 }
 
-// model StockExport {
-//   id String @id @default(auto()) @map("_id") @db.ObjectId
-//   quantity  Int
-//   reason    String?
-//   orderId   String?
-//   note      String?
-//   created_by String?
-//   created_at DateTime @default(now())
-// }
+model StockExport {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  quantity   Int
+  Product    Product? @relation(fields: [productId], references: [id])
+  productId  String?  @db.ObjectId
+  reason     String?
+  orderId    String?  @db.ObjectId
+  note       String?
+  created_by String?
+  created_at DateTime @default(now())
+}
 
 model StockAdjustment {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -217,4 +222,15 @@ model InventoryLog {
   created_at      DateTime @default(now())
   Product         Product? @relation(fields: [productId], references: [id])
   productId       String?  @db.ObjectId
+}
+
+model UserInteraction {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String   @db.ObjectId
+  productId        String   @db.ObjectId
+  interaction_type String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  User             User     @relation(fields: [userId], references: [id])
+  Product          Product  @relation(fields: [productId], references: [id])
 }

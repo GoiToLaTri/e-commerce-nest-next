@@ -1,4 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InventoryLogService } from '../inventory-log/inventory-log.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
+import { StockExportDto } from './dto/stock-export.dto';
 
 @Injectable()
-export class StockExportService {}
+export class StockExportService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+    private readonly inventoryLogService: InventoryLogService,
+  ) {}
+  async create(stockExportDto: StockExportDto) {
+    const { productId, quantity, reason, note } = stockExportDto;
+    await this.redis.del('inventory-*');
+
+    await this.prisma.$transaction(async (tx) => {
+      const exportRecord = await tx.stockExport.create({
+        data: { productId, quantity, reason, note },
+      });
+
+      await tx.inventory.update({
+        where: { productId },
+        data: {
+          quantity: { decrement: quantity },
+        },
+      });
+
+      await this.inventoryLogService.transLogExport(tx, {
+        productId,
+        quantity_change: quantity,
+        reference: exportRecord.id,
+      });
+
+      return exportRecord;
+    });
+  }
+}

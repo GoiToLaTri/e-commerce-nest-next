@@ -17,8 +17,10 @@ import { BrandModule } from './modules/brand/brand.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { StockImportModule } from './modules/stock-import/stock-import.module';
 import { StockExportModule } from './modules/stock-export/stock-export.module';
-import { StockAjustmentModule } from './modules/stock-ajustment/stock-ajustment.module';
+
 import { InventoryLogModule } from './modules/inventory-log/inventory-log.module';
+import { StockHistoryModule } from './modules/stock-history/stock-history.module';
+import { StockAdjustmentModule } from './modules/stock-adjustment/stock-adjustment.module';
 
 @Module({
   imports: [
@@ -40,7 +42,8 @@ import { InventoryLogModule } from './modules/inventory-log/inventory-log.module
     StockImportModule,
     StockExportModule,
     InventoryLogModule,
-    StockAjustmentModule,
+    StockAdjustmentModule,
+    StockHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

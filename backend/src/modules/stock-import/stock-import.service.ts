@@ -13,7 +13,7 @@ export class StockImportService {
   ) {}
   async create(stockImportDto: StockImportDto) {
     const { productId, quantity, price, note, supplier } = stockImportDto;
-    await this.redis.del('inventory-page-*');
+    await this.redis.del('inventory-*');
 
     await this.prisma.$transaction(async (tx) => {
       const importRecord = await tx.stockImport.create({

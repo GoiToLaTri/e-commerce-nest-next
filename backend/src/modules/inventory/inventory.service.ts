@@ -111,24 +111,24 @@ export class InventoryService {
       _sum: { quantity: true },
     });
 
-    // const exportData = await this.prisma.so.groupBy({
-    //   by: ['productId'],
-    //   where: { productId: { in: productIds } },
-    //   _sum: { quantity: true },
-    // });
+    const exportData = await this.prisma.stockExport.groupBy({
+      by: ['productId'],
+      where: { productId: { in: productIds } },
+      _sum: { quantity: true },
+    });
 
     return inventories.map((inv) => {
       const imported =
         importData.find((i) => i.productId === inv.productId)?._sum.quantity ||
         0;
-      // const exported =
-      //   exportData.find((e) => e.productId === inv.productId)?._sum.quantity ||
-      //   0;
+      const exported =
+        exportData.find((e) => e.productId === inv.productId)?._sum.quantity ||
+        0;
 
       return {
         ...inv,
         total_imported: imported,
-        // totalExported: exported,
+        total_exported: exported,
       };
     });
   }

@@ -21,15 +21,48 @@ export class InventoryLogService {
     });
   }
 
-  transLogImport(
+  async transLogImport(
     tx: Prisma.TransactionClient,
     createInventoryLog: CreateInventoryLog,
   ) {
+    await this.redis.del('product-inventory-log-*');
     return tx.inventoryLog.create({
       data: {
         productId: createInventoryLog.productId,
         change_type: 'import',
         quantity_change: Math.abs(createInventoryLog.quantity_change),
+        reference: createInventoryLog.reference,
+        created_by: 'admin',
+      },
+    });
+  }
+
+  async transLogExport(
+    tx: Prisma.TransactionClient,
+    createInventoryLog: CreateInventoryLog,
+  ) {
+    await this.redis.del('product-inventory-log-*');
+    return tx.inventoryLog.create({
+      data: {
+        productId: createInventoryLog.productId,
+        change_type: 'export',
+        quantity_change: -Math.abs(createInventoryLog.quantity_change),
+        reference: createInventoryLog.reference,
+        created_by: 'admin',
+      },
+    });
+  }
+
+  async transLogAdjustment(
+    tx: Prisma.TransactionClient,
+    createInventoryLog: CreateInventoryLog,
+  ) {
+    await this.redis.del('product-inventory-log-*');
+    return tx.inventoryLog.create({
+      data: {
+        productId: createInventoryLog.productId,
+        change_type: 'adjustment',
+        quantity_change: createInventoryLog.quantity_change,
         reference: createInventoryLog.reference,
         created_by: 'admin',
       },

@@ -1,7 +1,13 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 
-@Controller('inventory')
+@UseGuards(JwtGuard, RoleGuard)
+@Roles(Role.ADMIN)
+@Controller({ path: 'inventory', version: '1' })
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
   @Get()
