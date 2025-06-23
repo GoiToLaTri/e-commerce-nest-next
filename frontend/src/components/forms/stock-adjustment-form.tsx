@@ -6,13 +6,13 @@ import { sonnerLoading } from "../sonner/sonner";
 import { Button, Form, Input, InputNumber } from "antd";
 import { useInventory } from "@/hooks/useInventory";
 import { useRouter } from "next/navigation";
-import { useStockAjustment } from "@/hooks/useStockAdjustment";
+import { useStockAdjustment } from "@/hooks/useStockAdjustment";
 
-export function StockAjustmentForm({ id }: { id: string }) {
+export function StockAdjustmentForm({ id }: { id: string }) {
   const [form] = Form.useForm();
   const { data } = useInventory(id);
   const router = useRouter();
-  const stockImportMutation = useStockAjustment();
+  const stockImportMutation = useStockAdjustment();
 
   useEffect(() => {
     if (data) {
@@ -35,14 +35,14 @@ export function StockAjustmentForm({ id }: { id: string }) {
           return { message };
         })
         .catch((error) => {
-          throw error.response.data.message || "Stock ajustment failed!";
+          throw error.response.data.message || "Stock adjustment failed!";
         })
     );
   };
 
   return (
     <div className="w-full select-none">
-      <h2 className="text-xl font-semibold mb-4">Stock Ajustment Form</h2>
+      <h2 className="text-xl font-semibold mb-4">Stock Adjustment Form</h2>
 
       <Form
         layout="vertical"
