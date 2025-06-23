@@ -20,3 +20,19 @@ export interface StockImportPayload {
   price: number;
   note: string;
 }
+
+export interface StockExportPayload {
+  product: string;
+  productId: string;
+  quantity: number;
+  reason: string;
+  note: string;
+}
+
+export interface StockAdjustmentPayload {
+  productId: string;
+  product: string;
+  system_stock: number;
+  actual_stock: number;
+  note: string;
+}

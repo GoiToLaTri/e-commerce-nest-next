@@ -100,25 +100,25 @@ const columns: TableProps<IInventory>["columns"] = [
         <Link href={`/admin/inventory/${record.id}/import`}>
           <Button
             type="primary"
-            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+            className="!bg-[#a855f7] leading-[1.6] !py-[0.75rem] hover:!bg-[#9333ea] transition-colors duration-300"
           >
             Import
           </Button>
         </Link>
-        <Link href={`/admin/inventory/${record.id}/import`}>
+        <Link href={`/admin/inventory/${record.id}/export`}>
           <Button
             type="primary"
-            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+            className="!bg-[#c084fc] leading-[1.6] !py-[0.75rem] hover:!bg-[#a855f7] transition-colors duration-300"
           >
             Export
           </Button>
         </Link>
-        <Link href={`/admin/inventory/${record.id}/ajustment`}>
+        <Link href={`/admin/inventory/${record.id}/adjustment`}>
           <Button
             type="primary"
-            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+            className="!bg-[#6b21a8] leading-[1.6] !py-[0.75rem] hover:!bg-[#581c87] transition-colors duration-300"
           >
-            Ajustment
+            Adjustment
           </Button>
         </Link>
       </div>

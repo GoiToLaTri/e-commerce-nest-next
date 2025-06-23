@@ -1,4 +1,8 @@
-import { StockImportPayload } from "@/models";
+import {
+  StockAdjustmentPayload,
+  StockExportPayload,
+  StockImportPayload,
+} from "@/models";
 import axiosClient from "./axios-client";
 
 export const inventoryApi = {
@@ -7,4 +11,8 @@ export const inventoryApi = {
   findOne: (id: string) => axiosClient.get(`proxy/inventory/${id}`),
   importStock: (stockData: StockImportPayload) =>
     axiosClient.post("proxy/stock-import/", stockData),
+  exportStock: (stockData: StockExportPayload) =>
+    axiosClient.post("proxy/stock-export/", stockData),
+  adjustmentStock: (stockData: StockAdjustmentPayload) =>
+    axiosClient.post("proxy/stock-adjustment/", stockData),
 };

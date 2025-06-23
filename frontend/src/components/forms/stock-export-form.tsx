@@ -1,18 +1,18 @@
 "use client";
 
-import { StockImportPayload } from "@/models";
-import React, { useEffect } from "react";
+import { StockExportPayload } from "@/models";
+import { useEffect } from "react";
 import { sonnerLoading } from "../sonner/sonner";
 import { Button, Form, Input, InputNumber } from "antd";
 import { useInventory } from "@/hooks/useInventory";
 import { useRouter } from "next/navigation";
-import { useStockImport } from "@/hooks/useStockImport";
+import { useStockExport } from "@/hooks/useStockExport";
 
-export function StockImportForm({ id }: { id: string }) {
+export function StockExportForm({ id }: { id: string }) {
   const [form] = Form.useForm();
   const { data } = useInventory(id);
   const router = useRouter();
-  const stockImportMutation = useStockImport();
+  const stockImportMutation = useStockExport();
 
   useEffect(() => {
     if (data) {
@@ -22,7 +22,7 @@ export function StockImportForm({ id }: { id: string }) {
     }
   }, [data, form]);
 
-  const onFinish = async (values: StockImportPayload) => {
+  const onFinish = async (values: StockExportPayload) => {
     sonnerLoading(
       stockImportMutation
         .mutateAsync({
@@ -37,22 +37,11 @@ export function StockImportForm({ id }: { id: string }) {
           throw error.response.data.message || "Stock import failed!";
         })
     );
-    // try {
-    //   await stockImportMutation.mutateAsync({
-    //     ...values,
-    //     productId: data?.product.id || "",
-    //   });
-
-    //   // Navigate sau khi mutation thành công
-    //   router.push("/admin/inventory/");
-    // } catch (error) {
-    //   console.error("Import error:", error);
-    // }
   };
 
   return (
     <div className="w-full select-none">
-      <h2 className="text-xl font-semibold mb-4">Stock Import Form</h2>
+      <h2 className="text-xl font-semibold mb-4">Stock Export Form</h2>
 
       <Form
         layout="vertical"
@@ -72,14 +61,6 @@ export function StockImportForm({ id }: { id: string }) {
         </Form.Item>
 
         <Form.Item
-          label="Supplier"
-          name="supplier"
-          rules={[{ required: true, message: "Please enter a supplier!" }]}
-        >
-          <Input placeholder="Enter a supplier" className="py-2" />
-        </Form.Item>
-
-        <Form.Item
           label="Quantity"
           name="quantity"
           rules={[{ required: true, message: "Please enter the quantity!" }]}
@@ -92,13 +73,11 @@ export function StockImportForm({ id }: { id: string }) {
         </Form.Item>
 
         <Form.Item
-          label="Purchase Price"
-          name="price"
-          rules={[
-            { required: true, message: "Please enter the purchase price!" },
-          ]}
+          label="Reason"
+          name="reason"
+          rules={[{ required: true, message: "Please enter the reason!" }]}
         >
-          <InputNumber placeholder="Enter price" className="py-2 !w-full" />
+          <Input.TextArea placeholder="Reason..." className="py-2" />
         </Form.Item>
 
         <Form.Item label="Note" name="note">

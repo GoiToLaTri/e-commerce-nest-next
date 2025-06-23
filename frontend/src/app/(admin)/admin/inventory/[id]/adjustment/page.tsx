@@ -1,8 +1,8 @@
-import { StockImportForm } from "@/components/forms";
+import { StockAdjustmentForm } from "@/components/forms";
 import Card from "@/components/ui/cards/card";
 import React from "react";
 
-export default async function StockImport({
+export default async function StockAdjustment({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -12,7 +12,7 @@ export default async function StockImport({
     <div>
       <div className="stock-import-form">
         <Card>
-          <StockImportForm id={id} />
+          <StockAdjustmentForm id={id} />
         </Card>
       </div>
     </div>

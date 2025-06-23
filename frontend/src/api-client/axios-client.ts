@@ -1,4 +1,3 @@
-import { envConfig } from "@/common/configs";
 import axios from "axios";
 
 const axiosClient = axios.create({

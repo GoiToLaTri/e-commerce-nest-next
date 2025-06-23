@@ -5,3 +5,5 @@ export * from "./product-image-form";
 export * from "./product-info-form";
 export * from "./quantity-and-price-form";
 export * from "./stock-import-form";
+export * from "./stock-export-form";
+export * from "./stock-adjustment-form";

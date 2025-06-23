@@ -38,11 +38,14 @@ const columns: TableProps<IInventoryLogData>["columns"] = [
           let color: string;
           let content: string;
           if (_record.change_type === "import") {
-            color = "error";
+            color = "processing";
             content = "Import";
-          } else {
+          } else if (_record.change_type === "export") {
             color = "success";
-            content = "Available";
+            content = "export";
+          } else {
+            color = "warning";
+            content = "adjustment";
           }
           return <Tag color={color}>{content.toUpperCase()}</Tag>;
         })()}
@@ -51,7 +54,7 @@ const columns: TableProps<IInventoryLogData>["columns"] = [
     filters: [
       { text: "Import", value: "import" },
       { text: "Export", value: "export" },
-      { text: "Ajustment", value: "ajustment" },
+      { text: "Adjustment", value: "adjustment" },
     ],
   },
   {
@@ -62,6 +65,12 @@ const columns: TableProps<IInventoryLogData>["columns"] = [
     render: (_, record) => {
       if (record.change_type === "import")
         return `+${Math.abs(record.quantity_change)}`;
+      if (record.change_type === "export")
+        return `-${Math.abs(record.quantity_change)}`;
+      if (record.change_type === "adjustment")
+        return `${record.quantity_change > 0 ? "+" : "-"}${Math.abs(
+          record.quantity_change
+        )}`;
     },
   },
   {

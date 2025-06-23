@@ -1,28 +1,29 @@
 "use client";
 
-import { StockImportPayload } from "@/models";
-import React, { useEffect } from "react";
+import { StockAdjustmentPayload } from "@/models";
+import { useEffect } from "react";
 import { sonnerLoading } from "../sonner/sonner";
 import { Button, Form, Input, InputNumber } from "antd";
 import { useInventory } from "@/hooks/useInventory";
 import { useRouter } from "next/navigation";
-import { useStockImport } from "@/hooks/useStockImport";
+import { useStockAjustment } from "@/hooks/useStockAdjustment";
 
-export function StockImportForm({ id }: { id: string }) {
+export function StockAjustmentForm({ id }: { id: string }) {
   const [form] = Form.useForm();
   const { data } = useInventory(id);
   const router = useRouter();
-  const stockImportMutation = useStockImport();
+  const stockImportMutation = useStockAjustment();
 
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
         product: data.product?.model,
+        system_stock: data.quantity,
       });
     }
   }, [data, form]);
 
-  const onFinish = async (values: StockImportPayload) => {
+  const onFinish = async (values: StockAdjustmentPayload) => {
     sonnerLoading(
       stockImportMutation
         .mutateAsync({
@@ -34,25 +35,14 @@ export function StockImportForm({ id }: { id: string }) {
           return { message };
         })
         .catch((error) => {
-          throw error.response.data.message || "Stock import failed!";
+          throw error.response.data.message || "Stock ajustment failed!";
         })
     );
-    // try {
-    //   await stockImportMutation.mutateAsync({
-    //     ...values,
-    //     productId: data?.product.id || "",
-    //   });
-
-    //   // Navigate sau khi mutation thành công
-    //   router.push("/admin/inventory/");
-    // } catch (error) {
-    //   console.error("Import error:", error);
-    // }
   };
 
   return (
     <div className="w-full select-none">
-      <h2 className="text-xl font-semibold mb-4">Stock Import Form</h2>
+      <h2 className="text-xl font-semibold mb-4">Stock Ajustment Form</h2>
 
       <Form
         layout="vertical"
@@ -72,33 +62,25 @@ export function StockImportForm({ id }: { id: string }) {
         </Form.Item>
 
         <Form.Item
-          label="Supplier"
-          name="supplier"
-          rules={[{ required: true, message: "Please enter a supplier!" }]}
+          label="System stock"
+          name="system_stock"
+          rules={[{ required: true, message: "Please enter a product!" }]}
         >
-          <Input placeholder="Enter a supplier" className="py-2" />
+          <Input placeholder="Enter a product" className="py-2" disabled />
         </Form.Item>
 
         <Form.Item
-          label="Quantity"
-          name="quantity"
-          rules={[{ required: true, message: "Please enter the quantity!" }]}
+          label="Actual stock"
+          name="actual_stock"
+          rules={[
+            { required: true, message: "Please enter the actual stock!" },
+          ]}
         >
           <InputNumber
-            placeholder="Enter quantity"
+            placeholder="Enter actual stock"
             className="py-2 !w-full"
             min={1}
           />
-        </Form.Item>
-
-        <Form.Item
-          label="Purchase Price"
-          name="price"
-          rules={[
-            { required: true, message: "Please enter the purchase price!" },
-          ]}
-        >
-          <InputNumber placeholder="Enter price" className="py-2 !w-full" />
         </Form.Item>
 
         <Form.Item label="Note" name="note">

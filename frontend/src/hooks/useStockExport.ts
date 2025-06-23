@@ -1,16 +1,16 @@
 // hooks/useStockImport.js
 import { inventoryApi } from "@/api-client/inventory.api";
 import { queryKeys } from "@/common/enums";
-import { StockImportPayload } from "@/models";
+import { StockExportPayload } from "@/models";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useStockImport() {
+export function useStockExport() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (stockImportPayload: StockImportPayload) => {
-      await inventoryApi.importStock(stockImportPayload);
-      return "Stock import success";
+    mutationFn: async (stockExportPayload: StockExportPayload) => {
+      await inventoryApi.exportStock(stockExportPayload);
+      return "Stock export success";
     },
     onSuccess: () => {
       // Tự động invalidate related queries
@@ -19,7 +19,7 @@ export function useStockImport() {
       });
     },
     onError: (error) => {
-      console.error("Import failed:", error);
+      console.error("Export failed:", error);
     },
   });
 }
