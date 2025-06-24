@@ -147,13 +147,31 @@ export class StockHistoryService {
     );
 
     // Thêm sắp xếp
-    const sortStage = {
-      $sort: { [sortField]: sortOrder === 'asc' ? 1 : -1 },
-    };
+    const defaultSortField = 'created_at'; // Hoặc field mặc định khác
+    const validSortFields = [
+      'created_at',
+      'change_type',
+      'quantity_change',
+      'product_name',
+      'supplier_name',
+    ]; // Danh sách các field hợp lệ
+
+    // Validate sortField
+    const safeSortField =
+      sortField && validSortFields.includes(sortField)
+        ? sortField
+        : defaultSortField;
+    const safeSortOrder = sortOrder === 'desc' ? -1 : 1;
+    const sortStage = { $sort: { [safeSortField]: safeSortOrder } };
     pipeline.push(sortStage);
 
     // Thêm phân trang
-    pipeline.push({ $skip: (page - 1) * limit }, { $limit: limit });
+    // Validate pagination parameters
+    const safePage = Math.max(1, page || 1);
+    const safeLimit = Math.max(1, Math.min(100, limit || 10)); // Giới hạn tối đa 100
+
+    // Thêm phân trang
+    pipeline.push({ $skip: (safePage - 1) * safeLimit }, { $limit: safeLimit });
     const data = await this.prisma.inventoryLog.aggregateRaw({ pipeline });
     const totalPipeline = [
       ...pipeline.filter((stage) => !('$skip' in stage || '$limit' in stage)),
