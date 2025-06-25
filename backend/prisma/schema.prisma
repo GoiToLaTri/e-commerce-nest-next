@@ -27,6 +27,25 @@ model User {
   interactions UserInteraction[]
   Role         Role              @relation(fields: [roleId], references: [id])
   roleId       String            @db.ObjectId
+  Admin        Admin?
+  Customer     Customer?
+}
+
+model Admin {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String    @unique @db.ObjectId
+  user       User      @relation(fields: [user_id], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  product    Product[]
+}
+
+model Customer {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String   @unique @db.ObjectId
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Role {
@@ -74,6 +93,8 @@ model Product {
   InventoryLog     InventoryLog[]
   StockExport      StockExport[]
   interactions     UserInteraction[]
+  Admin            Admin?            @relation(fields: [adminId], references: [id])
+  adminId          String?           @db.ObjectId
 }
 
 model LaptopBrand {

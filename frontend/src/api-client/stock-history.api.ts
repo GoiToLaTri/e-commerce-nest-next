@@ -24,4 +24,8 @@ export const stockHistoryApi = {
       paramsSerializer: (params) =>
         QueryString.stringify(params, { arrayFormat: "repeat" }),
     }),
+
+  findOne: ({ id }: { id: string }) => {
+    return axiosClient.get(`proxy/stock-history/${id}`);
+  },
 };

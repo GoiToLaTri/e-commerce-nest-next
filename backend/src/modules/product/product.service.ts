@@ -84,6 +84,7 @@ export class ProductService {
           Display: { connect: { id: displayId } },
           Memory: { connect: { id: ramId } },
           Storage: { connect: { id: storageId } },
+          Admin: { connect: { id: '68371b881f265cff80f558f0' } },
         },
       });
 

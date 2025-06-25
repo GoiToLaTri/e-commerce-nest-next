@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class StockHistoryService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
   async findAll(
     page = 1,
     limit = 8,
@@ -12,10 +16,15 @@ export class StockHistoryService {
     changeType?: string[],
     search?: string,
   ) {
+    const cacheKey = `stock-history:${page}:${limit}:${sortField}:${sortOrder}:${changeType?.join(',')}:${search}`;
+    // Check if the data is cached
+    const cachedData: string | null = await this.redis.get(cacheKey);
+    if (cachedData) return JSON.parse(cachedData) as { id: string };
+
     const skip = (page - 1) * limit;
     if (search && search.trim()) {
-      console.log(search);
-      return await this.atlasSearch(
+      // console.log(search);
+      const { data: searchData, total: searchTotal } = await this.atlasSearch(
         search,
         page,
         limit,
@@ -23,6 +32,17 @@ export class StockHistoryService {
         sortOrder,
         changeType,
       );
+      await this.redis.set(
+        cacheKey,
+        JSON.stringify({ data: searchData, total: searchTotal, page, limit }),
+        4 * 60 * 60,
+      );
+      return {
+        data: searchData,
+        total: searchTotal,
+        page,
+        limit,
+      };
     }
 
     const where: { change_type?: { in: string[] } } = {};
@@ -48,37 +68,11 @@ export class StockHistoryService {
       this.prisma.inventoryLog.count({ where }),
     ]);
 
-    // const historiesWithReference = await Promise.all(
-    //   histories.map(async (history) => {
-    //     let referenceData: any = null;
-
-    //     if (typeof history.reference === 'string') {
-    //       switch (history.change_type) {
-    //         case 'import':
-    //           referenceData = await this.prisma.stockImport.findUnique({
-    //             where: { id: history.reference },
-    //           });
-    //           break;
-    //         case 'export':
-    //           referenceData = await this.prisma.stockExport.findUnique({
-    //             where: { id: history.reference },
-    //           });
-    //           break;
-    //         case 'adjustment':
-    //           referenceData = await this.prisma.stockAdjustment.findUnique({
-    //             where: { id: history.reference },
-    //           });
-    //           break;
-    //       }
-    //     }
-
-    //     return {
-    //       ...history,
-    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    //       reference: referenceData,
-    //     };
-    //   }),
-    // );
+    await this.redis.set(
+      cacheKey,
+      JSON.stringify({ data: histories, total, page, limit }),
+      4 * 60 * 60,
+    );
 
     return {
       data: histories,
@@ -199,14 +193,37 @@ export class StockHistoryService {
     };
   }
 
-  update() {
-    return this.prisma.inventoryLog.updateMany({
-      where: {
-        change_type: 'import',
-      },
-      data: {
-        supplier_name: 'HP Supplier',
-      },
+  async findOne(id: string) {
+    const history = await this.prisma.inventoryLog.findUnique({
+      where: { id },
     });
+
+    let referenceData: any = null;
+
+    if (history && typeof history.reference === 'string') {
+      switch (history.change_type) {
+        case 'import':
+          referenceData = await this.prisma.stockImport.findUnique({
+            where: { id: history.reference },
+          });
+          break;
+        case 'export':
+          referenceData = await this.prisma.stockExport.findUnique({
+            where: { id: history.reference },
+          });
+          break;
+        case 'adjustment':
+          referenceData = await this.prisma.stockAdjustment.findUnique({
+            where: { id: history.reference },
+          });
+          break;
+      }
+    }
+
+    return {
+      ...history,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      reference: referenceData,
+    };
   }
 }

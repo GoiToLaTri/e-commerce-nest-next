@@ -1,8 +1,8 @@
 import Link from "next/link";
 import React from "react";
 import "@/styles/access-denied.style.css";
-import { Button } from "antd";
 import { ZwindLogo } from "../ui";
+import PrupleButton from "../ui/button/purple-button";
 
 export function AccessDenied() {
   return (
@@ -22,9 +22,7 @@ export function AccessDenied() {
             Sorry, you do not have permission to view this page.
           </p>
           <Link href="/">
-            <Button size="large" type="primary">
-              Go Home
-            </Button>
+            <PrupleButton>Go Home</PrupleButton>
           </Link>
         </div>
       </div>

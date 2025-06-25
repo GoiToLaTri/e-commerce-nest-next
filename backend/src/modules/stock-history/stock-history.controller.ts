@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { StockHistoryService } from './stock-history.service';
 import { Role } from 'src/enums/role.enum';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -36,8 +36,8 @@ export class StockHistoryController {
     );
   }
 
-  @Patch()
-  update() {
-    return this.stockHistoryService.update();
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.stockHistoryService.findOne(id);
   }
 }

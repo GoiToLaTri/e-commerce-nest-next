@@ -1,19 +1,12 @@
 "use client";
 
+import HistoryStockDetailModal from "@/components/modals/history-stock-detail-modal";
 import { useStockHistory } from "@/hooks/useStockHistory";
 import { IInventoryLogData } from "@/models";
 import { formatDate } from "@/utils/date.util";
-import {
-  Input,
-  Button,
-  Table,
-  TablePaginationConfig,
-  TableProps,
-  Tag,
-} from "antd";
+import { Input, Table, TablePaginationConfig, TableProps, Tag } from "antd";
 import { SearchProps } from "antd/es/input";
 import { FilterValue } from "antd/es/table/interface";
-import Link from "next/link";
 import { useState } from "react";
 
 const { Search } = Input;
@@ -105,14 +98,7 @@ const columns: TableProps<IInventoryLogData>["columns"] = [
     key: "actions",
     render: (_, record) => (
       <div style={{ display: "flex", gap: 8 }}>
-        <Link href={`/admin/inventory/${record.id}`}>
-          <Button
-            type="primary"
-            className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
-          >
-            Detail
-          </Button>
-        </Link>
+        <HistoryStockDetailModal id={record.id} />
       </div>
     ),
   },
