@@ -5,7 +5,7 @@ export interface PrupleButtonProps {
   children: ReactNode;
 }
 
-export default function PrupleButton({ children }: PrupleButtonProps) {
+export function PrupleButton({ children }: PrupleButtonProps) {
   return (
     <Button
       type="primary"

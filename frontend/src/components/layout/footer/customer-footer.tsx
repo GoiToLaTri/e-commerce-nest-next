@@ -25,9 +25,9 @@ const servicesLinks = [
 ];
 
 const productsLinks = [
-  { label: "Laptops", href: "/products/laptops" },
-  { label: "Accessories", href: "/products/accessories" },
-  { label: "Software", href: "/products/software" },
+  { label: "Laptops", href: "/product/laptops" },
+  { label: "Accessories", href: "/product/accessories" },
+  { label: "Software", href: "/product/software" },
 ];
 
 const solutionLinks = [

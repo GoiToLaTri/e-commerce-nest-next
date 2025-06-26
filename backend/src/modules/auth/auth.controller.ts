@@ -25,7 +25,6 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Req() req: Request, @Res() response: Response) {
-    // Implement your login logic here
     console.log('Login request received:', req.user);
     const access_token = await this.authService.login(req.user as IUser);
     response.cookie('access_token', access_token.access_token, {
@@ -47,12 +46,12 @@ export class AuthController {
     return this.authService.register(createUserDto);
   }
 
-  //   @Public()
-  //   @Post('logout')
-  //   async logout(@Request() req: any) {
-  //     // Implement your logout logic here
-  //     return this.authService.logout(req.user);
-  //   }
+  @Post('logout')
+  logout(@Req() req: { session_user: SessionData }) {
+    // Implement your logout logic here
+    console.log(req.session_user);
+    return this.authService.logout(req.session_user);
+  }
 
   @Get('user-session')
   getUserSession(@Req() request: Request) {

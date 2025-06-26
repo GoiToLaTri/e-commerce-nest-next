@@ -5,6 +5,9 @@ import { IImage, ImageResponsePayload, ProductInfoPayload } from "@/models";
 import { Button, Form, Input, InputNumber } from "antd";
 import React from "react";
 import { sonnerLoading } from "../sonner/sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/common/enums";
+import { useRouter } from "next/navigation";
 
 export interface ProductInfoFormProps {
   thumbnail?: Pick<IImage, "public_id" | "url" | "is_temp">[];
@@ -29,6 +32,9 @@ export default function ProductInfoForm({
   thumbnail,
   imageList,
 }: ProductInfoFormProps) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
   const onFinish = (payload: ProductInfoPayload) => {
     console.log(thumbnail);
     sonnerLoading(
@@ -51,7 +57,13 @@ export default function ProductInfoForm({
             })),
           })) || [],
       })
-        .then((message) => ({ message }))
+        .then((message) => {
+          queryClient.refetchQueries({
+            queryKey: [queryKeys.GET_LIST_PRODUCT_DATA],
+          });
+          router.push('/admin/product/manage')
+          return { message };
+        })
         .catch((error) => {
           throw error.response.data.message || "Add product failed!";
         })
@@ -110,10 +122,10 @@ export default function ProductInfoForm({
         label="Display"
         name="display"
         rules={[{ required: true, message: "Please input the display!" }]}
-        tooltip='Describe the display, e.g., 16.1" 16:9 IPS (1920x1080) 144Hz, 3ms, 100% sRGB, 250nits'
+        tooltip='Describe the display, e.g., 16.1" 16:9 IPS (1920x1080) 144Hz, 3ms, sRGB 100%, 250nits'
       >
         <Input
-          placeholder='16" 16:10 IPS (2560×1600) 165Hz, 3ms, 100% sRGB, 400nits'
+          placeholder='16" 16:10 IPS (2560×1600) 165Hz, 3ms, sRGB 100%, 400nits'
           className="py-2"
         />
       </Form.Item>
@@ -160,7 +172,7 @@ export default function ProductInfoForm({
       <Button
         htmlType="submit"
         type="primary"
-        className="w-full bg-blue-900 hover:bg-blue-800 h-10 rounded-md"
+        className="!w-full !bg-[#924dff] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
       >
         Submit
       </Button>

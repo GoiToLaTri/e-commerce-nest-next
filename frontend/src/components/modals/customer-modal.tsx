@@ -5,16 +5,17 @@ import Link from "next/link";
 import { useState } from "react";
 import "@/styles/admin-modal.style.css";
 import { useSignout } from "@/hooks/useSignout";
-import { useRouter } from "next/navigation";
 import { sonnerLoading } from "../sonner/sonner";
+import { useRouter } from "next/navigation";
 
-export interface AdminModalProps {
+export interface CustomerModalProps {
   data: { session_user: IUserSession };
 }
 
-export function AdminModal({ data }: AdminModalProps) {
+export function CustomerModal({ data }: CustomerModalProps) {
   const signoutMutation = useSignout();
   const router = useRouter();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalClose, setIsModalClose] = useState<boolean>(false);
   const showModal = () => {
@@ -90,7 +91,7 @@ export function AdminModal({ data }: AdminModalProps) {
               className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
               size="large"
             >
-              Admin dashboard
+              Shopping cart
             </Button>
           </Link>
           <Link href={"/admin/product/manage"}>
@@ -99,25 +100,7 @@ export function AdminModal({ data }: AdminModalProps) {
               className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
               size="large"
             >
-              Product management
-            </Button>
-          </Link>
-          <Link href={"/admin/inventory"}>
-            <Button
-              type="text"
-              className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
-              size="large"
-            >
-              Inventory
-            </Button>
-          </Link>
-          <Link href={"/admin/stock-history"}>
-            <Button
-              type="text"
-              className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
-              size="large"
-            >
-              Stock history
+              Invoice
             </Button>
           </Link>
           <Divider />
@@ -127,7 +110,7 @@ export function AdminModal({ data }: AdminModalProps) {
             size="large"
             onClick={handleSignout}
           >
-            Log out
+            Sign out
           </Button>
         </div>
       </Modal>

@@ -27,6 +27,12 @@ export class ProductController {
     return this.productService.findAll(page);
   }
 
+  @Get('customer')
+  findAllCustomer(@Query('page') queryPage?: number) {
+    const page: number = queryPage || 1;
+    return this.productService.findAll(page);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productService.findOne(id);

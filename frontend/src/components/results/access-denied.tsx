@@ -1,8 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import "@/styles/access-denied.style.css";
-import { ZwindLogo } from "../ui";
-import PrupleButton from "../ui/button/purple-button";
+import { PrupleButton, ZwindLogo } from "../ui";
 
 export function AccessDenied() {
   return (

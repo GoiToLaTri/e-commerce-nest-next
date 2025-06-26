@@ -1,5 +1,6 @@
 import { useStockHistoryDetail } from "@/hooks/useStockHistoryDetail";
-import { Button, Descriptions, Divider, Modal, Skeleton } from "antd";
+import { formatDate } from "@/utils/date.util";
+import { Button, Descriptions, Modal, Skeleton } from "antd";
 import React, { useState } from "react";
 
 export interface HistoryStockDetailModalProps {
@@ -27,6 +28,8 @@ export default function HistoryStockDetailModal({
     setIsModalClose(true);
   };
 
+  console.log(data);
+
   return (
     <>
       <div className="flex items-center gap-2">
@@ -45,7 +48,7 @@ export default function HistoryStockDetailModal({
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
-        width={400}
+        width={600}
         centered
         transitionName=""
         maskTransitionName=""
@@ -64,7 +67,7 @@ export default function HistoryStockDetailModal({
           {isLoading && <Skeleton />}
           {data && (
             <Descriptions
-              title="Product Specification"
+              title=""
               column={1}
               styles={{
                 title: {
@@ -83,7 +86,10 @@ export default function HistoryStockDetailModal({
               <Descriptions.Item label="Change type">
                 {data.change_type || "-"}
               </Descriptions.Item>
-              <Descriptions.Item label="Change type">
+              <Descriptions.Item label="Quantity">
+                {data.quantity_change || "-"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Supplier">
                 {data.supplier_name || "-"}
               </Descriptions.Item>
               <Descriptions.Item label="Reason">
@@ -91,6 +97,12 @@ export default function HistoryStockDetailModal({
               </Descriptions.Item>
               <Descriptions.Item label="Note">
                 {data.reference.note || "-"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Created by">
+                {data.created_by || "-"}
+              </Descriptions.Item>
+              <Descriptions.Item label="Created at">
+                {formatDate(data.created_at) || "-"}
               </Descriptions.Item>
             </Descriptions>
           )}

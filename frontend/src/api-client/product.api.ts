@@ -16,4 +16,6 @@ export const productApi = {
   getDetailProduct: (id: string) => axiosClient.get(`proxy/product/${id}`),
   getClientDetailProduct: (id: string) =>
     axiosClient.get(`${FORNTEND_URL}/api/proxy/product/${id}`),
+  findAll: (query: { page: number }) =>
+    axiosClient.get(`${FORNTEND_URL}/api/proxy/product/customer`, { params: { ...query } }),
 };

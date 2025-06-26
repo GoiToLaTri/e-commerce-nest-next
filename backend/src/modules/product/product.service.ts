@@ -30,7 +30,8 @@ export class ProductService {
     private readonly brandService: BrandService,
     private readonly inventoryService: InventoryService,
   ) {}
-  create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto) {
+    await this.redis.del('product-*');
     // console.log(createProductDto.display);
     const displayInput = productUtil.cleanDisplayInput(
       createProductDto.display,
@@ -84,7 +85,7 @@ export class ProductService {
           Display: { connect: { id: displayId } },
           Memory: { connect: { id: ramId } },
           Storage: { connect: { id: storageId } },
-          Admin: { connect: { id: '68371b881f265cff80f558f0' } },
+          Admin: { connect: { id: '685b493087f9c8207f8a54da' } },
         },
       });
 
@@ -104,11 +105,14 @@ export class ProductService {
   }
 
   async findAll(page: number) {
-    const getProductQuery = `list-product-page-${page}`;
-    const data: string | null = await this.redis.get(getProductQuery);
+    const clientProductKey = `list:client:product:page-${page}`;
+    const data: string | null = await this.redis.get(clientProductKey);
     if (data) return JSON.parse(data) as IProduct[];
 
+    const where = { status: true };
+
     const listProduct = await this.prisma.product.findMany({
+      where,
       skip: (page - 1) * 10,
       take: 10,
       include: {
@@ -121,9 +125,8 @@ export class ProductService {
       },
     });
 
-    const setProductQuery = `list-product-page-${page}`;
     await this.redis.set(
-      setProductQuery,
+      clientProductKey,
       JSON.stringify(listProduct),
       4 * 60 * 60,
     );
@@ -326,8 +329,8 @@ export class ProductService {
         type: storage.type,
         capacity: storage.capacity,
         interface: storage.interface,
-        max_capacity: storage.max_capacity,
-        slots: storage.slots,
+        max_capacity: storage.max_capacity || '-',
+        slots: storage.slots || 1,
       },
     });
 

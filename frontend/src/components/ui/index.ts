@@ -20,3 +20,6 @@ export * from "./tables/inventory-table";
 
 // exporting all button components
 export * from "./button/purple-button";
+
+// exporting all action components
+export * from "./actions/product-detail-action";

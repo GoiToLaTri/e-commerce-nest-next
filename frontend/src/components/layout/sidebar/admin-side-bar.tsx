@@ -21,17 +21,13 @@ export default function AdminSideBar() {
         </div>
         <div className="flex flex-col w-fit">
           {adminSideBarItem.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href ?? "#"}
-              passHref
-            >
+            <Link key={item.label} href={item.href ?? "#"} passHref>
               <Tooltip placement="right" title={item.label} arrow={false}>
                 <Button
                   type="text"
                   shape="circle"
                   size="large"
-                  className={`!text-[1rem] !rounded-[4rem]  ${
+                  className={`!bg-transparent !border-0  !text-[1rem] !rounded-[4rem] hover:!bg-[rgba(255,255,255,.04)] hover:!border-0 transition ${
                     pathName === item.href ? "!text-[#0984e3] !font-bold" : ""
                   }`}
                 >

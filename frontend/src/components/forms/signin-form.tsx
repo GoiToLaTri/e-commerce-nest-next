@@ -23,7 +23,7 @@ export function SigninForm() {
           ...values,
         })
         .then((message) => {
-          router.push("/");
+          router.back();
           return { message };
         })
         .catch((error) => {

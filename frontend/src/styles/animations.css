@@ -84,3 +84,8 @@
     opacity: 0;
     animation: enterFromTop .6s .6s forwards;
 }
+
+.product-card {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}

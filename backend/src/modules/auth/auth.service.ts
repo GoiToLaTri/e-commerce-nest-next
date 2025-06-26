@@ -8,6 +8,7 @@ import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
 import { SessionService } from '@/modules/session/session.service';
 import { RedisService } from '../redis/redis.service';
 import { appConfig } from '@/common/configs';
+import { SessionData } from '../session/interfaces';
 
 @Injectable()
 export class AuthService {
@@ -50,5 +51,10 @@ export class AuthService {
     const newUser = { ...createUserDto, password };
     if (user) throw new BadRequestException('User already exists');
     return { ...(await this.userService.create(newUser)), password: undefined };
+  }
+
+  async logout(session: SessionData): Promise<void> {
+    await this.redisService.del('session-*');
+    await this.sessionService.removeBySessionId(session.session_id);
   }
 }

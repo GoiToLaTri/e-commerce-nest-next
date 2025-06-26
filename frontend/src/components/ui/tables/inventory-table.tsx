@@ -68,16 +68,16 @@ const columns: TableProps<IInventory>["columns"] = [
           let content: string;
           if (_record.quantity === 0) {
             color = "error";
-            content = "Sold out";
+            content = "Out of stock";
           } else if (
             _record.quantity > 0 &&
             _record.quantity <= _record.min_alert_quantity
           ) {
             color = "warning";
-            content = "Sold out";
+            content = "Low stock";
           } else {
             color = "success";
-            content = "Available";
+            content = "In stock";
           }
           return <Tag color={color}>{content.toUpperCase()}</Tag>;
         })()}

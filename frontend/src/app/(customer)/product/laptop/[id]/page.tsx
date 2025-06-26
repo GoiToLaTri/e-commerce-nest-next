@@ -1,8 +1,9 @@
 import { productApi } from "@/api-client";
+import { ProductDetailAction } from "@/components/ui";
 import ProductImagePreview from "@/components/ui/preview/product-image-preview";
 import { IProduct } from "@/models";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import { Button, Descriptions, Image, Rate } from "antd";
+import { Descriptions, Image, Rate } from "antd";
 
 export interface ProductDetailProps {
   params: { id: string };
@@ -13,8 +14,9 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
   const res = await productApi.getClientDetailProduct(id);
   const data = (await res.data) as IProduct;
   console.log(data);
+
   return (
-    <div className="flex gap-4 pb-[8rem]">
+    <div className="flex gap-4 mb-[8rem]">
       <div className="product-images">
         <div>
           <Image src={data.thumbnail} alt="thumbnail" width={400} />
@@ -38,22 +40,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
               <div className="font-semibold text-4xl">
                 {convertNumberToCurrency(data.price)}
               </div>
-              <div className="flex flex-col gap-4">
-                <Button
-                  type="primary"
-                  size="large"
-                  className="!bg-[#924dff] !rounded-[4rem] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300 !py-"
-                >
-                  Buy now
-                </Button>
-                <Button
-                  type="default"
-                  size="large"
-                  className="!rounded-[4rem] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] !bg-transparent !border !border-[#924dff] !text-[#924dff] hover:!bg-[#f5f0ff] transition-colors duration-300"
-                >
-                  Add to cart
-                </Button>
-              </div>
+              <ProductDetailAction />
             </div>
           </div>
           <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">

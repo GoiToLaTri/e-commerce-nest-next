@@ -1,6 +1,4 @@
-import { ZwindLogo } from "@/components/ui";
 import Link from "next/link";
-import FooterLinks from "./footer-links";
 import {
   FacebookFilled,
   GithubFilled,
@@ -10,31 +8,6 @@ import {
   YoutubeFilled,
 } from "@ant-design/icons";
 import { Tooltip } from "antd";
-
-const importantLinks = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Contact Us", href: "/contact" },
-];
-
-const servicesLinks = [
-  { label: "Consulting", href: "/service/consulting" },
-  { label: "Support", href: "/service/support" },
-  { label: "Training", href: "/service/training" },
-];
-
-const productsLinks = [
-  { label: "Laptops", href: "/products/laptops" },
-  { label: "Accessories", href: "/products/accessories" },
-  { label: "Software", href: "/products/software" },
-];
-
-const solutionLinks = [
-  { label: "Enterprise Solutions", href: "/solutions/enterprise" },
-  { label: "Education Solutions", href: "/solutions/education" },
-  { label: "Government Solutions", href: "/solutions/government" },
-];
 
 export function AdminFooter() {
   return (
@@ -51,35 +24,6 @@ export function AdminFooter() {
       <div className="py-[4rem] px-0 w-full">
         <div className="px-[2.5rem]">
           <div className="w-full max-w-[80rem] mx-auto">
-            {/* <div
-              className="grid gap-12 mb-8"
-              style={{ gridTemplateColumns: "1.5fr repeat(4, 1fr)" }}
-            >
-              <div className="flex">
-                <div>
-                  <Link href="/" className="text-[#fff]">
-                    <ZwindLogo />
-                  </Link>
-                  <div className="mt-[24px] leading-[24px]">
-                    Optimized technology solutions and high-quality laptops for
-                    individuals, businesses, and organizations. We offer genuine
-                    products along with fast, efficient consulting and
-                    implementation services.
-                  </div>
-                </div>
-              </div>
-              <FooterLinks title="Important Links" links={importantLinks} />
-              <FooterLinks title="Services" links={servicesLinks} />
-              <FooterLinks title="Products" links={productsLinks} />
-              <FooterLinks title="Solution" links={solutionLinks} />
-            </div>
-            <div
-              className="h-[1px] w-full mx-auto mb-[2rem]"
-              style={{
-                background:
-                  "linear-gradient(90deg, rgba(234, 236, 240, 0), rgba(234, 236, 240, .12) 50%, rgba(234, 236, 240, 0))",
-              }}
-            /> */}
             <div className="flex items-center justify-between gap-[2rem]">
               <div className="flex items-center gap-[.5rem] text-[.875rem] opacity-[.8] text-[#7a7990]">
                 <span>

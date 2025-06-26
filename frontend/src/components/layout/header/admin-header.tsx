@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { adminSideBarItem } from "../sidebar/admin-sidebar-item";
 import { useUserSession } from "@/hooks/useUserSession";
 import { Role } from "@/common/enums";
-import AdminModal from "@/components/modals/admin-modal";
+import { AdminModal } from "@/components/modals";
 
 export default function AdminHeader() {
   const { data, isLoading } = useUserSession();

@@ -1,6 +1,6 @@
-import { GlobalContainer } from "@/components/ui";
-import PrupleButton from "@/components/ui/button/purple-button";
+import { GlobalContainer, PrupleButton } from "@/components/ui";
 import { Button } from "antd";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -8,7 +8,7 @@ export default function Home() {
       <section className="pt-[6rem] pb-[8rem] relative flex flex-col items-center justify-center text-[rgb(201,204,216)] text-[1.25rem] font-normal leading-[1.6]">
         <GlobalContainer>
           <div className="zwind-content text-[rgb(201,204,216)] text-[1.25rem] font-normal leading-[1.6]">
-            <h1 className="text-center max-w-[42rem] mx-auto text-[4rem] leading-[1.4] font-normal mb-6 tracking-wide">
+            <h1 className="text-center max-w-[42rem] mx-auto text-[3.6rem] leading-[1.4] font-bold mb-6 tracking-wide">
               The #1 Laptops & Technology Solutions
             </h1>
             <p className="zwind-subtitle text-center max-w-[42rem] mx-auto text-[1.25rem] leading-[1.6] mb-8">
@@ -17,7 +17,9 @@ export default function Home() {
             </p>
           </div>
           <div className="zwind-buttons flex justify-center items-center gap-4 mt-[2.5rem]">
-            <PrupleButton>Explore Laptops</PrupleButton>
+            <Link href={"/product/laptop"}>
+              <PrupleButton>Explore Laptops</PrupleButton>
+            </Link>
 
             <Button
               type="default"
@@ -30,7 +32,7 @@ export default function Home() {
         </GlobalContainer>
       </section>
       <section>
-        <div className="mt-[36px] flex flex-col items-center">
+        <div className="mt-[4rem] flex flex-col items-center">
           <h2 className="text-3xl font-semibold text-center mb-3 text-white">
             Why Choose Zwind?
           </h2>

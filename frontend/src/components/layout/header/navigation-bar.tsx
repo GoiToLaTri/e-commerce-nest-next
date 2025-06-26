@@ -9,8 +9,9 @@ import { customerNavItem } from "./customer-nav-item";
 import { usePathname } from "next/navigation";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
 import { useUserSession } from "@/hooks/useUserSession";
-import AdminModal from "@/components/modals/admin-modal";
 import { Role } from "@/common/enums";
+import { AdminModal } from "@/components/modals";
+import { CustomerModal } from "@/components/modals/customer-modal";
 
 export interface NavigationBarProps {
   children: ReactNode;
@@ -34,6 +35,7 @@ export function NavigationBar() {
 
   const haveSession = !isLoading && data && data.session_user.user.avatar;
   const isAdmin = haveSession && data.session_user.user.roleId === Role.ADMIN;
+  const isCustomer = haveSession && data.session_user.user.roleId === Role.USER;
 
   return (
     <header className="customer-navigation-bar w-full pt-[1.5rem] pb-[1rem] fixed z-[99] my-0 mx-auto">
@@ -87,6 +89,7 @@ export function NavigationBar() {
           <div className="flex items-center gap-[1rem]">
             {isLoading && <SkeletonAvatar active size={40} />}
             {isAdmin && <AdminModal data={data} />}
+            {isCustomer && <CustomerModal data={data} />}
             {!isLoading && !data && (
               <Link href="/auth/signup" passHref>
                 <Button

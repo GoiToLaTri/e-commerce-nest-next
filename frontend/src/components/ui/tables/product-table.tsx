@@ -57,7 +57,7 @@ const columns: TableProps<IProduct>["columns"] = [
     key: "actions",
     render: (_, record) => (
       <div style={{ display: "flex", gap: 8 }}>
-        <Link href={`/product/${record.id}`}>
+        <Link href={`/product/laptop/${record.id}`}>
           <Button type="primary">View</Button>
         </Link>
         <Link href={`/product/${record.id}/edit`}>
