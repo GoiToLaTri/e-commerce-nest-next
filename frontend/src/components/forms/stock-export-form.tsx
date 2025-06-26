@@ -87,7 +87,7 @@ export function StockExportForm({ id }: { id: string }) {
         <Button
           htmlType="submit"
           type="primary"
-          className="w-full bg-blue-900 hover:bg-blue-800 h-10 rounded-md"
+          className="!bg-[#924dff] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300 w-full"
         >
           Submit
         </Button>

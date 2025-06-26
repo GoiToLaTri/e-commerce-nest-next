@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InventoryLogService } from '../inventory-log/inventory-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
@@ -14,6 +14,15 @@ export class StockExportService {
   async create(stockExportDto: StockExportDto) {
     const { productId, quantity, reason, note, product } = stockExportDto;
     await this.redis.del('inventory-*');
+
+    const inventory = await this.prisma.inventory.findUnique({
+      where: { productId },
+    });
+
+    if (!inventory) throw new BadRequestException('Inventory not found');
+
+    if (inventory.quantity < quantity)
+      throw new BadRequestException('Quantity invalid');
 
     await this.prisma.$transaction(async (tx) => {
       const exportRecord = await tx.stockExport.create({

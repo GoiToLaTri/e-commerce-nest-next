@@ -24,9 +24,9 @@ export default function ClientListProduct({
     initialData: initialData || [],
   });
 
-  if (isLoading) return <div>Đang tải...</div>;
-  if (isError) return <div>Có lỗi xảy ra khi tải dữ liệu.</div>;
-  if (data.length === 0) return <div>Không có sản phẩm nào.</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>An error occurred while loading data.</div>;
+  if (data.length === 0) return <div>No products display.</div>;
 
   return (
     <div>
@@ -44,11 +44,8 @@ export default function ClientListProduct({
               data.map((laptop, index) => (
                 <AntdCard
                   key={laptop.id}
-                  hoverable
                   className="product-card !bg-[#1b1428] !border-[1px] !border-solid !border-[#564373] !rounded-2xl shadow-lg !flex !flex-col"
-                  style={{
-                    animationDelay: `${index * 400}ms`,
-                  }}
+                  style={{ animationDelay: `${index * 400}ms` }}
                   cover={
                     <Image
                       alt="laptop thumbnail"

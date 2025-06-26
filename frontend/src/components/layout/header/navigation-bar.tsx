@@ -1,6 +1,11 @@
 "use client";
 
-import { DropdownMenu, GlobalContainer, ZwindLogo } from "@/components/ui";
+import {
+  DropdownMenu,
+  GlobalContainer,
+  PrupleButton,
+  ZwindLogo,
+} from "@/components/ui";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import Link from "next/link";
@@ -22,8 +27,8 @@ export function NavigationBar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { data, isLoading } = useUserSession();
 
-  console.log("isLoading", isLoading);
-  console.log("data", data);
+  // console.log("isLoading", isLoading);
+  // console.log("data", data);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +53,7 @@ export function NavigationBar() {
           <Link href="/" className="flex items-center no-underline">
             <ZwindLogo />
           </Link>
-          <nav className="flex items-center justify-center gap-[2.25rem]">
+          <nav className="flex items-center justify-center gap-[2.25rem] absolute left-[50%] translate-x-[-50%]">
             <div className="flex items-center justify-center gap-[1.5rem]">
               {customerNavItem.map((item) =>
                 item.dropdown ? (
@@ -63,7 +68,7 @@ export function NavigationBar() {
                   >
                     <Button
                       type="text"
-                      className={`!text-[1rem] !rounded-[4rem] flex items-center gap-[0.5rem]`}
+                      className={`!bg-transparent !border-0 !text-[1rem] !rounded-[4rem] flex items-end gap-[0.5rem] hover:!border-0 hover:!bg-[rgba(255,255,255,.04)]`}
                     >
                       {item.label}
                       <CaretDownOutlined />
@@ -73,11 +78,11 @@ export function NavigationBar() {
                   <Link key={item.label} href={item.href ?? "#"} passHref>
                     <Button
                       type="text"
-                      className={`!text-[1rem] !rounded-[4rem]  ${
+                      className={`!bg-transparent !border-0 !text-[1rem] !rounded-[4rem] ${
                         pathName === item.href
                           ? "!text-[#0984e3] !font-bold"
                           : ""
-                      }`}
+                      } hover:!border-0 hover:!bg-[rgba(255,255,255,.04)]`}
                     >
                       {item.label}
                     </Button>
@@ -92,13 +97,14 @@ export function NavigationBar() {
             {isCustomer && <CustomerModal data={data} />}
             {!isLoading && !data && (
               <Link href="/auth/signup" passHref>
-                <Button
+                {/* <Button
                   type="primary"
                   size="large"
                   className="!text-[1rem] !rounded-[4rem] !bg-gradient-to-r !from-purple-600 !to-blue-600 !border-0 !shadow-lg hover:!from-blue-600 hover:!to-purple-600 transition-all duration-300"
                 >
                   Signup/Signin
-                </Button>
+                </Button> */}
+                <PrupleButton>Signup/Signin</PrupleButton>
               </Link>
             )}
           </div>
