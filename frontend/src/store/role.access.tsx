@@ -19,6 +19,7 @@ const pathLoginSuccess = "/";
 export function RoleAccess({ children, roles, routeAuth }: RoleAccessProps) {
   const authData = AuthData();
   const router = useRouter();
+
   const [isAccess, setIsAccess] = useState<{
     isLogin: boolean | null;
     isPermission: boolean | null;

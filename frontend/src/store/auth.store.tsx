@@ -2,6 +2,7 @@
 
 import { authApi } from "@/api-client";
 import { queryKeys, Role } from "@/common/enums";
+import { useUserSession } from "@/hooks/useUserSession";
 import { useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext, useState } from "react";
 
@@ -26,6 +27,7 @@ const AuthContext = createContext<AuthContextData>({
 export const AuthData = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const { data } = useUserSession();
   const queryClient = useQueryClient();
   // Set default options for react-query queries (e.g., 5 minutes cache time)
   queryClient.setDefaultOptions({
@@ -52,9 +54,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const getIsAccess = async (roles: Role[]) => {
-    const data = queryClient.getQueryData<{
-      session_user: IUserSession;
-    }>([queryKeys.USER_SESSION]);
+    // const data = queryClient.getQueryData<{
+    //   session_user: IUserSession;
+    // }>([queryKeys.USER_SESSION]);
     console.log("Get is access", data?.session_user);
     // const session_user = sessionData?.session_user;
     try {
