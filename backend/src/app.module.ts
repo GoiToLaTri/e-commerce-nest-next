@@ -21,6 +21,7 @@ import { StockExportModule } from './modules/stock-export/stock-export.module';
 import { InventoryLogModule } from './modules/inventory-log/inventory-log.module';
 import { StockHistoryModule } from './modules/stock-history/stock-history.module';
 import { StockAdjustmentModule } from './modules/stock-adjustment/stock-adjustment.module';
+import { UserInteractionModule } from './modules/user-interaction/user-interaction.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { StockAdjustmentModule } from './modules/stock-adjustment/stock-adjustme
     InventoryLogModule,
     StockAdjustmentModule,
     StockHistoryModule,
+    UserInteractionModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],
