@@ -7,11 +7,18 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserInteractionService } from './user-interaction.service';
 import { CreateUserInteractionDto } from './dto/create-user-interaction.dto';
 import { UpdateUserInteractionDto } from './dto/update-user-interaction.dto';
+import { Role } from 'src/enums/role.enum';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 
+@UseGuards(JwtGuard, RoleGuard)
+@Roles(Role.USER)
 @Controller('user-interaction')
 export class UserInteractionController {
   constructor(

@@ -8,6 +8,8 @@ import Meta from "antd/es/card/Meta";
 import "@/styles/client-list-product.style.css";
 import Link from "next/link";
 import { PrupleButton } from "../ui";
+import { useUserSession } from "@/hooks/useUserSession";
+import { useAddUserInteraction } from "@/hooks/useAddUserInteraction";
 
 export default function ClientListProduct({
   initialData,
@@ -23,6 +25,19 @@ export default function ClientListProduct({
     limit: 10,
     initialData: initialData || [],
   });
+
+  const { data: sessionData } = useUserSession();
+  const addUserInteractionMutation = useAddUserInteraction();
+
+  const handleAddUserInteraction = async (productId: string) => {
+    if (!sessionData?.session_user.user_id) return;
+
+    await addUserInteractionMutation.mutateAsync({
+      productId,
+      userId: sessionData?.session_user.user_id,
+      action: "VIEW",
+    });
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>An error occurred while loading data.</div>;
@@ -60,7 +75,11 @@ export default function ClientListProduct({
                       href={`laptop/${laptop.id}`}
                       key={`detail-${laptop.id}`}
                     >
-                      <PrupleButton>Detail</PrupleButton>
+                      <PrupleButton
+                        onClick={() => handleAddUserInteraction(laptop.id)}
+                      >
+                        Detail
+                      </PrupleButton>
                     </Link>,
                   ]}
                 >

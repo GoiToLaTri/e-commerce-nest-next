@@ -2,19 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserInteractionDto } from './dto/create-user-interaction.dto';
 import { UpdateUserInteractionDto } from './dto/update-user-interaction.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class UserInteractionService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
+  ) {}
 
   async create(createUserInteractionDto: CreateUserInteractionDto) {
-    const interaction = await this.prisma.userInteraction.create({
-      data: {
-        userId: createUserInteractionDto.userId,
-        productId: createUserInteractionDto.productId,
-        action: createUserInteractionDto.action,
-      },
-    });
+    const cacheKey = `create-user-interaction:${createUserInteractionDto.userId}:${createUserInteractionDto.productId}:${createUserInteractionDto.action}`;
+    let data: CreateUserInteractionDto;
+    const cache: string | null = await this.redis.get(cacheKey);
+    if (cache) data = JSON.parse(cache) as CreateUserInteractionDto;
+    else data = createUserInteractionDto;
+
+    await this.redis.set(cacheKey, JSON.stringify(data), 4 * 60 * 60);
+    const interaction = await this.prisma.userInteraction.create({ data });
     return interaction;
   }
 

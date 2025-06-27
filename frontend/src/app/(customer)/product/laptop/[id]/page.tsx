@@ -13,7 +13,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
   const { id } = await params;
   const res = await productApi.getClientDetailProduct(id);
   const data = (await res.data) as IProduct;
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="flex gap-4 mb-[8rem]">
