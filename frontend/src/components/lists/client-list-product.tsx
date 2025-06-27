@@ -10,6 +10,7 @@ import Link from "next/link";
 import { PrupleButton } from "../ui";
 import { useUserSession } from "@/hooks/useUserSession";
 import { useAddUserInteraction } from "@/hooks/useAddUserInteraction";
+import { Role } from "@/common/enums";
 
 export default function ClientListProduct({
   initialData,
@@ -31,7 +32,7 @@ export default function ClientListProduct({
 
   const handleAddUserInteraction = async (productId: string) => {
     if (!sessionData?.session_user.user_id) return;
-
+    if (sessionData.session_user.user.roleId !== Role.USER) return;
     await addUserInteractionMutation.mutateAsync({
       productId,
       userId: sessionData?.session_user.user_id,
@@ -60,14 +61,13 @@ export default function ClientListProduct({
                 <AntdCard
                   key={laptop.id}
                   className="product-card !bg-[#1b1428] !border-[1px] !border-solid !border-[#564373] !rounded-2xl shadow-lg !flex !flex-col"
-                  style={{ animationDelay: `${index * 400}ms` }}
+                  style={{ animationDelay: `${index * 240}ms` }}
                   cover={
                     <Image
                       alt="laptop thumbnail"
                       src={laptop.thumbnail}
-                      width={240}
-                      height={240}
                       preview={false}
+                      className="!rounded-t-2xl"
                     />
                   }
                   actions={[

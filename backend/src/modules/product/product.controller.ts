@@ -22,15 +22,42 @@ export class ProductController {
   }
 
   @Get()
-  findAll(@Query('page') queryPage?: number) {
-    const page: number = queryPage || 1;
-    return this.productService.findAll(page);
+  findAll(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Query('sortField') sortField: string,
+    @Query('sortOrder') sortOrder: string,
+    @Query('laptopBrand[]') laptopBrandRaw: string | string[],
+    @Query('status[]') saleStatusRaw: string | string[],
+    @Query('search') search: string,
+  ) {
+    const laptopBrand = Array.isArray(laptopBrandRaw)
+      ? laptopBrandRaw
+      : laptopBrandRaw
+        ? [laptopBrandRaw]
+        : undefined;
+
+    const saleStatus = Array.isArray(saleStatusRaw)
+      ? saleStatusRaw
+      : saleStatusRaw
+        ? [saleStatusRaw]
+        : undefined;
+
+    return this.productService.findAll(
+      +page || 1,
+      +limit || 4,
+      sortField,
+      sortOrder,
+      laptopBrand,
+      saleStatus,
+      search,
+    );
   }
 
   @Get('customer')
   findAllCustomer(@Query('page') queryPage?: number) {
     const page: number = queryPage || 1;
-    return this.productService.findAll(page);
+    return this.productService.findAllCustomer(page);
   }
 
   @Get(':id')
@@ -45,6 +72,6 @@ export class ProductController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+    return this.productService.remove(id);
   }
 }

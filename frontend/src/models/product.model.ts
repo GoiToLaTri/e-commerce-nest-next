@@ -29,7 +29,10 @@ export interface IProduct {
   images: IImage[];
   created_at: Date | string;
   updated_at: Date | string;
+  status: boolean;
 }
+
+
 
 export interface ILaptopBrand {
   id: string;

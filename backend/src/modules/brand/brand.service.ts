@@ -18,7 +18,7 @@ export class BrandService {
   }
 
   findAll() {
-    return `This action returns all brand`;
+    return this.prisma.laptopBrand.findMany();
   }
 
   findOne(id: number) {

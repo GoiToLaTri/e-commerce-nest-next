@@ -32,6 +32,7 @@ export class ProductService {
   ) {}
   async create(createProductDto: CreateProductDto) {
     await this.redis.del('product-*');
+    await this.redis.del('list:*');
     // console.log(createProductDto.display);
     const displayInput = productUtil.cleanDisplayInput(
       createProductDto.display,
@@ -60,51 +61,168 @@ export class ProductService {
     if (!ram) throw new BadRequestException('Ram info invalid');
     if (!storage) throw new BadRequestException('Storage info invalid');
 
-    return this.prisma.$transaction(async (tx) => {
-      const brandId = await this.brandService.transSaveLaptopBrand(
-        tx,
-        createProductDto.brand,
-      );
-      const cpuId = await this.transSaveCpu(tx, cpu);
-      const gpuId = await this.transSaveGpu(tx, gpu);
-      const displayId = await this.transSaveDisplay(tx, display);
-      const ramId = await this.transSaveRam(tx, ram);
-      const storageId = await this.transSaveStorage(tx, storage);
+    return this.prisma.$transaction(
+      async (tx) => {
+        const brandId = await this.brandService.transSaveLaptopBrand(
+          tx,
+          createProductDto.brand,
+        );
+        const cpuId = await this.transSaveCpu(tx, cpu);
+        const gpuId = await this.transSaveGpu(tx, gpu);
+        const displayId = await this.transSaveDisplay(tx, display);
+        const ramId = await this.transSaveRam(tx, ram);
+        const storageId = await this.transSaveStorage(tx, storage);
 
-      // console.log(createProductDto.thumbnail);
+        // console.log(createProductDto.thumbnail);
 
-      const product = await tx.product.create({
-        data: {
-          model: createProductDto.model,
-          description: createProductDto.description,
-          thumbnail: createProductDto.thumbnail[0].url,
-          price: createProductDto.pricing,
-          LaptopBrand: { connect: { id: brandId } },
-          Processor: { connect: { id: cpuId } },
-          VideoGraphics: { connect: { id: gpuId } },
-          Display: { connect: { id: displayId } },
-          Memory: { connect: { id: ramId } },
-          Storage: { connect: { id: storageId } },
-          Admin: { connect: { id: '685b493087f9c8207f8a54da' } },
-        },
-      });
-
-      await this.inventoryService.transCreate(tx, product.id);
-
-      await this.cloudinary.findByPublicIdAndUpdate(
-        createProductDto.thumbnail[0].public_id,
-        { is_temp: false, productId: product.id },
-      );
-
-      for (const image of images)
-        await this.cloudinary.findByPublicIdAndUpdate(image.public_id, {
-          is_temp: false,
-          productId: product.id,
+        const product = await tx.product.create({
+          data: {
+            model: createProductDto.model,
+            description: createProductDto.description,
+            thumbnail: createProductDto.thumbnail[0].url,
+            price: createProductDto.pricing,
+            LaptopBrand: { connect: { id: brandId } },
+            Processor: { connect: { id: cpuId } },
+            VideoGraphics: { connect: { id: gpuId } },
+            Display: { connect: { id: displayId } },
+            Memory: { connect: { id: ramId } },
+            Storage: { connect: { id: storageId } },
+            Admin: { connect: { id: '685b493087f9c8207f8a54da' } },
+          },
         });
-    });
+
+        await this.inventoryService.transCreate(tx, product.id);
+
+        await this.cloudinary.findByPublicIdAndUpdate(
+          createProductDto.thumbnail[0].public_id,
+          { is_temp: false, productId: product.id },
+        );
+
+        for (const image of images)
+          await this.cloudinary.findByPublicIdAndUpdate(image.public_id, {
+            is_temp: false,
+            productId: product.id,
+          });
+      },
+      {
+        maxWait: 5000, // default: 2000
+        timeout: 10000, // default: 5000
+      },
+    );
   }
 
-  async findAll(page: number) {
+  async findAll(
+    page: number,
+    limit: number,
+    sortField: string,
+    sortOrder: string,
+    laptopBrand?: string[],
+    saleStatus?: string[],
+    search?: string,
+  ) {
+    const cacheKey = `list:${page}:${limit}:${sortField || 'field-default'}:${sortOrder || 'order-default'}:${laptopBrand?.join(',') || 'brand-all'}:${saleStatus?.join(',') || 'status-all'}:${search || ''}`;
+    const data: string | null = await this.redis.get(cacheKey);
+    if (data) return JSON.parse(data) as IProduct[];
+
+    const skip = (page - 1) * limit;
+    if (search && search.trim()) {
+      const { data: searchData, total: searchTotal } = await this.atlasSearch(
+        search,
+        page,
+        limit,
+        sortField,
+        sortOrder,
+        laptopBrand,
+        saleStatus,
+      );
+
+      await this.redis.set(
+        cacheKey,
+        JSON.stringify({ data: searchData, total: searchTotal, page, limit }),
+        4 * 60 * 60,
+      );
+      return {
+        data: searchData,
+        total: searchTotal,
+        page,
+        limit,
+      };
+    }
+
+    const where: any = {};
+
+    if (saleStatus && saleStatus.length > 0) {
+      const bools = saleStatus.map((st) => st === 'true');
+      const uniqueBools = [...new Set(bools)];
+
+      if (uniqueBools.length === 1) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        where.status = uniqueBools[0];
+      }
+      // nếu có cả true lẫn false thì không cần filter vì lấy hết
+    }
+
+    const orderBy =
+      sortField && sortOrder
+        ? { [sortField]: sortOrder as 'asc' | 'desc' }
+        : undefined;
+
+    if (laptopBrand && laptopBrand.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      where.LaptopBrand = {
+        name: {
+          in: laptopBrand,
+          mode: 'insensitive', // không phân biệt hoa thường
+        },
+      };
+    }
+
+    const [listProduct, total] = await this.prisma.$transaction([
+      this.prisma.product.findMany({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        where,
+        skip,
+        orderBy,
+        take: limit,
+        select: {
+          id: true,
+          model: true,
+          thumbnail: true,
+          created_at: true,
+          updated_at: true,
+          status: true,
+          LaptopBrand: { select: { name: true } },
+          // Processor: true,
+          // VideoGraphics: true,
+          // Display: true,
+          // Memory: true,
+          // Storage: true,
+        },
+      }),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      this.prisma.product.count({ where }),
+    ]);
+
+    await this.redis.set(
+      cacheKey,
+      JSON.stringify({
+        data: listProduct,
+        total,
+        page,
+        limit,
+      }),
+      4 * 60 * 60,
+    );
+
+    return {
+      data: listProduct,
+      total,
+      page,
+      limit,
+    };
+  }
+
+  async findAllCustomer(page: number) {
     const clientProductKey = `list:client:product:page-${page}`;
     const data: string | null = await this.redis.get(clientProductKey);
     if (data) return JSON.parse(data) as IProduct[];
@@ -161,8 +279,13 @@ export class ProductService {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  remove(id: string) {
+    return this.prisma.product.delete({
+      where: { id },
+      include: {
+        images: true,
+      },
+    });
   }
 
   async findCpuByModel(model: string) {
@@ -181,6 +304,7 @@ export class ProductService {
   }
 
   async findGpuByModel(model: string) {
+    console.log('findGpuByModel', model);
     const getModelQuery = `gpu-${model.replaceAll(' ', '_')}`;
     const data: string | null = await this.redis.get(getModelQuery);
     if (data) return JSON.parse(data) as ICPU;
@@ -260,7 +384,8 @@ export class ProductService {
   }
 
   async transSaveGpu(tx: Prisma.TransactionClient, gpu: IGPUInfo) {
-    const existing = await this.findGpuByModel(gpu.model);
+    console.log('GPU modal', gpu);
+    const existing = await this.findGpuByModel(gpu.name);
     if (existing) return existing.id;
 
     const created = await tx.videoGraphics.create({
@@ -335,5 +460,140 @@ export class ProductService {
     });
 
     return created.id;
+  }
+
+  private async atlasSearch(
+    search: string,
+    page: number,
+    limit: number,
+    sortField: string,
+    sortOrder: string,
+    laptopBrand?: string[],
+    saleStatus?: string[],
+  ) {
+    console.log(search);
+    const pipeline: Record<string, any>[] = [
+      {
+        $search: {
+          index: 'product_search',
+          text: {
+            query: search,
+            path: 'model',
+            fuzzy: {
+              maxEdits: 2,
+              prefixLength: 1,
+            },
+          },
+        },
+      },
+    ];
+
+    // Thêm lọc changeType nếu có
+    if (laptopBrand && laptopBrand.length > 0) {
+      pipeline.push({
+        $match: { 'Product.LaptopBrand.name': { $in: laptopBrand } },
+      });
+    }
+
+    // Thêm lọc saleStatus nếu có
+    if (saleStatus && saleStatus.length > 0) {
+      const bools = saleStatus.map((st) => st === 'true');
+      const uniqueBools = [...new Set(bools)];
+      if (uniqueBools.length === 1) {
+        pipeline.push({
+          $match: { 'Product.status': uniqueBools[0] },
+        });
+      }
+    }
+
+    // Thêm addFields cho id + reference + product
+    pipeline.push(
+      {
+        $addFields: {
+          id: { $toString: '$_id' },
+          created_at: { $dateToString: { date: '$created_at' } },
+          updated_at: { $dateToString: { date: '$updated_at' } },
+        },
+      },
+      {
+        $lookup: {
+          from: 'LaptopBrand', // tên collection
+          localField: 'brand_id', // trường bên Product
+          foreignField: '_id', // field bên LaptopBrand
+          as: 'LaptopBrand',
+        },
+      },
+      // lấy object thay vì array
+      {
+        $unwind: {
+          path: '$LaptopBrand',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $unset: [
+          '_id',
+          'brand_id',
+          'description',
+          'price',
+          'processor_id',
+          'videographics_id',
+          'display_id',
+          'memory_id',
+          'storage_id',
+          'adminId',
+          'LaptopBrand.created_at',
+          'LaptopBrand.updated_at',
+          'LaptopBrand._id',
+        ],
+      },
+    );
+
+    // Thêm sắp xếp
+    const defaultSortField = 'created_at'; // Hoặc field mặc định khác
+    const validSortFields = ['created_at', 'updated_at']; // Danh sách các field hợp lệ
+
+    // Validate sortField
+    const safeSortField =
+      sortField && validSortFields.includes(sortField)
+        ? sortField
+        : defaultSortField;
+    const safeSortOrder = sortOrder === 'desc' ? -1 : 1;
+    const sortStage = { $sort: { [safeSortField]: safeSortOrder } };
+    pipeline.push(sortStage);
+
+    // Thêm phân trang
+    // Validate pagination parameters
+    const safePage = Math.max(1, page || 1);
+    const safeLimit = Math.max(1, Math.min(100, limit || 10)); // Giới hạn tối đa 100
+
+    // Thêm phân trang
+    pipeline.push({ $skip: (safePage - 1) * safeLimit }, { $limit: safeLimit });
+    const data = await this.prisma.product.aggregateRaw({ pipeline });
+    const totalPipeline = [
+      ...pipeline.filter((stage) => !('$skip' in stage || '$limit' in stage)),
+    ];
+    totalPipeline.push({ $count: 'total' });
+    const totalResult = await this.prisma.product.aggregateRaw({
+      pipeline: totalPipeline,
+    });
+    let total = 0;
+    if (
+      Array.isArray(totalResult) &&
+      totalResult.length > 0 &&
+      typeof totalResult[0] === 'object' &&
+      totalResult[0] !== null &&
+      'total' in totalResult[0]
+    ) {
+      total = Number((totalResult[0] as { total: number }).total) || 0;
+    }
+    // Cuối cùng gọi aggregateRaw
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 }

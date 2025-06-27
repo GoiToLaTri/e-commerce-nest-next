@@ -12,7 +12,7 @@ export function useCustomerProducts({
   return useQuery<IProduct[]>({
     queryKey: [queryKeys.GET_CUSTOMER_LIST_PRODUCT_DATA, page, limit],
     queryFn: async () => {
-      const res = await productApi.getAllProduct({ page });
+      const res = await productApi.findAll({ page });
       return res.data;
     },
     initialData,

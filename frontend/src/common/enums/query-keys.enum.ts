@@ -8,4 +8,5 @@ export enum queryKeys {
   GET_PRODUCT_INVENTORY_LOG = "get-product-inventory-log",
   GET_STOCK_HISTORY = "get-stock-history",
   GET_STOCK_HISTORY_DETAIL = "get-stock-history-detail",
+  GET_BRANDS = "get-brands",
 }
