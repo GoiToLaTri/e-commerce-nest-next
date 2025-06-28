@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+import { appConfig } from '@/common/configs';
 
 @Injectable()
 export class StockHistoryService {
@@ -16,7 +17,7 @@ export class StockHistoryService {
     changeType?: string[],
     search?: string,
   ) {
-    const cacheKey = `stock-history:${page}:${limit}:${sortField}:${sortOrder}:${changeType?.join(',')}:${search}`;
+    const cacheKey = `stock-history:page${page}:limit-${limit}:${sortField || 'field-default'}:${sortOrder || 'order-default'}:${changeType?.join(',') || 'type-all'}:${search || ''}`;
     // Check if the data is cached
     const cachedData: string | null = await this.redis.get(cacheKey);
     if (cachedData) return JSON.parse(cachedData) as { id: string };
@@ -35,7 +36,7 @@ export class StockHistoryService {
       await this.redis.set(
         cacheKey,
         JSON.stringify({ data: searchData, total: searchTotal, page, limit }),
-        4 * 60 * 60,
+        appConfig.REDIS_TTL_CACHE,
       );
       return {
         data: searchData,
@@ -71,7 +72,7 @@ export class StockHistoryService {
     await this.redis.set(
       cacheKey,
       JSON.stringify({ data: histories, total, page, limit }),
-      4 * 60 * 60,
+      appConfig.REDIS_TTL_CACHE,
     );
 
     return {

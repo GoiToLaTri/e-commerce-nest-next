@@ -20,6 +20,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { BrandService } from '../brand/brand.service';
 import { IProduct } from './interfaces/product.interface';
 import { InventoryService } from '../inventory/inventory.service';
+import { appConfig } from '@/common/configs';
 
 @Injectable()
 export class ProductService {
@@ -120,7 +121,7 @@ export class ProductService {
     saleStatus?: string[],
     search?: string,
   ) {
-    const cacheKey = `list:${page}:${limit}:${sortField || 'field-default'}:${sortOrder || 'order-default'}:${laptopBrand?.join(',') || 'brand-all'}:${saleStatus?.join(',') || 'status-all'}:${search || ''}`;
+    const cacheKey = `list:page-${page}:limit-${limit}:${sortField || 'field-default'}:${sortOrder || 'order-default'}:${laptopBrand?.join(',') || 'brand-all'}:${saleStatus?.join(',') || 'status-all'}:${search || ''}`;
     const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as IProduct[];
 
@@ -139,7 +140,7 @@ export class ProductService {
       await this.redis.set(
         cacheKey,
         JSON.stringify({ data: searchData, total: searchTotal, page, limit }),
-        4 * 60 * 60,
+        appConfig.REDIS_TTL_CACHE,
       );
       return {
         data: searchData,
@@ -211,7 +212,7 @@ export class ProductService {
         page,
         limit,
       }),
-      4 * 60 * 60,
+      appConfig.REDIS_TTL_CACHE,
     );
 
     return {
@@ -246,15 +247,15 @@ export class ProductService {
     await this.redis.set(
       clientProductKey,
       JSON.stringify(listProduct),
-      4 * 60 * 60,
+      appConfig.REDIS_TTL_CACHE,
     );
 
     return listProduct;
   }
 
   async findOne(id: string) {
-    const productQuery = `product-${id}`;
-    const cached: string | null = await this.redis.get(productQuery);
+    const cacheKey = `product-${id}`;
+    const cached: string | null = await this.redis.get(cacheKey);
     if (cached) return JSON.parse(cached) as IProduct;
 
     const product = await this.prisma.product.findUnique({
@@ -271,7 +272,11 @@ export class ProductService {
     });
 
     if (!product) return null;
-    await this.redis.set(productQuery, JSON.stringify(product), 4 * 60 * 60);
+    await this.redis.set(
+      cacheKey,
+      JSON.stringify(product),
+      appConfig.REDIS_TTL_CACHE,
+    );
     return product;
   }
 
@@ -289,8 +294,8 @@ export class ProductService {
   }
 
   async findCpuByModel(model: string) {
-    const getModelQuery = `cpu-${model.replaceAll(' ', '_')}`;
-    const data: string | null = await this.redis.get(getModelQuery);
+    const cacheKey = `cpu-${model.replaceAll(' ', '_')}`;
+    const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as ICPU;
 
     const newData = await this.prisma.processor.findFirst({
@@ -298,15 +303,13 @@ export class ProductService {
     });
     if (!newData) return null;
 
-    const setModelQuery = `cpu-${newData.model.replaceAll(' ', '_')}`;
-    await this.redis.set(setModelQuery, JSON.stringify(newData), 4 * 60);
+    await this.redis.set(cacheKey, JSON.stringify(newData), 4 * 60);
     return newData;
   }
 
   async findGpuByModel(model: string) {
-    console.log('findGpuByModel', model);
-    const getModelQuery = `gpu-${model.replaceAll(' ', '_')}`;
-    const data: string | null = await this.redis.get(getModelQuery);
+    const cacheKey = `gpu-${model.replaceAll(' ', '_')}`;
+    const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as ICPU;
 
     const newData = await this.prisma.videoGraphics.findFirst({
@@ -314,14 +317,13 @@ export class ProductService {
     });
     if (!newData) return null;
 
-    const setModelQuery = `gpu-${newData.model.replaceAll(' ', '_')}`;
-    await this.redis.set(setModelQuery, JSON.stringify(newData), 4 * 60);
+    await this.redis.set(cacheKey, JSON.stringify(newData), 4 * 60);
     return newData;
   }
 
   async findDisplayByInfo(info: string) {
-    const getDisplayQuery = `display-${info.replaceAll(' ', '_')}`;
-    const data: string | null = await this.redis.get(getDisplayQuery);
+    const cacheKey = `display-${info.replaceAll(' ', '_')}`;
+    const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as IDisplay;
 
     const newData = await this.prisma.display.findFirst({
@@ -329,14 +331,13 @@ export class ProductService {
     });
     if (!newData) return null;
 
-    const setDisplayQuery = `display-${newData.info.replaceAll(' ', '_')}`;
-    await this.redis.set(setDisplayQuery, JSON.stringify(newData), 4 * 60);
+    await this.redis.set(cacheKey, JSON.stringify(newData), 4 * 60);
     return newData;
   }
 
   async findRamByInfo(info: string) {
-    const getRamQuery = `ram-${info.replaceAll(' ', '_')}`;
-    const data: string | null = await this.redis.get(getRamQuery);
+    const cacheKey = `ram-${info.replaceAll(' ', '_')}`;
+    const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as IRam;
 
     const newData = await this.prisma.memory.findUnique({
@@ -344,14 +345,13 @@ export class ProductService {
     });
     if (!newData) return null;
 
-    const setRamQuery = `ram-${newData.info.replaceAll(' ', '_')}`;
-    await this.redis.set(setRamQuery, JSON.stringify(newData), 4 * 60);
+    await this.redis.set(cacheKey, JSON.stringify(newData), 4 * 60);
     return newData;
   }
 
   async findStorageByInfo(info: string) {
-    const getStorageQuery = `storage-${info.replaceAll(' ', '_')}`;
-    const data: string | null = await this.redis.get(getStorageQuery);
+    const cacheKey = `storage-${info.replaceAll(' ', '_')}`;
+    const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as IStorage;
 
     const newData = await this.prisma.storage.findFirst({
@@ -359,8 +359,7 @@ export class ProductService {
     });
     if (!newData) return null;
 
-    const setStorageQuery = `storage-${newData.info.replaceAll(' ', '_')}`;
-    await this.redis.set(setStorageQuery, JSON.stringify(newData), 4 * 60);
+    await this.redis.set(cacheKey, JSON.stringify(newData), 4 * 60);
     return newData;
   }
 

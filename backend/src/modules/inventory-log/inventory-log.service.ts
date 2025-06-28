@@ -3,6 +3,7 @@ import { CreateInventoryLog } from './dto/create-inventory-log';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from 'generated/prisma';
 import { RedisService } from '../redis/redis.service';
+import { appConfig } from '@/common/configs';
 
 @Injectable()
 export class InventoryLogService {
@@ -83,8 +84,8 @@ export class InventoryLogService {
     sortOrder: string,
     changeType?: string[],
   ) {
-    const getQuery = `product-inventory-log-${productId}-${page}-${limit}-${sortField}-${sortOrder}-${changeType?.join('_')}`;
-    const cache: string | null = await this.redis.get(getQuery);
+    const cacheKey = `product-inventory-log:${productId}:page-${page}:limit-${limit}-${sortField || 'filed-default'}:${sortOrder || 'order-default'}:${changeType?.join('_') || 'typle-all'}`;
+    const cache: string | null = await this.redis.get(cacheKey);
     if (cache) return { ...JSON.parse(cache) } as { id: string };
 
     const skip = (page - 1) * limit;
@@ -115,7 +116,11 @@ export class InventoryLogService {
       totalPages: Math.ceil(total / limit),
     };
 
-    await this.redis.set(getQuery, JSON.stringify(setCacheData), 4 * 60 * 60);
+    await this.redis.set(
+      cacheKey,
+      JSON.stringify(setCacheData),
+      appConfig.REDIS_TTL_CACHE,
+    );
 
     return { ...setCacheData };
   }

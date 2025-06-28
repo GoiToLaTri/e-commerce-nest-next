@@ -13,6 +13,7 @@ export class AppConfig {
   CLOUDINARY_CLOUD_NAME: string;
   CLOUDINARY_API_KEY: string;
   CLOUDINARY_API_SECRET: string;
+  REDIS_TTL_CACHE: number;
 
   constructor() {
     this.PORT = Number(process.env.SERVER_PORT ?? 3000);
@@ -29,6 +30,7 @@ export class AppConfig {
     this.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || '';
     this.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '';
     this.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
+    this.REDIS_TTL_CACHE = 4 * 3600;
   }
 }
 

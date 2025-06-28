@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from 'generated/prisma';
 import { RedisService } from '../redis/redis.service';
+import { appConfig } from '@/common/configs';
 
 @Injectable()
 export class InventoryService {
@@ -50,7 +51,11 @@ export class InventoryService {
       },
     });
 
-    await this.redis.set(key, JSON.stringify(fallbackData), 4 * 60 * 60);
+    await this.redis.set(
+      key,
+      JSON.stringify(fallbackData),
+      appConfig.REDIS_TTL_CACHE,
+    );
 
     return fallbackData;
   }
@@ -66,7 +71,11 @@ export class InventoryService {
 
     const inventoryList = await this.getInventoryList(skip, limit, search);
     const result = await this.appendImportExportStats(inventoryList);
-    await this.redis.set(key, JSON.stringify(result), 4 * 60 * 60);
+    await this.redis.set(
+      key,
+      JSON.stringify(result),
+      appConfig.REDIS_TTL_CACHE,
+    );
     return result;
   }
 

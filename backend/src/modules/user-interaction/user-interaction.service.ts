@@ -3,6 +3,7 @@ import { CreateUserInteractionDto } from './dto/create-user-interaction.dto';
 import { UpdateUserInteractionDto } from './dto/update-user-interaction.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+import { appConfig } from '@/common/configs';
 
 @Injectable()
 export class UserInteractionService {
@@ -18,7 +19,11 @@ export class UserInteractionService {
     if (cache) data = JSON.parse(cache) as CreateUserInteractionDto;
     else data = createUserInteractionDto;
 
-    await this.redis.set(cacheKey, JSON.stringify(data), 4 * 60 * 60);
+    await this.redis.set(
+      cacheKey,
+      JSON.stringify(data),
+      appConfig.REDIS_TTL_CACHE,
+    );
     const interaction = await this.prisma.userInteraction.create({ data });
     return interaction;
   }
