@@ -32,8 +32,6 @@ export interface IProduct {
   status: boolean;
 }
 
-
-
 export interface ILaptopBrand {
   id: string;
   name: string;
@@ -106,4 +104,11 @@ export interface IStorage {
   slots: number;
   type: string;
   updated_at: Date | string;
+}
+
+export interface IProductResponse {
+  data: IProduct[];
+  total: number;
+  page: number;
+  limit: number;
 }

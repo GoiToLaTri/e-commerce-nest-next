@@ -9,4 +9,8 @@ export enum queryKeys {
   GET_STOCK_HISTORY = "get-stock-history",
   GET_STOCK_HISTORY_DETAIL = "get-stock-history-detail",
   GET_BRANDS = "get-brands",
+  GET_RAMS = "get-rams",
+  GET_PROCESSORS = "get-processors",
+  GET_STORAGES = "get-storages",
+  GET_GPUS = "get-gpus",
 }

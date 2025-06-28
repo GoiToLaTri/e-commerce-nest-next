@@ -6,3 +6,4 @@ export * from "./inventory-log.api";
 // export * from "./inventory.api";
 export * from "./user-interaction.api";
 export * from "./brand.api";
+export * from "./product-specification";

@@ -23,3 +23,6 @@ export * from "./button/purple-button";
 
 // exporting all action components
 export * from "./actions/product-detail-action";
+
+// exporting all collapse components
+export * from "./collapses/client-product-filter";

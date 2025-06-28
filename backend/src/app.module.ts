@@ -22,6 +22,7 @@ import { InventoryLogModule } from './modules/inventory-log/inventory-log.module
 import { StockHistoryModule } from './modules/stock-history/stock-history.module';
 import { StockAdjustmentModule } from './modules/stock-adjustment/stock-adjustment.module';
 import { UserInteractionModule } from './modules/user-interaction/user-interaction.module';
+import { ProductSpecificationModule } from './modules/product-specification/product-specification.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { UserInteractionModule } from './modules/user-interaction/user-interacti
     StockAdjustmentModule,
     StockHistoryModule,
     UserInteractionModule,
+    ProductSpecificationModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

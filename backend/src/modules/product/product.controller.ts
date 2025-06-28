@@ -55,9 +55,41 @@ export class ProductController {
   }
 
   @Get('customer')
-  findAllCustomer(@Query('page') queryPage?: number) {
-    const page: number = queryPage || 1;
-    return this.productService.findAllCustomer(page);
+  findAllCustomer(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Query('sortField') sortField: string,
+    @Query('sortOrder') sortOrder: string,
+    @Query('laptopBrand[]') laptopBrandRaw: string | string[],
+    @Query('cpuBrands[]') cpuBrandsRaw: string | string[],
+    @Query('cpuSeries[]') cpuSeriesRaw: string | string[],
+  ) {
+    console.log({ cpuBrandsRaw, cpuSeriesRaw, laptopBrandRaw });
+    const laptopBrand = Array.isArray(laptopBrandRaw)
+      ? laptopBrandRaw
+      : laptopBrandRaw
+        ? [laptopBrandRaw]
+        : undefined;
+
+    const cpuBrands = Array.isArray(cpuBrandsRaw)
+      ? cpuBrandsRaw
+      : cpuBrandsRaw
+        ? [cpuBrandsRaw]
+        : undefined;
+
+    const cpuSeries = Array.isArray(cpuSeriesRaw)
+      ? cpuSeriesRaw
+      : cpuSeriesRaw
+        ? [cpuSeriesRaw]
+        : undefined;
+
+    return this.productService.findAllCustomer(
+      +page || 1,
+      +limit || 12,
+      laptopBrand,
+      cpuBrands,
+      cpuSeries,
+    );
   }
 
   @Get(':id')

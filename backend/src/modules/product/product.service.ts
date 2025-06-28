@@ -193,11 +193,6 @@ export class ProductService {
           updated_at: true,
           status: true,
           LaptopBrand: { select: { name: true } },
-          // Processor: true,
-          // VideoGraphics: true,
-          // Display: true,
-          // Memory: true,
-          // Storage: true,
         },
       }),
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -223,34 +218,77 @@ export class ProductService {
     };
   }
 
-  async findAllCustomer(page: number) {
-    const clientProductKey = `list:client:product:page-${page}`;
+  async findAllCustomer(
+    page: number,
+    limit: number,
+    laptopBrand: string[] = [],
+    cpuBrand: string[] = [],
+    cpuSeries: string[] = [],
+  ) {
+    const clientProductKey = `list:client:product:page-${page}:limit-${limit}:laptopBrand-${laptopBrand.join(',') || 'all'}:cpuBrand-${cpuBrand.join(',') || 'all'}:cpuSeries-${cpuSeries.join(',') || 'all'}`;
     const data: string | null = await this.redis.get(clientProductKey);
     if (data) return JSON.parse(data) as IProduct[];
 
-    const where = { status: true };
+    const skip = (page - 1) * limit;
+    const where: any = { status: true };
 
-    const listProduct = await this.prisma.product.findMany({
-      where,
-      skip: (page - 1) * 10,
-      take: 10,
-      include: {
-        LaptopBrand: true,
-        Processor: true,
-        VideoGraphics: true,
-        Display: true,
-        Memory: true,
-        Storage: true,
-      },
-    });
+    console.log({ laptopBrand, cpuBrand, cpuSeries });
+
+    if (laptopBrand && laptopBrand.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      where.LaptopBrand = { name: { in: laptopBrand, mode: 'insensitive' } };
+    }
+
+    if (cpuBrand && cpuBrand.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      where.Processor = { brand: { in: cpuBrand, mode: 'insensitive' } };
+    }
+
+    if (cpuSeries && cpuSeries.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      where.Processor = { series: { in: cpuSeries, mode: 'insensitive' } };
+    }
+
+    const [listProduct, total] = await this.prisma.$transaction([
+      this.prisma.product.findMany({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        where,
+
+        skip,
+        // orderBy,
+        take: limit,
+        select: {
+          id: true,
+          model: true,
+          thumbnail: true,
+          price: true,
+          created_at: true,
+          updated_at: true,
+          status: true,
+          LaptopBrand: { select: { name: true } },
+        },
+      }),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      this.prisma.product.count({ where }),
+    ]);
 
     await this.redis.set(
       clientProductKey,
-      JSON.stringify(listProduct),
+      JSON.stringify({
+        data: listProduct,
+        total,
+        page,
+        limit,
+      }),
       appConfig.REDIS_TTL_CACHE,
     );
 
-    return listProduct;
+    return {
+      data: listProduct,
+      total,
+      page,
+      limit,
+    };
   }
 
   async findOne(id: string) {

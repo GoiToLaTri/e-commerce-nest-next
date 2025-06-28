@@ -31,8 +31,16 @@ export const productApi = {
   getDetailProduct: (id: string) => axiosClient.get(`proxy/product/${id}`),
   getClientDetailProduct: (id: string) =>
     axiosClient.get(`${FORNTEND_URL}/api/proxy/product/${id}`),
-  findAll: (query: { page: number }) =>
+  findAll: (query: PaginationParams & Partial<QueryParams>) =>
     axiosClient.get(`${FORNTEND_URL}/api/proxy/product/customer`, {
-      params: { ...query },
+      params: {
+        page: query.page,
+        limit: query.limit,
+        sortField: query.sortField,
+        sortOrder: query.sortOrder,
+        laptopBrand: query?.filters?.laptopbrand,
+        cpuBrands: query?.filters?.cpu_brand,
+        cpuSeries: query?.filters?.cpu_series,
+      },
     }),
 };

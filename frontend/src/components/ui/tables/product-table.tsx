@@ -54,7 +54,7 @@ export function ProductTable() {
       title: "Brand",
       dataIndex: "LaptopBrand",
       key: "laptopbrand",
-      filters: brands?.map((brand) => ({
+      filters: brands?.map((brand: { name: string }) => ({
         text: brand.name,
         value: brand.name,
       })),
