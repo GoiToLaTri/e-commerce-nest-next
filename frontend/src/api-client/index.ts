@@ -7,3 +7,4 @@ export * from "./inventory-log.api";
 export * from "./user-interaction.api";
 export * from "./brand.api";
 export * from "./product-specification";
+export * from "./cart.api";

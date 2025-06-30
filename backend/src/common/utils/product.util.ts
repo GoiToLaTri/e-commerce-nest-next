@@ -267,18 +267,117 @@ class ProductUtil {
   //   };
   // }
 
+  // public parseGPUName(input: string): IGPUInfo | null {
+  //   // Regex chính cho NVIDIA và AMD
+  //   const mainRegex =
+  //     /^(?<manufacturer>NVIDIA|AMD)\s+(?<brand>GeForce|Radeon)\s+(?<prefix>GTX|RTX|RX)\s+(?<modelNumber>\d{3,4})\s*(?<modelSuffix>Ti|XT|XTX|Super|Pro|M)?\s*(?<vram>\d+)?\s*GB?\s*(?<memoryType>GDDR\dX?)?/i;
+
+  //   // Regex cho Intel Arc
+  //   const intelArcRegex =
+  //     /^(?<manufacturer>Intel)\s+(?<brand>Arc)\s+(?<prefix>A)\s*(?<modelNumber>\d{3,4})\s*(?<modelSuffix>M)?\s*(?<vram>\d+)?\s*GB?\s*(?<memoryType>GDDR\dX?)?/i;
+
+  //   // Regex cho Intel integrated graphics (UHD, HD, Iris Xe) - FIXED
+  //   const intelIntegratedRegex =
+  //     /^(?<manufacturer>Intel)\s+(?<brand>UHD|HD|Iris)\s*(?<prefix>Xe)?\s*(?<graphics>Graphics)?\s*(?<modelNumber>\d{3,4})?\s*(?<modelSuffix>G\d+)?/i;
+
+  //   let match = input.match(mainRegex);
+  //   let isIntelIntegrated = false;
+
+  //   // Thử với Intel Arc nếu không match với regex chính
+  //   if (!match?.groups) {
+  //     match = input.match(intelArcRegex);
+  //   }
+
+  //   // Thử với Intel integrated graphics
+  //   if (!match?.groups) {
+  //     match = input.match(intelIntegratedRegex);
+  //     isIntelIntegrated = true;
+  //   }
+
+  //   if (!match?.groups) return null;
+
+  //   const {
+  //     manufacturer,
+  //     brand,
+  //     prefix,
+  //     modelNumber,
+  //     modelSuffix,
+  //     vram,
+  //     memoryType,
+  //     graphics, // Thêm capture group này
+  //   } = match.groups;
+
+  //   // Xử lý đặc biệt cho Intel integrated graphics
+  //   if (isIntelIntegrated) {
+  //     const fullNameParts = [manufacturer];
+
+  //     if (brand === 'Iris' && prefix === 'Xe') fullNameParts.push('Iris Xe');
+  //     else {
+  //       fullNameParts.push(brand);
+  //       if (prefix && prefix !== 'Graphics') fullNameParts.push(prefix);
+  //     }
+
+  //     // Thêm "Graphics" nếu có
+  //     if (graphics) fullNameParts.push(graphics);
+
+  //     if (modelNumber) fullNameParts.push(modelNumber);
+
+  //     if (modelSuffix) fullNameParts.push(modelSuffix);
+
+  //     return {
+  //       manufacturer: manufacturer as IGPUInfo['manufacturer'],
+  //       brand,
+  //       prefix: prefix || '-',
+  //       series: modelNumber ? modelNumber.slice(0, 2) : '-',
+  //       model: modelNumber
+  //         ? `${modelNumber}${modelSuffix ? ' ' + modelSuffix : ''}`
+  //         : modelSuffix || '',
+  //       vram_gb: null, // Integrated graphics không có VRAM riêng
+  //       memory_type: null,
+  //       name: fullNameParts.join(' '),
+  //     };
+  //   }
+
+  //   // Xử lý cho discrete graphics (NVIDIA, AMD, Intel Arc)
+  //   const model = `${modelNumber}${modelSuffix ? ' ' + modelSuffix : ''}`;
+  //   const series = modelNumber.slice(0, 2);
+  //   const fullNameParts = [manufacturer, brand];
+
+  //   // Xử lý prefix đặc biệt cho Intel Arc
+  //   if (manufacturer === 'Intel' && brand === 'Arc') {
+  //     fullNameParts.push(`${prefix}${modelNumber}`);
+  //   } else {
+  //     fullNameParts.push(prefix, model);
+  //   }
+
+  //   // Thêm VRAM và memoryType nếu có
+  //   if (vram) fullNameParts.push(`${vram}GB`);
+  //   if (memoryType) fullNameParts.push(memoryType.toUpperCase());
+
+  //   return {
+  //     manufacturer: manufacturer as IGPUInfo['manufacturer'],
+  //     brand,
+  //     prefix,
+  //     series,
+  //     model,
+  //     vram_gb: vram ? parseInt(vram, 10) : null,
+  //     memory_type: memoryType ? memoryType.toUpperCase() : null,
+  //     name: fullNameParts.join(' '),
+  //   };
+  // }
+
   public parseGPUName(input: string): IGPUInfo | null {
-    // Regex chính cho NVIDIA và AMD
+    // Regex chính cho NVIDIA và AMD - FIXED
     const mainRegex =
-      /^(?<manufacturer>NVIDIA|AMD)\s+(?<brand>GeForce|Radeon)\s+(?<prefix>GTX|RTX|RX)\s+(?<modelNumber>\d{3,4})\s*(?<modelSuffix>Ti|XT|XTX|Super|Pro|M)?\s*(?<vram>\d+)?\s*GB?\s*(?<memoryType>GDDR\dX?)?/i;
+      /^(?<manufacturer>NVIDIA|AMD)\s+(?<brand>GeForce|Radeon)\s+(?<prefix>GTX|RTX|RX)\s+(?<modelNumber>\d{3,4})\s*(?<modelSuffix>Ti|XT|XTX|Super|Pro|M)?\s*(?<vram>\d+)?\s*GB?\s*(?<memoryType>GDDR\d+X?)?/i;
 
-    // Regex cho Intel Arc
+    // Regex cho Intel Arc - FIXED
     const intelArcRegex =
-      /^(?<manufacturer>Intel)\s+(?<brand>Arc)\s+(?<prefix>A)\s*(?<modelNumber>\d{3,4})\s*(?<modelSuffix>M)?\s*(?<vram>\d+)?\s*GB?\s*(?<memoryType>GDDR\dX?)?/i;
+      /^(?<manufacturer>Intel)\s+(?<brand>Arc)\s+(?<prefix>A)(?<modelNumber>\d{3,4})\s*(?<modelSuffix>M)?\s*(?<vram>\d+)?\s*GB?\s*(?<memoryType>GDDR\d+X?)?/i;
 
-    // Regex cho Intel integrated graphics (UHD, HD, Iris Xe) - FIXED
+    // Regex cho Intel integrated graphics - FIXED
     const intelIntegratedRegex =
-      /^(?<manufacturer>Intel)\s+(?<brand>UHD|HD|Iris)\s*(?<prefix>Xe)?\s*(?<graphics>Graphics)?\s*(?<modelNumber>\d{3,4})?\s*(?<modelSuffix>G\d+)?/i;
+      /^(?<manufacturer>Intel)\s+(?:(?<brand>UHD|HD|Iris)\s*(?<prefix>Xe)?\s*|(?<prefix2>Xe)\s+)?(?<graphics>Graphics)\s*(?<modelNumber>\d{3,4})?\s*(?<modelSuffix>G\d+)?/i;
 
     let match = input.match(mainRegex);
     let isIntelIntegrated = false;
@@ -300,38 +399,59 @@ class ProductUtil {
       manufacturer,
       brand,
       prefix,
+      prefix2,
       modelNumber,
       modelSuffix,
       vram,
       memoryType,
-      graphics, // Thêm capture group này
+      graphics,
     } = match.groups;
 
     // Xử lý đặc biệt cho Intel integrated graphics
     if (isIntelIntegrated) {
-      const fullNameParts = [manufacturer];
+      // Xác định brand, prefix, model dựa trên input
+      const finalBrand = '-';
+      const finalPrefix = 'Graphics';
+      let finalModel = '';
 
-      if (brand === 'Iris' && prefix === 'Xe') fullNameParts.push('Iris Xe');
-      else {
-        fullNameParts.push(brand);
-        if (prefix && prefix !== 'Graphics') fullNameParts.push(prefix);
+      // Xử lý brand (HD, UHD, Iris)
+      if (brand) {
+        finalModel = brand;
+
+        // Xử lý Xe prefix cho Iris
+        if (prefix === 'Xe' && brand === 'Iris') {
+          finalModel = `${brand} ${prefix}`;
+        }
+      } else if (prefix2 === 'Xe') {
+        // Trường hợp "Intel Xe Graphics"
+        finalModel = prefix2;
       }
 
-      // Thêm "Graphics" nếu có
-      if (graphics) fullNameParts.push(graphics);
+      // Thêm model number nếu có
+      if (modelNumber) {
+        finalModel = finalModel ? `${finalModel} ${modelNumber}` : modelNumber;
+      }
 
-      if (modelNumber) fullNameParts.push(modelNumber);
+      // Thêm model suffix nếu có
+      if (modelSuffix) {
+        finalModel = finalModel ? `${finalModel} ${modelSuffix}` : modelSuffix;
+      }
 
-      if (modelSuffix) fullNameParts.push(modelSuffix);
+      // Xây dựng tên đầy đủ
+      const fullNameParts = [manufacturer];
+
+      if (finalModel) {
+        fullNameParts.push(finalModel);
+      }
+
+      fullNameParts.push('Graphics');
 
       return {
         manufacturer: manufacturer as IGPUInfo['manufacturer'],
-        brand,
-        prefix: prefix || '-',
-        series: modelNumber ? modelNumber.slice(0, 2) : '-',
-        model: modelNumber
-          ? `${modelNumber}${modelSuffix ? ' ' + modelSuffix : ''}`
-          : modelSuffix || '',
+        brand: finalBrand,
+        prefix: finalPrefix,
+        series: '-',
+        model: finalModel,
         vram_gb: null, // Integrated graphics không có VRAM riêng
         memory_type: null,
         name: fullNameParts.join(' '),

@@ -8,7 +8,7 @@ export interface SiteLayoutProps {
 export default function SiteLayout({ children }: SiteLayoutProps) {
   return (
     <div>
-      {children}
+      <div className="min-h-screen">{children}</div>
       <CustomerFooter />
     </div>
   );

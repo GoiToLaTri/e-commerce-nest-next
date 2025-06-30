@@ -17,7 +17,7 @@ export class InventoryController {
     @Query('search') search?: string,
   ) {
     console.log({ page, limit, search });
-    return this.inventoryService.findAll(+page || 1, +limit || 20, search);
+    return this.inventoryService.findAll(+page || 1, +limit || 4, search);
   }
 
   @Get(':id')

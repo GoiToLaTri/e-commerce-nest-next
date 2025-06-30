@@ -60,9 +60,16 @@ export class InventoryService {
     return fallbackData;
   }
 
-  async findAll(page = 1, limit = 4, search?: string) {
+  async findAll(
+    page = 1,
+    limit = 4,
+    // sortField: string,
+    // sortOrder: string,
+    search?: string,
+  ) {
     const skip = (page - 1) * limit;
-    const key = `inventory-page-${page}`;
+    // const key = `inventory:page-${page}:limit-${limit}:sortField-${sortField || 'default'}:sortOrder-${sortOrder || 'default'}:search-${search || ''}`;
+    const key = `inventory:page-${page}:limit-${limit}:search-${search || ''}`;
 
     if (!search) {
       const cache: string | null = await this.redis.get(key);
@@ -70,13 +77,13 @@ export class InventoryService {
     }
 
     const inventoryList = await this.getInventoryList(skip, limit, search);
-    const result = await this.appendImportExportStats(inventoryList);
+    const result = await this.appendImportExportStats(inventoryList.data);
     await this.redis.set(
       key,
-      JSON.stringify(result),
+      JSON.stringify({ data: result, total: inventoryList.total, page, limit }),
       appConfig.REDIS_TTL_CACHE,
     );
-    return result;
+    return { data: result, total: inventoryList.total, page, limit };
   }
 
   private async getInventoryList(skip: number, take: number, search?: string) {
@@ -88,8 +95,26 @@ export class InventoryService {
 
       const productIds = products.map((p) => p.id);
 
-      return this.prisma.inventory.findMany({
-        where: { productId: { in: productIds } },
+      const [inventoryList, total] = await this.prisma.$transaction([
+        this.prisma.inventory.findMany({
+          where: { productId: { in: productIds } },
+          skip,
+          take,
+          include: {
+            product: {
+              select: { id: true, thumbnail: true, model: true, price: true },
+            },
+          },
+        }),
+        this.prisma.inventory.count({
+          where: { productId: { in: productIds } },
+        }),
+      ]);
+      return { data: inventoryList, total };
+    }
+
+    const [inventoryList, total] = await this.prisma.$transaction([
+      this.prisma.inventory.findMany({
         skip,
         take,
         include: {
@@ -97,18 +122,10 @@ export class InventoryService {
             select: { id: true, thumbnail: true, model: true, price: true },
           },
         },
-      });
-    }
-
-    return this.prisma.inventory.findMany({
-      skip,
-      take,
-      include: {
-        product: {
-          select: { id: true, thumbnail: true, model: true, price: true },
-        },
-      },
-    });
+      }),
+      this.prisma.inventory.count(),
+    ]);
+    return { data: inventoryList, total };
   }
 
   private async appendImportExportStats(inventories: { productId: string }[]) {

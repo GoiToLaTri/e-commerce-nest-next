@@ -57,11 +57,13 @@ export default function ClientListProduct({
     <div>
       <h2 className="text-2xl font-bold mb-4 text-white">Laptop</h2>
       <div className="flex w-full gap-4">
-        <Card>
-          <div className="w-[240px]">
-            <ClientProductFilter onFilterChange={handleFilterChange} />
-          </div>
-        </Card>
+        <div className="flex client-product-filter">
+          <Card>
+            <div className="w-[240px]">
+              <ClientProductFilter onFilterChange={handleFilterChange} />
+            </div>
+          </Card>
+        </div>
         <div>
           {isLoading && <Skeleton paragraph={{ rows: 4 }} />}
           {!isLoading && !isError && data?.data.length === 0 && (

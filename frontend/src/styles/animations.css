@@ -89,3 +89,18 @@
     opacity: 0;
     animation: enterFromTop .6s forwards;
 }
+
+.client-product-filter {
+    opacity: 0;
+    animation: enterFromLeft .6s forwards;
+}
+
+.client-search {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.search-product-result {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}

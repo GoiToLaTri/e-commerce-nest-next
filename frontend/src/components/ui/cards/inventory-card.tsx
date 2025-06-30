@@ -5,7 +5,6 @@ import React from "react";
 import Card from "./card";
 import { Descriptions, Image, Skeleton, Tag } from "antd";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import { LoadingSpin } from "../loading/loading-spin";
 
 export interface InventoryCardProps {
   id: string;

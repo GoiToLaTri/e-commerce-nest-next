@@ -345,13 +345,19 @@ export class ProductService {
     return newData;
   }
 
-  async findGpuByModel(model: string) {
-    const cacheKey = `gpu-${model.replaceAll(' ', '_')}`;
+  async findGpuByName(name: string) {
+    console.log('Finding GPU by name:', name);
+    const cacheKey = `gpu-${name.replaceAll(' ', '_')}`;
     const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as ICPU;
 
     const newData = await this.prisma.videoGraphics.findFirst({
-      where: { model },
+      where: {
+        name: {
+          equals: name,
+          mode: 'insensitive',
+        },
+      },
     });
     if (!newData) return null;
 
@@ -422,9 +428,9 @@ export class ProductService {
 
   async transSaveGpu(tx: Prisma.TransactionClient, gpu: IGPUInfo) {
     console.log('GPU modal', gpu);
-    const existing = await this.findGpuByModel(gpu.name);
+    const existing = await this.findGpuByName(gpu.name);
     if (existing) return existing.id;
-
+    console.log('existing gpu', existing);
     const created = await tx.videoGraphics.create({
       data: {
         manufacturer: gpu.manufacturer,

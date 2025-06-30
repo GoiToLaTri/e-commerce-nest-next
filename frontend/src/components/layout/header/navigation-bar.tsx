@@ -15,8 +15,7 @@ import { usePathname } from "next/navigation";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
 import { useUserSession } from "@/hooks/useUserSession";
 import { Role } from "@/common/enums";
-import { AdminModal } from "@/components/modals";
-import { CustomerModal } from "@/components/modals/customer-modal";
+import { AdminModal, CustomerModal } from "@/components/modals";
 
 export interface NavigationBarProps {
   children: ReactNode;
@@ -92,18 +91,11 @@ export function NavigationBar() {
             </div>
           </nav>
           <div className="flex items-center gap-[1rem]">
-            {isLoading && <SkeletonAvatar active size={40} />}
+            {isLoading && <SkeletonAvatar size={40} />}
             {isAdmin && <AdminModal data={data} />}
             {isCustomer && <CustomerModal data={data} />}
             {!isLoading && !data && (
               <Link href="/auth/signup" passHref>
-                {/* <Button
-                  type="primary"
-                  size="large"
-                  className="!text-[1rem] !rounded-[4rem] !bg-gradient-to-r !from-purple-600 !to-blue-600 !border-0 !shadow-lg hover:!from-blue-600 hover:!to-purple-600 transition-all duration-300"
-                >
-                  Signup/Signin
-                </Button> */}
                 <PrupleButton>Signup/Signin</PrupleButton>
               </Link>
             )}

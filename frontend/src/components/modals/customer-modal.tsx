@@ -85,7 +85,7 @@ export function CustomerModal({ data }: CustomerModalProps) {
         )}
       >
         <div className="mt-8">
-          <Link href={"/admin/dashboard"}>
+          <Link href={"/customer/shopping-cart"}>
             <Button
               type="text"
               className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
@@ -94,13 +94,13 @@ export function CustomerModal({ data }: CustomerModalProps) {
               Shopping cart
             </Button>
           </Link>
-          <Link href={"/admin/product/manage"}>
+          <Link href={"/customer/order"}>
             <Button
               type="text"
               className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
               size="large"
             >
-              Invoice
+              Order
             </Button>
           </Link>
           <Divider />

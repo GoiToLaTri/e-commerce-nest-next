@@ -13,4 +13,6 @@ export enum queryKeys {
   GET_PROCESSORS = "get-processors",
   GET_STORAGES = "get-storages",
   GET_GPUS = "get-gpus",
+  SEARCH_PRODUCTS = "search-products",
+  GET_PRODUCTS_IN_CART = "get-products-in-cart",
 }

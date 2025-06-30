@@ -23,6 +23,8 @@ import { StockHistoryModule } from './modules/stock-history/stock-history.module
 import { StockAdjustmentModule } from './modules/stock-adjustment/stock-adjustment.module';
 import { UserInteractionModule } from './modules/user-interaction/user-interaction.module';
 import { ProductSpecificationModule } from './modules/product-specification/product-specification.module';
+import { SearchModule } from './modules/search/search.module';
+import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -48,6 +50,8 @@ import { ProductSpecificationModule } from './modules/product-specification/prod
     StockHistoryModule,
     UserInteractionModule,
     ProductSpecificationModule,
+    SearchModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

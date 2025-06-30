@@ -40,7 +40,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
               <div className="font-semibold text-4xl">
                 {convertNumberToCurrency(data.price)}
               </div>
-              <ProductDetailAction />
+              <ProductDetailAction productId={data.id} />
             </div>
           </div>
           <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
