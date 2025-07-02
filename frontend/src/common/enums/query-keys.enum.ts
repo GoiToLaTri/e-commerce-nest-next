@@ -15,4 +15,5 @@ export enum queryKeys {
   GET_GPUS = "get-gpus",
   SEARCH_PRODUCTS = "search-products",
   GET_PRODUCTS_IN_CART = "get-products-in-cart",
+  GET_RECOMMENDATION = "get-recommendation",
 }

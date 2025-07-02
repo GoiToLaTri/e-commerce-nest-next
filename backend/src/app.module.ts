@@ -25,6 +25,7 @@ import { UserInteractionModule } from './modules/user-interaction/user-interacti
 import { ProductSpecificationModule } from './modules/product-specification/product-specification.module';
 import { SearchModule } from './modules/search/search.module';
 import { CartModule } from './modules/cart/cart.module';
+import { RecommendationModule } from './modules/recommendation/recommendation.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { CartModule } from './modules/cart/cart.module';
     ProductSpecificationModule,
     SearchModule,
     CartModule,
+    RecommendationModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

@@ -1,8 +1,10 @@
 import { userInteractionApi } from "@/api-client";
+import { queryKeys } from "@/common/enums";
 import { AddUserInteractionPayload } from "@/models";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useAddUserInteraction() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (userInteractionPyaload: AddUserInteractionPayload) => {
       await userInteractionApi.create(userInteractionPyaload);
@@ -13,6 +15,11 @@ export function useAddUserInteraction() {
       //   queryClient.invalidateQueries({
       //     queryKey: [queryKeys.USER_SESSION],
       //   });
+
+      queryClient.refetchQueries({
+        queryKey: [queryKeys.GET_RECOMMENDATION],
+      });
+
       console.log("Add user interaction success");
     },
     onError: (error) => {

@@ -5,5 +5,6 @@ import { UserInteractionController } from './user-interaction.controller';
 @Module({
   controllers: [UserInteractionController],
   providers: [UserInteractionService],
+  exports: [UserInteractionService],
 })
 export class UserInteractionModule {}

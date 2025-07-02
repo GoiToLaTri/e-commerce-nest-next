@@ -12,7 +12,11 @@ export default function CartListProduct() {
       <h2 className="text-2xl font-bold mb-4 text-white">Shopping cart</h2>
       {isLoading && <Skeleton className="!w-full" />}
       {isError && <div>Error loading cart</div>}
-      {!isLoading && data?.items.length === 0 && <div>Cart is empty</div>}
+      {!isLoading && !data && <div>Cart is empty</div>}
+      {!isLoading && data && !data.items && <div>Cart is empty</div>}
+      {!isLoading && data && data.items.length === 0 && (
+        <div>Cart is empty</div>
+      )}
       {!isLoading && data && (
         <div>
           {data.items.map((item) => (

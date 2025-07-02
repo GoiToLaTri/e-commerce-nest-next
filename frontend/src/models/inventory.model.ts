@@ -2,6 +2,7 @@ export interface IInventory {
   id: string;
   quantity: number;
   total_imported: number;
+  total_exported: number;
   min_alert_quantity: number;
   cost: number;
   product: {
