@@ -7,7 +7,7 @@ import { Card as AntdCard, Image, Pagination, Skeleton } from "antd";
 import Meta from "antd/es/card/Meta";
 import "@/styles/client-list-product.style.css";
 import Link from "next/link";
-import { ClientProductFilter, PrupleButton } from "../ui";
+import { ClientProductFilter, PurpleButton } from "../ui";
 import { useUserSession } from "@/hooks/useUserSession";
 import { useAddUserInteraction } from "@/hooks/useAddUserInteraction";
 import { Role } from "@/common/enums";
@@ -103,11 +103,11 @@ export default function ClientListProduct({
                         href={`laptop/${laptop.id}`}
                         key={`detail-${laptop.id}`}
                       >
-                        <PrupleButton
+                        <PurpleButton
                           onClick={() => handleAddUserInteraction(laptop.id)}
                         >
                           Detail
-                        </PrupleButton>
+                        </PurpleButton>
                       </Link>,
                     ]}
                   >

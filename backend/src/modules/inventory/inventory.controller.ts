@@ -14,10 +14,18 @@ export class InventoryController {
   async findAll(
     @Query('page') page: string,
     @Query('limit') limit: string,
+    @Query('sortField') sortField: string,
+    @Query('sortOrder') sortOrder: string,
     @Query('search') search?: string,
   ) {
-    console.log({ page, limit, search });
-    return this.inventoryService.findAll(+page || 1, +limit || 4, search);
+    console.log({ page, sortField, sortOrder, limit, search });
+    return this.inventoryService.findAll(
+      +page || 1,
+      +limit || 4,
+      sortField,
+      sortOrder,
+      search,
+    );
   }
 
   @Get(':id')

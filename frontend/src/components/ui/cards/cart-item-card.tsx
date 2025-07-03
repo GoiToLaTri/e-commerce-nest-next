@@ -62,7 +62,7 @@ export default function CartItemCard({ data }: CartItemCardProps) {
   };
 
   return (
-    <div className=" w-[40rem] mb-4">
+    <div className="cart-item w-[40rem] mb-4">
       <div className="transition-all duration-300 g-gradient-to-br from-white/10 to-white/5 backdrop-blur-0 border border-purple-200/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.1)] rounded-[24px] flex items-start gap-4 px-6 w-full">
         <div className="flex items-center gap-4 w-full">
           <div className="flex justify-center mb-2">

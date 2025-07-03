@@ -1,12 +1,12 @@
 import { Button } from "antd";
 import { MouseEventHandler, ReactNode } from "react";
 
-export interface PrupleButtonProps {
+export interface PurpleButtonProps {
   children: ReactNode;
   onClick?: MouseEventHandler<HTMLElement> | undefined;
 }
 
-export function PrupleButton({ children, onClick }: PrupleButtonProps) {
+export function PurpleButton({ children, onClick }: PurpleButtonProps) {
   return (
     <Button
       type="primary"

@@ -7,28 +7,27 @@ import { Button, Form, Input } from "antd";
 import FacebookIconSVG from "../../../public/facebook.svg";
 import GoogleIconSVG from "../../../public/google.svg";
 import Image from "next/image";
-
-export const handleSignup = async (signupData: SignupPayload) => {
-  try {
-    console.log(signupData);
-    // await authApi.signin(singinData);
-    return "Login successful!";
-  } catch (error) {
-    throw error;
-  }
-};
+import { useSignup } from "@/hooks/useSignup";
+import { useRouter } from "next/navigation";
 
 export function SignupForm() {
+  const signupMutation = useSignup();
+  const router = useRouter();
+
   const onFinish = (values: SignupPayload) => {
     sonnerLoading(
-      handleSignup(values)
-        .then((message) => ({ message }))
+      signupMutation
+        .mutateAsync({
+          ...values,
+        })
+        .then((message) => {
+          router.push("/auth/signin");
+          return { message };
+        })
         .catch((error) => {
           throw error.response.data.message || "Sign up failed!";
         })
     );
-
-    console.log("Received values:", values);
   };
 
   return (

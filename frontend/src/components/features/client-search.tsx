@@ -18,6 +18,14 @@ export function ClientSearch() {
     useRecommendation();
   const onSearch: SearchProps["onSearch"] = (value) => setQuery(value);
   console.log(recommend_data);
+
+  const hasData = !!data && Array.isArray(data.data) && data.data.length > 0;
+  const hasRecommend =
+    !!recommend_data &&
+    Array.isArray(recommend_data) &&
+    recommend_data.length > 0;
+  const noResults = !hasData && !hasRecommend;
+
   return (
     <div className="client-search flex items-center flex-col gap-8">
       <AntdSearch
@@ -34,13 +42,13 @@ export function ClientSearch() {
             <Spin size="large" />
           </div>
         )}
-        {!isLoading && !recommendLoading && !data && !recommend_data && (
+        {!isLoading && !recommendLoading && noResults && (
           <div className="search-product-result text-center">
             No results found. Please try a different search.
           </div>
         )}
-        {!isLoading && !recommendLoading && !data && recommend_data && (
-          <div className="search-product-result text-center">
+        {!isLoading && !recommendLoading && !hasData && hasRecommend && (
+          <div className="search-product-result text-center w-fit mx-auto">
             {recommend_data.map((pd) => (
               <Link key={pd.id} href={`/product/laptop/${pd.id}`}>
                 <div className="search-product-result w-[40rem] mx-auto mb-4">
@@ -66,7 +74,7 @@ export function ClientSearch() {
             ))}
           </div>
         )}
-        {!isLoading && data?.data.length === 0 && (
+        {!isLoading && !recommendLoading && hasData && (
           <div className="search-product-result text-center">
             No results found. Please try a different search.
           </div>

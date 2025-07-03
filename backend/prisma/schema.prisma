@@ -151,7 +151,7 @@ model VideoGraphics {
   brand        String
   prefix       String
   series       String
-  model        String    @unique
+  model        String
   vram_gb      Int
   memory_type  String
   name         String    @unique

@@ -7,6 +7,7 @@ export interface ICart {
   id: string;
   userId: string;
   items: CartProduct[];
+  updatedAt: Date | string;
 }
 
 export interface CartDataResponse {

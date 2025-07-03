@@ -3,7 +3,7 @@
 import {
   DropdownMenu,
   GlobalContainer,
-  PrupleButton,
+  PurpleButton,
   ZwindLogo,
 } from "@/components/ui";
 import { CaretDownOutlined } from "@ant-design/icons";
@@ -96,7 +96,7 @@ export function NavigationBar() {
             {isCustomer && <CustomerModal data={data} />}
             {!isLoading && !data && (
               <Link href="/auth/signup" passHref>
-                <PrupleButton>Signup/Signin</PrupleButton>
+                <PurpleButton>Signup/Signin</PurpleButton>
               </Link>
             )}
           </div>

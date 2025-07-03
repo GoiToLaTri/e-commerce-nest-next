@@ -1,4 +1,4 @@
-import { GlobalContainer, PrupleButton } from "@/components/ui";
+import { GlobalContainer, PurpleButton } from "@/components/ui";
 import { Button } from "antd";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ export default function Home() {
           </div>
           <div className="zwind-buttons flex justify-center items-center gap-4 mt-[2.5rem]">
             <Link href={"/product/laptop"}>
-              <PrupleButton>Explore Laptops</PrupleButton>
+              <PurpleButton>Explore Laptops</PurpleButton>
             </Link>
 
             <Button

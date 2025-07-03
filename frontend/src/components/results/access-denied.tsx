@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import "@/styles/access-denied.style.css";
-import { PrupleButton, ZwindLogo } from "../ui";
+import { PurpleButton, ZwindLogo } from "../ui";
 
 export function AccessDenied() {
   return (
@@ -21,7 +21,7 @@ export function AccessDenied() {
             Sorry, you do not have permission to view this page.
           </p>
           <Link href="/">
-            <PrupleButton>Go Home</PrupleButton>
+            <PurpleButton>Go Home</PurpleButton>
           </Link>
         </div>
       </div>

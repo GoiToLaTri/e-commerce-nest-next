@@ -104,3 +104,13 @@
     opacity: 0;
     animation: enterFromTop .6s forwards;
 }
+
+.cart-item{
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.cart-information {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}

@@ -13,6 +13,7 @@ export * from "./menu/dropdown-menu";
 // exporting all card components
 export * from "./cards/card";
 export * from "./cards/inventory-card";
+export * from "./cards/cart-information-card";
 
 // exporting all table components
 export * from "./tables/product-table";

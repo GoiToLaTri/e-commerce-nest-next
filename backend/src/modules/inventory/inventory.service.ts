@@ -63,43 +63,55 @@ export class InventoryService {
   async findAll(
     page = 1,
     limit = 4,
-    // sortField: string,
-    // sortOrder: string,
+    sortField: string,
+    sortOrder: string,
     search?: string,
   ) {
     const skip = (page - 1) * limit;
-    // const key = `inventory:page-${page}:limit-${limit}:sortField-${sortField || 'default'}:sortOrder-${sortOrder || 'default'}:search-${search || ''}`;
-    const key = `inventory:page-${page}:limit-${limit}:search-${search || ''}`;
 
-    if (!search) {
-      const cache: string | null = await this.redis.get(key);
-      if (cache) return JSON.parse(cache) as { id: string }[];
-    }
-
-    const inventoryList = await this.getInventoryList(skip, limit, search);
-    const result = await this.appendImportExportStats(inventoryList.data);
-    await this.redis.set(
-      key,
-      JSON.stringify({ data: result, total: inventoryList.total, page, limit }),
-      appConfig.REDIS_TTL_CACHE,
+    const inventoryList = await this.getInventoryList(
+      skip,
+      limit,
+      sortField,
+      sortOrder,
+      search,
     );
+
+    const result = await this.appendImportExportStats(inventoryList.data);
+
     return { data: result, total: inventoryList.total, page, limit };
   }
 
-  private async getInventoryList(skip: number, take: number, search?: string) {
-    if (search) {
-      const products = await this.prisma.product.findMany({
-        where: { model: { contains: search, mode: 'insensitive' } },
-        select: { id: true },
-      });
+  private async getInventoryList(
+    skip: number,
+    take: number,
+    sortField: string,
+    sortOrder: string,
+    search?: string,
+  ) {
+    const orderBy =
+      sortField && sortOrder
+        ? { [sortField]: sortOrder as 'asc' | 'desc' }
+        : undefined;
 
-      const productIds = products.map((p) => p.id);
+    if (search) {
+      const { data: products } = await this.atlasSearch(
+        search,
+        skip,
+        take,
+        sortField,
+        sortOrder,
+      );
+
+      const productIds: string[] =
+        (products as unknown as { id: string }[]).map((p) => p.id) || [];
 
       const [inventoryList, total] = await this.prisma.$transaction([
         this.prisma.inventory.findMany({
           where: { productId: { in: productIds } },
           skip,
           take,
+          orderBy,
           include: {
             product: {
               select: { id: true, thumbnail: true, model: true, price: true },
@@ -117,6 +129,7 @@ export class InventoryService {
       this.prisma.inventory.findMany({
         skip,
         take,
+        orderBy,
         include: {
           product: {
             select: { id: true, thumbnail: true, model: true, price: true },
@@ -157,5 +170,77 @@ export class InventoryService {
         total_exported: exported,
       };
     });
+  }
+
+  private async atlasSearch(
+    search: string,
+    skip: number,
+    take: number,
+    sortField?: string,
+    sortOrder?: string,
+  ) {
+    console.log(search);
+    const pipeline: Record<string, any>[] = [
+      {
+        $search: {
+          index: 'product_search',
+          text: {
+            query: search,
+            path: 'model',
+            fuzzy: {
+              maxEdits: 2,
+              prefixLength: 1,
+            },
+          },
+        },
+      },
+    ];
+
+    // Thêm addFields cho id + reference + product
+    pipeline.push({ $addFields: { id: { $toString: '$_id' } } });
+
+    // Thêm sắp xếp
+    const defaultSortField = 'quantity'; // Hoặc field mặc định khác
+    const validSortFields = ['quantity', 'cost']; // Danh sách các field hợp lệ
+
+    // Validate sortField
+    const safeSortField =
+      sortField && validSortFields.includes(sortField)
+        ? sortField
+        : defaultSortField;
+    const safeSortOrder = sortOrder === 'desc' ? -1 : 1;
+    const sortStage = { $sort: { [safeSortField]: safeSortOrder } };
+    pipeline.push(sortStage);
+
+    // Thêm phân trang
+    // Validate pagination parameters
+    // const safePage = Math.max(1, page || 1);
+    // Giới hạn tối đa 100
+    // const safeLimit = Math.max(1, Math.min(100, limit || 10));
+
+    // Thêm phân trang
+    // pipeline.push({ $skip: (safePage - 1) * safeLimit }, { $limit: safeLimit });
+    pipeline.push({ $skip: skip }, { $limit: take });
+    const data = await this.prisma.product.aggregateRaw({ pipeline });
+    const totalPipeline = [
+      ...pipeline.filter((stage) => !('$skip' in stage || '$limit' in stage)),
+    ];
+    totalPipeline.push({ $count: 'total' });
+    const totalResult = await this.prisma.product.aggregateRaw({
+      pipeline: totalPipeline,
+    });
+    let total = 0;
+    if (
+      Array.isArray(totalResult) &&
+      totalResult.length > 0 &&
+      typeof totalResult[0] === 'object' &&
+      totalResult[0] !== null &&
+      'total' in totalResult[0]
+    ) {
+      total = Number((totalResult[0] as { total: number }).total) || 0;
+    }
+    // Cuối cùng gọi aggregateRaw
+
+    return { data, total };
   }
 }

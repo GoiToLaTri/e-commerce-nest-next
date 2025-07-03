@@ -7,6 +7,7 @@ import {
   Image,
   Button,
   Tag,
+  Input,
   TablePaginationConfig,
 } from "antd";
 import Link from "next/link";
@@ -17,20 +18,19 @@ import { useInventories } from "@/hooks/useInventories";
 import { FilterValue } from "antd/es/table/interface";
 import { DropdownMenu } from "../menu/dropdown-menu";
 import { EllipsisOutlined } from "@ant-design/icons";
+import { SearchProps } from "antd/es/input";
+const { Search } = Input;
 
 export function InventoryTable() {
   const [params, setParams] = useState({
     page: 1,
     limit: 4,
-    sortField: "created_at",
-    sortOrder: "asc",
+    sortField: "quantity",
+    sortOrder: "desc",
     filters: {},
   });
 
-  const { data, isLoading } = useInventories({
-    page: params.page,
-    limit: params.limit,
-  });
+  const { data, isLoading } = useInventories({ ...params });
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
@@ -85,13 +85,11 @@ export function InventoryTable() {
       title: "Imported",
       dataIndex: "total_imported",
       key: "total_imported",
-      sorter: true,
     },
     {
       title: "Exported",
       dataIndex: "total_exported",
       key: "total_exported",
-      sorter: true,
     },
     {
       title: "Cost",
@@ -105,7 +103,6 @@ export function InventoryTable() {
       dataIndex: "product_price",
       key: "product_price",
       render: (_, record) => convertNumberToCurrency(record.product.price),
-      sorter: true,
     },
     {
       title: "Status",
@@ -133,11 +130,11 @@ export function InventoryTable() {
           })()}
         </>
       ),
-      filters: [
-        { text: "In stock", value: "In stock" },
-        { text: "Low stock", value: "Low stock" },
-        { text: "Out of stock", value: "Out of stock" },
-      ],
+      // filters: [
+      //   { text: "In stock", value: "In stock" },
+      //   { text: "Low stock", value: "Low stock" },
+      //   { text: "Out of stock", value: "Out of stock" },
+      // ],
     },
     {
       title: "Actions",
@@ -191,20 +188,33 @@ export function InventoryTable() {
       },
     },
   ];
+  const onSearch: SearchProps["onSearch"] = (value) =>
+    setParams((prev) => ({ ...prev, search: value }));
 
   return (
-    <Table<IInventory>
-      rowKey="id"
-      columns={columns}
-      pagination={{
-        current: params.page,
-        pageSize: params.limit,
-        total: data?.total || 0,
-        showSizeChanger: true,
-      }}
-      loading={isLoading}
-      onChange={handleTableChange}
-      dataSource={data?.data}
-    />
+    <div>
+      <div className="flex justify-center mb-4">
+        <Search
+          placeholder="Enter your text"
+          allowClear
+          onSearch={onSearch}
+          style={{ width: 400 }}
+          size="large"
+        />
+      </div>
+      <Table<IInventory>
+        rowKey="id"
+        columns={columns}
+        pagination={{
+          current: params.page,
+          pageSize: params.limit,
+          total: data?.total || 0,
+          showSizeChanger: true,
+        }}
+        loading={isLoading}
+        onChange={handleTableChange}
+        dataSource={data?.data}
+      />
+    </div>
   );
 }

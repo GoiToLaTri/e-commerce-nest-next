@@ -1,14 +1,14 @@
 import { authApi } from "@/api-client";
 import { queryKeys } from "@/common/enums";
-import { SigninPayload } from "@/models";
+import { SignupPayload } from "@/models";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useSignin() {
+export function useSignup() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (signinPayload: SigninPayload) => {
-      await authApi.signin(signinPayload);
-      return "Sign in success";
+    mutationFn: async (signupPayload: SignupPayload) => {
+      await authApi.signup(signupPayload);
+      return "Sign up success";
     },
     onSuccess: () => {
       // Tự động invalidate related queries
