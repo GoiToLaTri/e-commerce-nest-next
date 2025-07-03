@@ -9,4 +9,5 @@ export const cartApi = {
     axiosClient.patch(`proxy/cart/item/${cartItemId}`, { quantity }),
   deleteProductFromCart: (cartItemId: string) =>
     axiosClient.delete(`proxy/cart/item/${cartItemId}`),
+  clearCart: () => axiosClient.delete(`proxy/cart`),
 };

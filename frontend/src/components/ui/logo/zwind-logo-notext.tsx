@@ -1,22 +1,10 @@
-import Image from "next/image";
-import vercelIcon from "../../../../public/vercel.svg";
-
-export interface ZwindLogoProps {
-  width: string;
-  height: string;
-}
+import { VercelIcon } from "@/components/icon";
 
 export function ZwindLogoNotext() {
   return (
     <div className="select-none">
       <div className="relative w-[24px] h-[24px]">
-        <Image
-          src={vercelIcon}
-          alt="Logo"
-          fill
-          className="object-contain"
-          priority
-        />
+        <VercelIcon width={24} height={24} />
       </div>
     </div>
   );

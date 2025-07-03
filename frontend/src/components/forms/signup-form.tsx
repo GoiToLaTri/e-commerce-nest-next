@@ -4,11 +4,10 @@ import { SignupPayload } from "@/models";
 import Link from "next/link";
 import { sonnerLoading } from "../sonner/sonner";
 import { Button, Form, Input } from "antd";
-import FacebookIconSVG from "../../../public/facebook.svg";
-import GoogleIconSVG from "../../../public/google.svg";
-import Image from "next/image";
 import { useSignup } from "@/hooks/useSignup";
 import { useRouter } from "next/navigation";
+import { GoogleIcon } from "../icon";
+import { FacebookIcon } from "../icon/facebook-icon";
 
 export function SignupForm() {
   const signupMutation = useSignup();
@@ -94,19 +93,14 @@ export function SignupForm() {
           size="middle"
           className="rounded-md p-2 hover:scale-105 transition"
         >
-          <Image src={GoogleIconSVG} alt="google icon" width={20} height={20} />
+          <GoogleIcon width={20} height={20} />
           Google
         </Button>
         <Button
           size="middle"
           className="rounded-md p-2 hover:scale-105 transition"
         >
-          <Image
-            src={FacebookIconSVG}
-            alt="facebook icon"
-            width={20}
-            height={20}
-          />
+          <FacebookIcon width={20} height={20} />
           Facebook
         </Button>
       </div>

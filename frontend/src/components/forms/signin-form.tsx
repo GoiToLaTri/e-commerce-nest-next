@@ -2,14 +2,13 @@
 
 import { Button, Form, Input } from "antd";
 import { SigninPayload } from "@/models";
-import FacebookIconSVG from "../../../public/facebook.svg";
-import GoogleIconSVG from "../../../public/google.svg";
-import Image from "next/image";
-import Link from "next/link";
 import { sonnerLoading } from "../sonner/sonner";
 import { useSignin } from "@/hooks/useSignin";
 import { useRouter } from "next/navigation";
 import "@/styles/signin-form.style.css";
+import { GoogleIcon } from "../icon";
+import Link from "next/link";
+import { FacebookIcon } from "../icon/facebook-icon";
 
 // export interface SigninFormProps {}
 
@@ -78,19 +77,14 @@ export function SigninForm() {
           size="middle"
           className="rounded-md p-2 hover:scale-105 transition"
         >
-          <Image src={GoogleIconSVG} alt="google icon" width={20} height={20} />
+          <GoogleIcon width={20} height={20} />
           Google
         </Button>
         <Button
           size="middle"
           className="rounded-md p-2 hover:scale-105 transition"
         >
-          <Image
-            src={FacebookIconSVG}
-            alt="facebook icon"
-            width={20}
-            height={20}
-          />
+          <FacebookIcon width={20} height={20} />
           Facebook
         </Button>
       </div>

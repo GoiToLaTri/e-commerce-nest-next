@@ -1,10 +1,13 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Card from "./card";
 import { ICart } from "@/models";
-import { Descriptions } from "antd";
+import { Button, Descriptions } from "antd";
 import DescriptionsItem from "antd/es/descriptions/Item";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import { PurpleButton } from "../button/purple-button";
+import { useClearCart } from "@/hooks/useClearCart";
+import { sonnerLoading } from "@/components/sonner/sonner";
 
 export interface CartInformationCardProps {
   data?: ICart;
@@ -13,6 +16,30 @@ export interface CartInformationCardProps {
 export default function CartInformationCard({
   data,
 }: CartInformationCardProps) {
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (data?.items.length === 0) {
+      setBtnDisabled(true);
+      return;
+    }
+    setBtnDisabled(false);
+  }, [data]);
+
+  const clearCartMutation = useClearCart();
+  const handleClearCart = () => {
+    sonnerLoading(
+      clearCartMutation
+        .mutateAsync()
+        .then((data) => {
+          return { message: data.message };
+        })
+        .catch((error) => {
+          throw error.response.data.message || "Clear cart failed!";
+        })
+    );
+  };
+
   return (
     <div className="w-full cart-information">
       <Card>
@@ -50,8 +77,31 @@ export default function CartInformationCard({
                   })}
                 </DescriptionsItem>
               </Descriptions>
-              <div className="mt-4">
-                <PurpleButton>Check out</PurpleButton>
+              <div className="mt-4 flex gap-2">
+                <Button
+                  type="primary"
+                  size="large"
+                  className={`!rounded-[4rem] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem] transition-colors duration-300 ${
+                    btnDisabled
+                      ? "!bg-gray-300 !text-gray-500 !cursor-not-allowed"
+                      : "!bg-[#924dff] hover:!bg-[#7b3edc] !text-white"
+                  }`}
+                >
+                  Check out
+                </Button>
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={handleClearCart}
+                  disabled={btnDisabled}
+                  className={`!rounded-[4rem] !text-[1rem] !font-medium leading-[1.6] !px-[2rem] !py-[0.75rem]  transition-colors duration-300 ${
+                    btnDisabled
+                      ? "!bg-gray-300 !text-gray-500 !cursor-not-allowed"
+                      : "!bg-[#f87171] hover:!bg-[#dc2626] !text-white"
+                  }`}
+                >
+                  Clear
+                </Button>
               </div>
             </div>
           )}

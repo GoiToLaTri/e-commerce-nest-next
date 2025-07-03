@@ -97,20 +97,28 @@ export default function CartItemCard({ data }: CartItemCardProps) {
                   className={`!font-medium leading-[1.6] !py-[0.75rem] transition-colors duration-300 ${
                     btnDisabled
                       ? "!bg-gray-300 !text-gray-500 !cursor-not-allowed"
-                      : "!bg-[#924dff] hover:!bg-[#7b3edc] !text-white"
+                      : "!bg-[#3DB8FF] hover:!bg-[#2E90FA] !text-white"
                   }`}
                   onClick={handleUpdateQuantity}
                 >
                   Save
                 </Button>
               </div>
-              <Button
-                type="primary"
-                className="!bg-[#f87171] !font-medium !text-white leading-[1.6] !py-[0.75rem] hover:!bg-[#dc2626] transition-colors duration-300"
-                onClick={handleRemove}
-              >
-                Remove
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  type="primary"
+                  className="!bg-[#924dff] hover:!bg-[#7b3edc]!text-white !font-medium  leading-[1.6] !py-[0.75rem]  transition-colors duration-300"
+                >
+                  Check out
+                </Button>
+                <Button
+                  type="primary"
+                  className="!bg-[#f87171] !font-medium !text-white leading-[1.6] !py-[0.75rem] hover:!bg-[#dc2626] transition-colors duration-300"
+                  onClick={handleRemove}
+                >
+                  Remove
+                </Button>
+              </div>
             </div>
           </div>
         </div>

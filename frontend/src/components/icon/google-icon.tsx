@@ -1,9 +1,7 @@
-"use client";
-
-import vercelIcon from "../../../public/vercel.svg";
 import { Image } from "antd";
+import GoogleIconSVG from "../../../public/google.svg";
 
-export function VercelIcon({
+export function GoogleIcon({
   width,
   height,
 }: {
@@ -12,8 +10,8 @@ export function VercelIcon({
 }) {
   return (
     <Image
-      src={vercelIcon.src}
-      alt="vercel-icon"
+      src={GoogleIconSVG.src}
+      alt="google-icon"
       preview={false}
       width={width}
       height={height}

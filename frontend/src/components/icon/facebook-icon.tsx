@@ -1,9 +1,7 @@
-"use client";
-
-import vercelIcon from "../../../public/vercel.svg";
 import { Image } from "antd";
+import FacebookIconSVG from "../../../public/facebook.svg";
 
-export function VercelIcon({
+export function FacebookIcon({
   width,
   height,
 }: {
@@ -12,8 +10,8 @@ export function VercelIcon({
 }) {
   return (
     <Image
-      src={vercelIcon.src}
-      alt="vercel-icon"
+      src={FacebookIconSVG.src}
+      alt="facebook-icon"
       preview={false}
       width={width}
       height={height}
