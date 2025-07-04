@@ -5,10 +5,10 @@ const BACKEND_URL = envConfig.BACKEND_URL;
 
 async function handleProxy(
   req: NextRequest,
-  context: Promise<{ params: { path: string[] } }>
+  context: { params: Promise<{ path: string[] }> }
 ) {
   console.log("Matching request to /api/proxy/[...path]");
-  const { path } = await (await context).params;
+  const { path } = await context.params;
   const query = req.nextUrl.search;
   const url = `${BACKEND_URL}/${path.join("/")}${query}`;
   const headers = new Headers(req.headers);
