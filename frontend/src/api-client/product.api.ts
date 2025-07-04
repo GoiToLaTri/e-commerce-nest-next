@@ -4,7 +4,7 @@ import { envConfig } from "@/common/configs";
 import { QueryParams } from "./inventory-log.api";
 import { PaginationParams } from "@/hooks/useProducts";
 
-const FORNTEND_URL = envConfig.FORNTEND_URL;
+const FRONTEND_URL = envConfig.FRONTEND_URL;
 
 export const productApi = {
   addProduct: (
@@ -30,9 +30,9 @@ export const productApi = {
     }),
   getDetailProduct: (id: string) => axiosClient.get(`proxy/product/${id}`),
   getClientDetailProduct: (id: string) =>
-    axiosClient.get(`${FORNTEND_URL}/api/proxy/product/${id}`),
+    axiosClient.get(`${FRONTEND_URL}/api/proxy/product/${id}`),
   findAll: (query: PaginationParams & Partial<QueryParams>) =>
-    axiosClient.get(`${FORNTEND_URL}/api/proxy/product/customer`, {
+    axiosClient.get(`${FRONTEND_URL}/api/proxy/product/customer`, {
       params: {
         page: query.page,
         limit: query.limit,
