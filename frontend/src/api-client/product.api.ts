@@ -4,7 +4,7 @@ import { envConfig } from "@/common/configs";
 import { QueryParams } from "./inventory-log.api";
 import { PaginationParams } from "@/hooks/useProducts";
 
-const FRONTEND_URL = envConfig.FRONTEND_URL;
+const BACKEND_URL = envConfig.BACKEND_URL;
 
 export const productApi = {
   addProduct: (
@@ -30,9 +30,10 @@ export const productApi = {
     }),
   getDetailProduct: (id: string) => axiosClient.get(`proxy/product/${id}`),
   getClientDetailProduct: (id: string) =>
-    axiosClient.get(`${FRONTEND_URL}/api/proxy/product/${id}`),
+    // axiosClient.get(`${FRONTEND_URL}/api/proxy/product/${id}`),
+    axiosClient.get(`${BACKEND_URL}/product/${id}`),
   findAll: (query: PaginationParams & Partial<QueryParams>) =>
-    axiosClient.get(`${FRONTEND_URL}/api/proxy/product/customer`, {
+    axiosClient.get(`${BACKEND_URL}/product/customer`, {
       params: {
         page: query.page,
         limit: query.limit,
@@ -43,4 +44,15 @@ export const productApi = {
         cpuSeries: query?.filters?.cpu_series,
       },
     }),
+  // axiosClient.get(`${FRONTEND_URL}/api/proxy/product/customer`, {
+  //   params: {
+  //     page: query.page,
+  //     limit: query.limit,
+  //     sortField: query.sortField,
+  //     sortOrder: query.sortOrder,
+  //     laptopBrand: query?.filters?.laptopbrand,
+  //     cpuBrands: query?.filters?.cpu_brand,
+  //     cpuSeries: query?.filters?.cpu_series,
+  //   },
+  // }),
 };
