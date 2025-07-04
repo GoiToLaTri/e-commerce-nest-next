@@ -2,7 +2,7 @@ import { VercelIcon } from "@/components/icon";
 
 export function ZwindLogoXXL() {
   return (
-    <div className="flex gap-4 items-end justify-end select-none">
+    <div className="flex gap-4 items-end select-none">
       <div className="relative w-[80px] h-[80px]D">
         <VercelIcon />
       </div>

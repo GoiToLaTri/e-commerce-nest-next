@@ -7,7 +7,7 @@ export interface ZwindLogoProps {
 
 export function ZwindLogo() {
   return (
-    <div className="flex gap-4 items-end justify-end select-none">
+    <div className="flex gap-4 items-end select-none">
       <div className="relative w-[40px] h-[40px]">
         <VercelIcon width={40} height={40} />
       </div>
