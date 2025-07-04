@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = envConfig.BACKEND_URL;
 
-export async function handleProxy(
+async function handleProxy(
   req: NextRequest,
   context: Promise<{ params: { path: string[] } }>
 ) {
