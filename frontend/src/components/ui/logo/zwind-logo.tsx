@@ -12,8 +12,8 @@ export function ZwindLogo() {
         <VercelIcon width={40} height={40} />
       </div>
       <div>
-        <div className="font-bold tracking-[1.6] text-2xl">ZWIND</div>
-        <div className="text-[8px] tracking-[2.4] uppercase">zwind group</div>
+        <div className="font-bold tracking-[1.6px] text-2xl">ZWIND</div>
+        <div className="text-[8px] tracking-[2.4px] uppercase">zwind group</div>
       </div>
     </div>
   );
