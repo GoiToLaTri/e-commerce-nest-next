@@ -11,7 +11,7 @@ export const customerNavItem = [
   {
     label: "Products",
     dropdown: [
-      { label: "Laptop", href: "/products/laptop" },
+      { label: "Laptop", href: "/product/laptop" },
     ],
   },
   { label: "Search", href: "/search" },

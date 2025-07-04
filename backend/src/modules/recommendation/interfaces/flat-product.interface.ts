@@ -1,0 +1,31 @@
+export interface IFlatProduct {
+  product_id: string;
+  product_thumbnail: string;
+  product_model: string;
+  brand_name: string | null;
+  cpu_brand: string | null;
+  cpu_family: string | null;
+  cpu_series: string | null;
+  cpu_generation: number | null;
+  gpu_brand: string | null;
+  gpu_manufacturer: string | null;
+  gpu_model: string | null;
+  gpu_memory_type: string | null;
+  gpu_series: string | null;
+  gpu_prefix: string | null;
+  gpu_vram_gb: number | null;
+  display_brightness: string | null;
+  display_color_coverage: string | null;
+  display_panel_type: string | null;
+  display_ratio: string | null;
+  display_refresh_rate: string | null;
+  display_resolution: string | null;
+  display_response_time: string | null;
+  ram_capacity: string | null;
+  ram_speed: string | null;
+  ram_type: string | null;
+  storage_capacity: string | null;
+  storage_interface: string | null;
+  storage_max_capacity: string | null;
+  storage_type: string | null;
+}

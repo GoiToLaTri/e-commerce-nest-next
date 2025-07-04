@@ -1,0 +1,44 @@
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    backdrop-filter: blur(8px);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    backdrop-filter: blur(8px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+    backdrop-filter: blur(0px);
+  }
+}
+
+.custom-modal-wrapper .ant-modal-content {
+    will-change: backdrop-filter;
+    backdrop-filter: blur(8px) !important;
+    background-color: rgba(211, 210, 210, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+}
+
+.modal-open-animation{
+    animation: fadeInUp 0.3s ease forwards !important;
+}
+.modal-close-animation{
+    animation: fadeOutDown 0.3s ease forwards !important;
+}
+
+.custom-modal-wrapper .ant-modal-header {
+    background-color: transparent !important;
+}

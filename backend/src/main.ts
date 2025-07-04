@@ -10,7 +10,7 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors();
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api/v1');
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new NotFoundFilter());
   // app.useWebSocketAdapter(new RedisIoAdapter(app));

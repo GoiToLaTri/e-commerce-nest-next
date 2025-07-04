@@ -1,0 +1,15 @@
+/* CSS styles to add to your component or CSS file */
+.custom-upload .ant-upload-select {
+    width: 100% !important; /* Adjust width as needed */
+    height: 200px !important; /* Adjust height as needed */
+}
+
+.custom-upload .ant-upload-list-item {
+    width: 100% !important;
+    height: 200px !important;
+}
+
+.ant-upload-list-item-container{
+    width: 100% !important;
+    height: auto !important;
+}

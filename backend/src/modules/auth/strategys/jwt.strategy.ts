@@ -31,9 +31,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (sessionStr) {
       try {
         session = JSON.parse(sessionStr) as SessionData;
-
+        console.log(new Date(session.expires_at).getTime(), Date.now());
         // Nếu session đã hết hạn thì xóa và trả về null
         if (new Date(session.expires_at).getTime() < Date.now()) {
+          console.log(`Session expired: ${payload.session_id}`);
           await this.redis.del(payload.session_id);
           return null;
         }
@@ -47,6 +48,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       }
     }
 
+    console.log(
+      `Session not found in Redis, falling back to database: ${payload.session_id}`,
+    );
     const fallbackSession = (await this.sessionService.findBySessionId(
       payload.session_id,
     )) as SessionData | null;
@@ -55,6 +59,21 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       await this.sessionService.removeBySessionId(fallbackSession.session_id);
       return null;
     }
+
+    await this.redis.set(
+      fallbackSession.session_id,
+      JSON.stringify({
+        ...fallbackSession,
+        updated_at: undefined, // Exclude updated_at from session data
+        user: {
+          ...fallbackSession.user,
+          password: undefined, // Exclude password from session data
+          updated_at: undefined, // Exclude updated_at from user dataF
+        },
+      }),
+      appConfig.REDIS_SESSION_EXPIRE,
+    );
+
     return fallbackSession;
   }
 }

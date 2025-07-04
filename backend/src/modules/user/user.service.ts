@@ -6,23 +6,33 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.prisma.user.create({
       data: {
         first_name: createUserDto.firstName,
         last_name: createUserDto.lastName,
         email: createUserDto.email,
         password: createUserDto.password,
+        Role: { connect: { name: 'USER' } },
       },
     });
+
+    await this.prisma.customer.create({
+      data: { user: { connect: { id: user.id } } },
+    });
+
+    return user;
   }
 
   findAll() {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: { Role: true },
+    });
   }
 
   findOneByEmail(email: string) {

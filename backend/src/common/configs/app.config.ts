@@ -10,6 +10,10 @@ export class AppConfig {
   DB_URL: string;
   JWT_SECRET: string;
   JWT_EXPIRES_IN: string;
+  CLOUDINARY_CLOUD_NAME: string;
+  CLOUDINARY_API_KEY: string;
+  CLOUDINARY_API_SECRET: string;
+  REDIS_TTL_CACHE: number;
 
   constructor() {
     this.PORT = Number(process.env.SERVER_PORT ?? 3000);
@@ -23,6 +27,10 @@ export class AppConfig {
     this.JWT_SECRET = process.env.JWT_SECRET || '';
     this.JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
     this.REDIS_SESSION_EXPIRE = 60 * 60; // 1h
+    this.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || '';
+    this.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '';
+    this.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
+    this.REDIS_TTL_CACHE = 4 * 3600;
   }
 }
 

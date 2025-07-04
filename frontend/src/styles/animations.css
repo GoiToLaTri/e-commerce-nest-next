@@ -1,0 +1,126 @@
+/* Animaion */
+@keyframes enterFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes enterFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Usage */
+.customer-navigation-bar, .zwind-content {
+    animation: enterFromTop .6s forwards;
+}
+
+.zwind-subtitle {
+    opacity: 0;
+    animation: enterFromTop 1.2s .6s forwards;
+}
+
+.zwind-buttons {
+    opacity: 0;
+    animation: enterFromTop 1.2s 1.2s forwards;
+}
+
+.admin-header {
+    opacity: 0;
+    animation: enterFromTop .6s .6s forwards;
+}
+
+.admin-side-bar {
+    animation: enterFromLeft .6s forwards;
+}
+
+.product-image-form {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.product-info-form {
+    opacity: 0;
+    animation: enterFromTop .6s .6s forwards;
+}
+
+.product-table {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.product-images {
+    opacity: 0;
+    animation: enterFromTop .6s .2s forwards;
+}
+
+.product-info {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.stock-import-form {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.inventory-card {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.inventory-log-table {
+    opacity: 0;
+    animation: enterFromTop .6s .6s forwards;
+}
+
+.product-card {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.client-product-filter {
+    opacity: 0;
+    animation: enterFromLeft .6s forwards;
+}
+
+.client-search {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.search-product-result {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.cart-item{
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.cart-information {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.error-loading-cart {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.empty-cart {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}

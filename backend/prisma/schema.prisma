@@ -15,23 +15,46 @@ datasource db {
 }
 
 model User {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  first_name   String
+  last_name    String
+  email        String            @unique
+  password     String
+  avatar       String?           @default("https://brandlogos.net/wp-content/uploads/2024/01/aorus-logo_brandlogos.net_cckqq-768x807.png")
+  created_at   DateTime          @default(now())
+  updated_at   DateTime          @updatedAt
+  Session      Session[]
+  interactions UserInteraction[]
+  Role         Role              @relation(fields: [roleId], references: [id])
+  roleId       String            @db.ObjectId
+  Admin        Admin?
+  Customer     Customer?
+  Cart         Cart?
+}
+
+model Admin {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  first_name String
-  last_name  String
-  email      String    @unique
-  password   String
-  avatar     String?   @default("https://brandlogos.net/wp-content/uploads/2024/01/aorus-logo_brandlogos.net_cckqq-768x807.png")
+  user_id    String    @unique @db.ObjectId
+  user       User      @relation(fields: [user_id], references: [id])
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
-  Session    Session[]
-  Role       Role?     @relation(fields: [roleId], references: [id])
-  roleId     String?   @db.ObjectId
+  product    Product[]
+}
+
+model Customer {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id    String   @unique @db.ObjectId
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Role {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String @unique
-  users User[]
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String   @unique
+  users      User[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Session {
@@ -42,4 +65,221 @@ model Session {
   expires_at DateTime
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model Product {
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  model            String            @unique
+  description      String
+  thumbnail        String
+  price            Int
+  status           Boolean           @default(true)
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @updatedAt
+  LaptopBrand      LaptopBrand?      @relation(fields: [brand_id], references: [id])
+  brand_id         String?           @db.ObjectId
+  Processor        Processor?        @relation(fields: [processor_id], references: [id])
+  processor_id     String?           @db.ObjectId
+  VideoGraphics    VideoGraphics?    @relation(fields: [videographics_id], references: [id])
+  videographics_id String?           @db.ObjectId
+  Display          Display?          @relation(fields: [display_id], references: [id])
+  display_id       String?           @db.ObjectId
+  Memory           Memory?           @relation(fields: [memory_id], references: [id])
+  memory_id        String?           @db.ObjectId
+  Storage          Storage?          @relation(fields: [storage_id], references: [id])
+  storage_id       String?           @db.ObjectId
+  images           Images[]
+  Inventory        Inventory?
+  imports          StockImport[]
+  adjustments      StockAdjustment[]
+  InventoryLog     InventoryLog[]
+  StockExport      StockExport[]
+  interactions     UserInteraction[]
+  Admin            Admin?            @relation(fields: [adminId], references: [id])
+  adminId          String?           @db.ObjectId
+  CartItem         CartItem[]
+}
+
+model Cart {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items CartItem[]
+}
+
+model CartItem {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  cartId       String   @db.ObjectId
+  productId    String   @db.ObjectId
+  quantity     Int
+  priceAtAdded Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model LaptopBrand {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String    @unique
+  product    Product[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+}
+
+model Processor {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  brand      String
+  family     String
+  series     String
+  generation Int
+  model      String    @unique
+  sku        String
+  suffix     String
+  product    Product[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+}
+
+model VideoGraphics {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  manufacturer String
+  brand        String
+  prefix       String
+  series       String
+  model        String
+  vram_gb      Int
+  memory_type  String
+  name         String    @unique
+  product      Product[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Display {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  size           String
+  ratio          String
+  panel_type     String
+  resolution     String
+  refresh_rate   String
+  response_time  String
+  color_coverage String
+  brightness     String
+  info           String    @unique
+  product        Product[]
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+}
+
+model Memory {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  capacity     String
+  max_capacity String
+  type         String
+  speed        String
+  slots        Int
+  sticks       Int
+  info         String    @unique
+  product      Product[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Storage {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  capacity     String
+  max_capacity String
+  type         String
+  interface    String
+  slots        Int
+  info         String    @unique
+  product      Product[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Images {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  url          String
+  public_id    String   @unique
+  is_thumbnail Boolean
+  is_temp      Boolean
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  Product      Product? @relation(fields: [productId], references: [id])
+  productId    String?  @db.ObjectId
+}
+
+model Inventory {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  quantity           Int
+  min_alert_quantity Int      @default(5)
+  cost               Int?
+  updated_at         DateTime @updatedAt
+  productId          String   @unique @db.ObjectId
+  product            Product  @relation(fields: [productId], references: [id])
+}
+
+model StockImport {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  quantity      Int
+  import_price  Int
+  supplier_name String?
+  note          String?
+  created_by    String?
+  created_at    DateTime @default(now())
+  Product       Product? @relation(fields: [productId], references: [id])
+  productId     String?  @db.ObjectId
+}
+
+model StockExport {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  quantity   Int
+  Product    Product? @relation(fields: [productId], references: [id])
+  productId  String?  @db.ObjectId
+  reason     String?
+  orderId    String?  @db.ObjectId
+  note       String?
+  created_by String?
+  created_at DateTime @default(now())
+}
+
+model StockAdjustment {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  old_quantity Int
+  new_quantity Int
+  reason       String?
+  created_by   String?
+  created_at   DateTime @default(now())
+  Product      Product? @relation(fields: [productId], references: [id])
+  productId    String?  @db.ObjectId
+}
+
+model InventoryLog {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  change_type     String // 'import', 'export', 'adjustment'
+  quantity_change Int
+  product_name    String?
+  supplier_name   String?
+  reference       String?  @db.ObjectId // id phiếu liên quan
+  created_by      String?
+  created_at      DateTime @default(now())
+  Product         Product? @relation(fields: [productId], references: [id])
+  productId       String?  @db.ObjectId
+}
+
+model UserInteraction {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  productId  String   @db.ObjectId
+  action     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  User       User     @relation(fields: [userId], references: [id])
+  Product    Product  @relation(fields: [productId], references: [id])
 }

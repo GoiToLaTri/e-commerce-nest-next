@@ -1,4 +1,7 @@
 import { ReactNode } from "react";
+import "@/styles/authlayout.style.css";
+import { RoleAccess } from "@/store";
+import { Role } from "@/common/enums";
 
 export interface AuthLayoutProps {
   children: ReactNode;
@@ -6,9 +9,8 @@ export interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div>
-      AuthLayout
-      <div>{children}</div>
-    </div>
+    <RoleAccess roles={[Role.GUEST]} routeAuth={true}>
+      <div className="auth-layout h-screen">{children}</div>
+    </RoleAccess>
   );
 }

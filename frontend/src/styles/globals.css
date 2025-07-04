@@ -25,3 +25,10 @@ body {
   background: var(--background);
   font-family: "Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans SC", sans-serif;
 }
+
+
+.ant-dropdown-menu {
+  background-color: #1e1035 !important;
+  border: 1px solid #564373 !important;
+  padding: 16px !important;
+}

@@ -1,5 +1,4 @@
-import Image from "next/image";
-import vercelIcon from "../../../../public/vercel.svg";
+import { VercelIcon } from "@/components/icon";
 
 export interface ZwindLogoProps {
   width: string;
@@ -8,13 +7,13 @@ export interface ZwindLogoProps {
 
 export function ZwindLogo() {
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex gap-4 items-end select-none">
       <div className="relative w-[40px] h-[40px]">
-        <Image src={vercelIcon} alt="Logo" fill className="object-contain" />
+        <VercelIcon width={40} height={40} />
       </div>
       <div>
         <div className="font-bold tracking-[1.6] text-2xl">ZWIND</div>
-        <div className="text-[8px] tracking-[3.2] uppercase">zwind group</div>
+        <div className="text-[8px] tracking-[2.4] uppercase">zwind group</div>
       </div>
     </div>
   );

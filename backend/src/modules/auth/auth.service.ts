@@ -8,6 +8,7 @@ import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
 import { SessionService } from '@/modules/session/session.service';
 import { RedisService } from '../redis/redis.service';
 import { appConfig } from '@/common/configs';
+import { SessionData } from '../session/interfaces';
 
 @Injectable()
 export class AuthService {
@@ -44,11 +45,16 @@ export class AuthService {
     return { access_token: await this.jwtService.signAsync(payload) };
   }
 
-  async register(createUserDto: CreateUserDto): Promise<IUser> {
+  async register(createUserDto: CreateUserDto): Promise<Partial<IUser>> {
     const user = await this.userService.findOneByEmail(createUserDto.email);
     const password = await argon.hashSync(createUserDto.password);
     const newUser = { ...createUserDto, password };
     if (user) throw new BadRequestException('User already exists');
-    return this.userService.create(newUser);
+    return { ...(await this.userService.create(newUser)), password: undefined };
+  }
+
+  async logout(session: SessionData): Promise<void> {
+    await this.redisService.del('session-*');
+    await this.sessionService.removeBySessionId(session.session_id);
   }
 }
