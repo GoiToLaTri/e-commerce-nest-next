@@ -2,7 +2,7 @@ import { Form, InputNumber } from "antd";
 import React from "react";
 
 export interface QuantityAndPriceProps {
-  onFinish: (value: any) => void;
+  onFinish: (value: { quantity: number; price: number }) => void;
 }
 
 export default function QuantityAndPrice({ onFinish }: QuantityAndPriceProps) {
