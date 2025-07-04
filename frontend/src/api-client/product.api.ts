@@ -55,4 +55,16 @@ export const productApi = {
   //     cpuSeries: query?.filters?.cpu_series,
   //   },
   // }),
+  findAllClient: (query: PaginationParams & Partial<QueryParams>) =>
+    axiosClient.get(`proxy/product/customer`, {
+      params: {
+        page: query.page,
+        limit: query.limit,
+        sortField: query.sortField,
+        sortOrder: query.sortOrder,
+        laptopBrand: query?.filters?.laptopbrand,
+        cpuBrands: query?.filters?.cpu_brand,
+        cpuSeries: query?.filters?.cpu_series,
+      },
+    }),
 };

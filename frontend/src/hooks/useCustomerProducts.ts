@@ -18,7 +18,7 @@ export function useCustomerProducts({
       { page, limit, sortField, sortOrder, filters },
     ],
     queryFn: async () => {
-      const res = await productApi.findAll({
+      const res = await productApi.findAllClient({
         page,
         limit,
         sortField,
