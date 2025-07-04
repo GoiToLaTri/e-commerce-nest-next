@@ -14,8 +14,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // type RenderType = Parameters<typeof unstableSetRender>[0];
 
 // Fix render type for React 19
-type RenderType = NonNullable<Parameters<typeof unstableSetRender>[0]>;
-type ContainerType = Parameters<RenderType>[1] & {
+// type RenderType = NonNullable<Parameters<typeof unstableSetRender>[0]>;
+
+type AntdRenderFunction = (
+  node: React.ReactNode,
+  container: HTMLElement
+) => () => Promise<void>;
+
+type ContainerType = Parameters<AntdRenderFunction>[1] & {
   _reactRoot?: ReturnType<typeof createRoot>;
 };
 
