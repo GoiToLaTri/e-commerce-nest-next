@@ -8,23 +8,27 @@ import DescriptionsItem from "antd/es/descriptions/Item";
 import { convertNumberToCurrency } from "@/utils/currency.util";
 import { useClearCart } from "@/hooks/useClearCart";
 import { sonnerLoading } from "@/components/sonner/sonner";
+import { useRouter } from "next/navigation";
 
 export interface CartInformationCardProps {
   data?: ICart;
+  hasData?: boolean;
 }
 
 export default function CartInformationCard({
   data,
+  hasData,
 }: CartInformationCardProps) {
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+  const router = useRouter();
 
   useEffect(() => {
-    if (data?.items.length === 0) {
+    if (!hasData) {
       setBtnDisabled(true);
       return;
     }
     setBtnDisabled(false);
-  }, [data]);
+  }, [hasData]);
 
   const clearCartMutation = useClearCart();
   const handleClearCart = () => {
@@ -40,6 +44,10 @@ export default function CartInformationCard({
     );
   };
 
+  const checkOutAll = () => {
+    router.push("/checkout/cart");
+  };
+
   return (
     <div className="w-full cart-information">
       <Card>
@@ -47,7 +55,7 @@ export default function CartInformationCard({
           <h2 className="text-xl font-bold mb-4 text-white">
             Cart information
           </h2>
-          {!data && <div>No data</div>}
+          {!hasData && <div>No data</div>}
           {data && (
             <div>
               <Descriptions column={1}>
@@ -86,6 +94,7 @@ export default function CartInformationCard({
                       ? "!bg-gray-300 !text-gray-500 !cursor-not-allowed"
                       : "!bg-[#924dff] hover:!bg-[#7b3edc] !text-white"
                   }`}
+                  onClick={checkOutAll}
                 >
                   Check out
                 </Button>

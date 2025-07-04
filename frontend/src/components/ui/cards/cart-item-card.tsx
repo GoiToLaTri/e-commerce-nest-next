@@ -6,6 +6,7 @@ import { useUpdateQuantityProductCart } from "@/hooks/useUpdateQuantityProductCa
 import { CartProduct } from "@/models";
 import { convertNumberToCurrency } from "@/utils/currency.util";
 import { Button, Image, InputNumber } from "antd";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export interface CartItemCardProps {
@@ -18,6 +19,8 @@ export default function CartItemCard({ data }: CartItemCardProps) {
   const [quantity, setQuantity] = useState<number>(data.quantity);
   const updateQuantityMutation = useUpdateQuantityProductCart();
   const removeProductMutation = useRemoveProductFromCart();
+  const router = useRouter();
+
   const onChange = (value: number | null) => {
     if (!value) {
       setBtnDisabled(true);
@@ -59,6 +62,10 @@ export default function CartItemCard({ data }: CartItemCardProps) {
           throw error.response.data.message || "Remove product failed!";
         })
     );
+  };
+
+  const checkOutOne = () => {
+    router.push(`/checkout/cart/${data.id}`);
   };
 
   return (
@@ -108,6 +115,7 @@ export default function CartItemCard({ data }: CartItemCardProps) {
                 <Button
                   type="primary"
                   className="!bg-[#924dff] hover:!bg-[#7b3edc]!text-white !font-medium  leading-[1.6] !py-[0.75rem]  transition-colors duration-300"
+                  onClick={checkOutOne}
                 >
                   Check out
                 </Button>

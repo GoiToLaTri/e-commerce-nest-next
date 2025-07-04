@@ -67,17 +67,21 @@ export function NavigationBar() {
                   >
                     <Button
                       type="text"
-                      className={`!bg-transparent !border-0 !text-[1rem] !rounded-[4rem] flex items-end gap-[0.5rem] hover:!border-0 hover:!bg-[rgba(255,255,255,.04)]`}
+                      className={`!bg-transparent !pb-[0.2rem] !border-0 !text-[1rem] !rounded-[4rem] flex items-end justify-end gap-[0.5rem] hover:!border-0 hover:!bg-[rgba(255,255,255,.04)]`}
                     >
                       {item.label}
-                      <CaretDownOutlined />
+                      <CaretDownOutlined
+                        style={{
+                          fontSize: 16,
+                        }}
+                      />
                     </Button>
                   </DropdownMenu>
                 ) : (
                   <Link key={item.label} href={item.href ?? "#"} passHref>
                     <Button
                       type="text"
-                      className={`!bg-transparent !border-0 !text-[1rem] !rounded-[4rem] ${
+                      className={`!bg-transparent !pb-[0.2rem] !border-0 !text-[1rem] !rounded-[4rem] ${
                         pathName === item.href
                           ? "!text-[#0984e3] !font-bold"
                           : ""

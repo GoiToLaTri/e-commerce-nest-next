@@ -114,3 +114,13 @@
     opacity: 0;
     animation: enterFromTop .6s .4s forwards;
 }
+
+.error-loading-cart {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.empty-cart {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}

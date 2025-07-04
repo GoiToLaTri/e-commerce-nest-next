@@ -5,8 +5,8 @@ import { PurpleButton, ZwindLogo } from "../ui";
 
 export function AccessDenied() {
   return (
-    <div className="access-denied flex flex-col items-center justify-center min-h-screen">
-      <div className="access-deneid-card w-full max-w-md py-8 px-16 rounded-[24px] backdrop-blur-xl bg-white/10 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.2)] text-white mx-auto select-none">
+    <div className="access-denied absolute top-0 left-0 z-[9999] min-w-full flex flex-col items-center justify-center min-h-screen">
+      <div className="access-denied-card w-full max-w-md py-8 px-16 rounded-[24px] backdrop-blur-xl bg-white/10 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.2)] text-white mx-auto select-none">
         <div className="flex flex-col justify-center items-center">
           <div className="mb-12">
             <ZwindLogo />
