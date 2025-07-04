@@ -6,11 +6,11 @@ import { convertNumberToCurrency } from "@/utils/currency.util";
 import { Descriptions, Image, Rate } from "antd";
 
 export interface ProductDetailProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function ProductDetail({ params }: ProductDetailProps) {
-  const { id } = params;
+  const { id } = await params;
   const res = await productApi.getClientDetailProduct(id);
   const data = (await res.data) as IProduct;
   // console.log(data);
