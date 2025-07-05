@@ -16,7 +16,7 @@
     background-repeat: no-repeat;
 }
 
-.access-deneid-card {
+.access-denied-card {
     opacity: 0;
     animation: enterFromTop .6s forwards;
 }

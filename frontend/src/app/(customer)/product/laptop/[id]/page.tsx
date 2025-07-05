@@ -4,6 +4,7 @@ import ProductImagePreview from "@/components/ui/preview/product-image-preview";
 import { IProduct } from "@/models";
 import { convertNumberToCurrency } from "@/utils/currency.util";
 import { Descriptions, Image, Rate } from "antd";
+import { notFound } from "next/navigation";
 
 export interface ProductDetailProps {
   params: Promise<{ id: string }>;
@@ -13,7 +14,8 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
   const { id } = await params;
   const res = await productApi.getClientDetailProduct(id);
   const data = (await res.data) as IProduct;
-  // console.log(data);
+
+  if (!data) notFound();
 
   return (
     <div className="flex gap-4 mb-[8rem]">

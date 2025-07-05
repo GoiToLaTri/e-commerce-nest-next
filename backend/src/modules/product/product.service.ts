@@ -21,6 +21,7 @@ import { BrandService } from '../brand/brand.service';
 import { IProduct } from './interfaces/product.interface';
 import { InventoryService } from '../inventory/inventory.service';
 import { appConfig } from '@/common/configs';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ProductService {
@@ -292,9 +293,7 @@ export class ProductService {
   }
 
   async findOne(id: string) {
-    const cacheKey = `product-${id}`;
-    const cached: string | null = await this.redis.get(cacheKey);
-    if (cached) return JSON.parse(cached) as IProduct;
+    if (!ObjectId.isValid(id)) return null;
 
     const product = await this.prisma.product.findUnique({
       where: { id },
@@ -310,11 +309,7 @@ export class ProductService {
     });
 
     if (!product) return null;
-    await this.redis.set(
-      cacheKey,
-      JSON.stringify(product),
-      appConfig.REDIS_TTL_CACHE,
-    );
+
     return product;
   }
 
