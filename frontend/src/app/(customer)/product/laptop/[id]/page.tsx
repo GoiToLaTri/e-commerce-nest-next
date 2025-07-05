@@ -1,4 +1,5 @@
 import { productApi } from "@/api-client";
+import ProductDetailTracker from "@/components/trackers/product-detail-tracker";
 import { ProductDetailAction } from "@/components/ui";
 import ProductImagePreview from "@/components/ui/preview/product-image-preview";
 import { IProduct } from "@/models";
@@ -100,6 +101,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
           </div>
         </div>
       </div>
+      {id && <ProductDetailTracker productId={id} />}
     </div>
   );
 }

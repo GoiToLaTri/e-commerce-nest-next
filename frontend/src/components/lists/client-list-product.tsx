@@ -6,19 +6,17 @@ import { convertNumberToCurrency } from "@/utils/currency.util";
 import { Card as AntdCard, Image, Pagination, Skeleton } from "antd";
 import Meta from "antd/es/card/Meta";
 import "@/styles/client-list-product.style.css";
-import Link from "next/link";
 import { ClientProductFilter, PurpleButton } from "../ui";
-import { useUserSession } from "@/hooks/useUserSession";
-import { useAddUserInteraction } from "@/hooks/useAddUserInteraction";
-import { Role } from "@/common/enums";
 import Card from "../ui/cards/card";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ClientListProduct({
   initialData,
 }: {
   initialData: IProductResponse;
 }) {
+  const router = useRouter();
   const [params, setParams] = useState({
     page: 1,
     limit: 12,
@@ -32,17 +30,8 @@ export default function ClientListProduct({
     initialData,
   });
 
-  const { data: sessionData } = useUserSession();
-  const addUserInteractionMutation = useAddUserInteraction();
-
-  const handleAddUserInteraction = async (productId: string) => {
-    if (!sessionData?.session_user.user_id) return;
-    if (sessionData.session_user.user.roleId !== Role.USER) return;
-    await addUserInteractionMutation.mutateAsync({
-      productId,
-      userId: sessionData?.session_user.user_id,
-      action: "VIEW",
-    });
+  const handleDetail = (productId: string) => {
+    router.push(`laptop/${productId}`);
   };
 
   const handlePageChange = (page: number) => {
@@ -99,16 +88,12 @@ export default function ClientListProduct({
                       />
                     }
                     actions={[
-                      <Link
-                        href={`laptop/${laptop.id}`}
+                      <PurpleButton
                         key={`detail-${laptop.id}`}
+                        onClick={() => handleDetail(laptop.id)}
                       >
-                        <PurpleButton
-                          onClick={() => handleAddUserInteraction(laptop.id)}
-                        >
-                          Detail
-                        </PurpleButton>
-                      </Link>,
+                        Detail
+                      </PurpleButton>,
                     ]}
                   >
                     <Meta

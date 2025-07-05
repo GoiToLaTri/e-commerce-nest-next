@@ -4,7 +4,7 @@ import { productApi } from "@/api-client";
 import { IImage, ImageResponsePayload, ProductInfoPayload } from "@/models";
 import { Button, Form, Input, InputNumber } from "antd";
 import React from "react";
-import { sonnerLoading } from "../sonner/sonner";
+import { sonnerError, sonnerLoading } from "../sonner/sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/common/enums";
 import { useRouter } from "next/navigation";
@@ -36,7 +36,16 @@ export default function ProductInfoForm({
   const router = useRouter();
 
   const onFinish = (payload: ProductInfoPayload) => {
-    console.log(thumbnail);
+    if (!thumbnail || thumbnail.length === 0) {
+      sonnerError("Thumbnail is required");
+      return;
+    }
+
+    if (!imageList || imageList.length === 0) {
+      sonnerError("Image list is required");
+      return;
+    }
+
     sonnerLoading(
       handleAdd({
         ...payload,
@@ -61,7 +70,7 @@ export default function ProductInfoForm({
           queryClient.refetchQueries({
             queryKey: [queryKeys.GET_LIST_PRODUCT_DATA],
           });
-          router.push('/admin/product/manage')
+          router.push("/admin/product/manage");
           return { message };
         })
         .catch((error) => {
