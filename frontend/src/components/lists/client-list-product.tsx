@@ -24,7 +24,7 @@ export default function ClientListProduct({
     filters: {},
   });
 
-  const { data, isLoading, isError } = useCustomerProducts({
+  const { data, isLoading, isError, isFetching } = useCustomerProducts({
     ...params,
     initialData,
   });
@@ -48,9 +48,11 @@ export default function ClientListProduct({
             </div>
           </Card>
         </div>
-        <div>
-          {isLoading && <Skeleton paragraph={{ rows: 4 }} />}
-          {!isLoading && !isError && data?.data.length === 0 && (
+        <div className="w-full">
+          {(isLoading || isFetching) && (
+            <Skeleton paragraph={{ rows: 4 }} className="!w-full" />
+          )}
+          {!isLoading && !isFetching && !isError && data?.data.length === 0 && (
             <div>No products found.</div>
           )}
           {isError && (
@@ -66,7 +68,9 @@ export default function ClientListProduct({
                 gap: 16,
               }}
             >
-              {data &&
+              {!isLoading &&
+                !isFetching &&
+                data &&
                 data.data &&
                 data.data.length > 0 &&
                 data.data.map((laptop, index) => (
@@ -104,7 +108,7 @@ export default function ClientListProduct({
                 ))}
             </div>
           </AntdCard.Grid>
-          <div className="mt-4">
+          <div className="mt-4 w-full">
             <Pagination
               total={data?.total || 0}
               defaultCurrent={data?.page || 1}
