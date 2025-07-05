@@ -31,10 +31,6 @@ export default function ClientListProduct({
     initialData,
   });
 
-  const handleDetail = (productId: string) => {
-    router.push(`laptop/${productId}`);
-  };
-
   const handlePageChange = (page: number) => {
     setParams((prev) => ({ ...prev, page }));
   };
