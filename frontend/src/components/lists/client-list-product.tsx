@@ -9,7 +9,6 @@ import "@/styles/client-list-product.style.css";
 import { ClientProductFilter, PurpleButton } from "../ui";
 import Card from "../ui/cards/card";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function ClientListProduct({
@@ -17,7 +16,6 @@ export default function ClientListProduct({
 }: {
   initialData: IProductResponse;
 }) {
-  const router = useRouter();
   const [params, setParams] = useState({
     page: 1,
     limit: 12,
