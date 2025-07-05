@@ -10,6 +10,7 @@ import { ClientProductFilter, PurpleButton } from "../ui";
 import Card from "../ui/cards/card";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ClientListProduct({
   initialData,
@@ -88,12 +89,13 @@ export default function ClientListProduct({
                       />
                     }
                     actions={[
-                      <PurpleButton
+                      <Link
                         key={`detail-${laptop.id}`}
-                        onClick={() => handleDetail(laptop.id)}
+                        href={`laptop/${laptop.id}`}
+                        prefetch
                       >
-                        Detail
-                      </PurpleButton>,
+                        <PurpleButton>Detail</PurpleButton>
+                      </Link>,
                     ]}
                   >
                     <Meta
