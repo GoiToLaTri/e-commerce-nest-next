@@ -11,9 +11,9 @@ export function NotFoundError() {
           <div className="mb-12">
             <ZwindLogo />
           </div>
-          <h1 className="text-8xl tracking-wider font-bold text-white mb-2 ml-4 font-mono">
+          <span className="text-8xl tracking-wider font-bold text-white mb-2 ml-4 font-mono">
             404
-          </h1>
+          </span>
           <h2 className="text-2xl font-semibold tracking-wider text-white mb-4">
             Not Found
           </h2>

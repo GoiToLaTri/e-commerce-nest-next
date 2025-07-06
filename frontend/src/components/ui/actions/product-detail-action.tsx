@@ -20,7 +20,7 @@ export function ProductDetailAction({ productId }: ProductDetailActionProps) {
   const addUserInteractionMutation = useAddUserInteraction();
   const router = useRouter();
 
-  const haveSession = !isLoading && data && data.session_user.user.avatar;
+  const haveSession = data && data.session_user.user.avatar;
   // const isAdmin = haveSession && data.session_user.user.roleId === Role.ADMIN;
   const isCustomer = haveSession && data.session_user.user.roleId === Role.USER;
 
@@ -55,7 +55,7 @@ export function ProductDetailAction({ productId }: ProductDetailActionProps) {
     <div className="flex flex-col gap-4">
       {isLoading && <SkeletonButton />}
       {isLoading && <SkeletonButton />}
-      {!haveSession && (
+      {!isLoading && !haveSession && (
         <div>
           <Link href={"/auth/signin"}>
             <Button
@@ -68,7 +68,7 @@ export function ProductDetailAction({ productId }: ProductDetailActionProps) {
           </Link>
         </div>
       )}
-      {isCustomer && (
+      {!isLoading && isCustomer && (
         <div className="flex flex-col gap-4">
           <Button
             type="primary"
