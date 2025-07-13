@@ -3,7 +3,8 @@ class EnvConfig {
   FRONTEND_URL: string;
   constructor() {
     this.BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3000";
-    this.FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5555";
+    this.FRONTEND_URL =
+      process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:5555";
   }
 }
 

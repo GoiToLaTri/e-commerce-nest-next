@@ -42,6 +42,7 @@ export function CheckoutForm({
   const [countryCodes, setCountryCodes] = useState<
     { value: string; label: string }[]
   >([]);
+
   const updateCheckoutSessionMutation = useUpdateCheckoutSession();
   const paymentMomoMutation = usePaymentMomo();
   // Ensure unique country codes by value
@@ -83,7 +84,6 @@ export function CheckoutForm({
         .mutateAsync({
           ...payload,
           sessionId,
-          
         })
         .then(async (message) => {
           const res = await paymentMomoMutation.mutateAsync();
@@ -115,6 +115,8 @@ export function CheckoutForm({
 
   useEffect(() => {
     (async () => {
+      console.log("env", envConfig.FRONTEND_URL);
+
       const data = await fetchRegionJson(
         `${envConfig.FRONTEND_URL}/json/region.json`
       );
