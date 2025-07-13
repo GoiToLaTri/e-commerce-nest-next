@@ -86,7 +86,7 @@ export default function BuyNowPage() {
 
   return (
     <div className="flex gap-4">
-      <div className="flex h-fit max-w-[220px]">
+      <div className="expire-time flex h-fit max-w-[220px]">
         <Card>
           <div>
             <div className="flex items-center mb-4">
@@ -108,7 +108,7 @@ export default function BuyNowPage() {
           </div>
         </Card>
       </div>
-      <div className="w-[60%]">
+      <div className="form-checkout w-[60%]">
         <Card>
           <CheckoutForm
             handleSetShippingFee={handleSetShippingFee}
@@ -116,7 +116,7 @@ export default function BuyNowPage() {
           />
         </Card>
       </div>
-      <div className="w-[40%]">
+      <div className="order-summary w-[40%]">
         <Card>
           <div>
             <h2 className="text-xl font-bold mb-4 text-white">Order summary</h2>

@@ -90,23 +90,25 @@ export class PaymentService {
   async processPayment(payload: { extraData: string; resultCode: string }) {
     if (!payload) return;
     // console.log(payload);
+
+    const extraDataString = Buffer.from(payload.extraData, 'base64').toString(
+      'utf-8',
+    );
+    const extraDataParse: { sessionId: string } = JSON.parse(
+      extraDataString,
+    ) as { sessionId: string };
+
+    // console.log(extraDataParse.sessionId);
+
+    const session: ICheckoutSession =
+      (await this.checkoutSessionService.findByCheckoutSessionId(
+        extraDataParse.sessionId,
+      )) as unknown as ICheckoutSession;
+
     if (payload.resultCode == '0') {
       // console.log(payload.extraData);
-      const extraDataString = Buffer.from(payload.extraData, 'base64').toString(
-        'utf-8',
-      );
-      const extraDataParse: { sessionId: string } = JSON.parse(
-        extraDataString,
-      ) as { sessionId: string };
 
-      // console.log(extraDataParse.sessionId);
-
-      const session: ICheckoutSession =
-        (await this.checkoutSessionService.findByCheckoutSessionId(
-          extraDataParse.sessionId,
-        )) as unknown as ICheckoutSession;
-
-      const result = await this.ordersService.create(session);
+      const result = await this.ordersService.create(session, 'SUCCESS');
       if (!result) return;
 
       // const successCondition =
@@ -116,5 +118,14 @@ export class PaymentService {
       // if (successCondition)
       return `${appConfig.FRONTEND_URL}/payment-result/${result[0].sessionId}/result`;
     }
+    const result = await this.ordersService.create(session, 'FAILED');
+    if (!result) return;
+
+    // const successCondition =
+    //   result[0].orderStatus === 'PROCESSING' &&
+    //   result[0].paymentStatus === 'SUCCESS';
+    // console.log('successCondition', successCondition);
+    // if (successCondition)
+    return `${appConfig.FRONTEND_URL}/payment-result/${result[0].sessionId}/result`;
   }
 }

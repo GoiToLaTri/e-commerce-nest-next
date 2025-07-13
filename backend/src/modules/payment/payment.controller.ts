@@ -24,7 +24,7 @@ export class PaymentController {
   @Post('momo/webhook')
   handleMomoWebhook(@Body() body: any, @Res() res: Response) {
     try {
-      // console.log('Nhận dữ liệu Webhook:', body);
+      console.log('Nhận dữ liệu Webhook:', body);
       return res.status(HttpStatus.OK).json({ message: 'Webhook received' });
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

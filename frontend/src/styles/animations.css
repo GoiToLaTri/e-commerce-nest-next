@@ -124,3 +124,18 @@
     opacity: 0;
     animation: enterFromTop .6s forwards;
 }
+
+.expire-time {
+    opacity: 0;
+    animation: enterFromTop .6s .4s forwards;
+}
+
+.form-checkout {
+    opacity: 0;
+    animation: enterFromTop .6s forwards;
+}
+
+.order-summary {
+    opacity: 0;
+    animation: enterFromTop .6s .2s forwards;
+}

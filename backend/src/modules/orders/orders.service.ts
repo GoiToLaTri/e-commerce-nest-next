@@ -26,7 +26,10 @@ export class OrdersService {
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
   ) {}
-  async create(checkoutSession: ICheckoutSession) {
+  async create(
+    checkoutSession: ICheckoutSession,
+    transactionStatus: 'PENDING' | 'SUCCESS' | 'FAILED',
+  ) {
     const { products, userId } = checkoutSession;
 
     const order = await this.findBySessionId(checkoutSession.id);
@@ -64,6 +67,8 @@ export class OrdersService {
 
     let locationStr = '';
 
+    let isPaid: boolean = true;
+
     if (!province) {
       console.log(`Province with code ${provinceCode} not found.`);
     } else if (!district) {
@@ -80,16 +85,26 @@ export class OrdersService {
       orderStatus?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED';
     } = {};
 
-    if (refund) {
-      console.log('Refund is required due to insufficient stock.');
-      // Handle refund logic here
-      statusData.paymentStatus = 'REFUNDED';
-      statusData.orderStatus = 'CANCELLED';
+    if (transactionStatus === 'SUCCESS') {
+      if (refund) {
+        console.log('Refund is required due to insufficient stock.');
+        // Handle refund logic here
+        statusData.paymentStatus = 'REFUNDED';
+        statusData.orderStatus = 'CANCELLED';
+      } else {
+        console.log('Proceeding to create the order.');
+        // Handle order creation logic here
+        statusData.paymentStatus = 'SUCCESS';
+        statusData.orderStatus = 'PROCESSING';
+      }
+    } else if (transactionStatus === 'PENDING') {
+      statusData.paymentStatus = 'PENDING';
+      statusData.orderStatus = 'PENDING';
+      isPaid = false;
     } else {
-      console.log('Proceeding to create the order.');
-      // Handle order creation logic here
-      statusData.paymentStatus = 'SUCCESS';
-      statusData.orderStatus = 'PROCESSING';
+      statusData.paymentStatus = 'FAILED';
+      statusData.orderStatus = 'CANCELLED';
+      isPaid = false;
     }
 
     const orders = await this.prisma.$transaction([
@@ -117,7 +132,7 @@ export class OrdersService {
 
       this.prisma.checkoutSession.update({
         where: { id: checkoutSession.id },
-        data: { isPaid: true },
+        data: { isPaid: isPaid },
       }),
     ]);
 
