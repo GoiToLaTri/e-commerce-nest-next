@@ -1,6 +1,5 @@
 import { checkoutApi } from "@/api-client";
 import { queryKeys } from "@/common/enums";
-import { IProduct } from "@/models";
 import { useQuery } from "@tanstack/react-query";
 
 interface CheckoutSessionResponse {

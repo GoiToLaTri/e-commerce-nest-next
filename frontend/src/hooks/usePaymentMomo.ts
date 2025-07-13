@@ -1,8 +1,7 @@
 import { paymentApi } from "@/api-client/payment.api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 export function usePaymentMomo() {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
       const res = await paymentApi.momoMethod();
