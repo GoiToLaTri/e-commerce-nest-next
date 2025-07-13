@@ -8,7 +8,7 @@ export class ProductSpecificationController {
   ) {}
   @Get('cpu')
   async findManyCpu() {
-    console.log('calling findManyCpu');
+    // console.log('calling findManyCpu');
     return this.productSpecificationService.findManyCpu();
   }
   @Get('ram')

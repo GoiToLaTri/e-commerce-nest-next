@@ -1,9 +1,8 @@
-import { inventoryApi } from "@/api-client/inventory.api";
 import { PaginationParams } from "./useProducts";
 import { queryKeys } from "@/common/enums";
 import { useQuery } from "@tanstack/react-query";
 import { IInventory } from "@/models";
-import { QueryParams } from "@/api-client";
+import { inventoryApi, QueryParams } from "@/api-client";
 
 export function useInventories(
   query: { search?: string; status?: boolean } & QueryParams & PaginationParams

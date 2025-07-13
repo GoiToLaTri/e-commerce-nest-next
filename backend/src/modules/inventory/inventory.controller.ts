@@ -18,7 +18,7 @@ export class InventoryController {
     @Query('sortOrder') sortOrder: string,
     @Query('search') search?: string,
   ) {
-    console.log({ page, sortField, sortOrder, limit, search });
+    // console.log({ page, sortField, sortOrder, limit, search });
     return this.inventoryService.findAll(
       +page || 1,
       +limit || 4,

@@ -26,12 +26,18 @@ import { ProductSpecificationModule } from './modules/product-specification/prod
 import { SearchModule } from './modules/search/search.module';
 import { CartModule } from './modules/cart/cart.module';
 import { RecommendationModule } from './modules/recommendation/recommendation.module';
+import { CheckoutSessionModule } from './modules/checkout-session/checkout-session.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CheckoutModule } from './modules/checkout/checkout.module';
+import { PaymentModule } from './modules/payment/payment.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     // ChatModule,
     PrismaModule,
     UserModule,
@@ -54,6 +60,10 @@ import { RecommendationModule } from './modules/recommendation/recommendation.mo
     SearchModule,
     CartModule,
     RecommendationModule,
+    CheckoutSessionModule,
+    CheckoutModule,
+    PaymentModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],

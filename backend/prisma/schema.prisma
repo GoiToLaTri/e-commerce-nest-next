@@ -30,6 +30,7 @@ model User {
   Admin        Admin?
   Customer     Customer?
   Cart         Cart?
+  orders       Orders[]
 }
 
 model Admin {
@@ -282,4 +283,65 @@ model UserInteraction {
   updated_at DateTime @updatedAt
   User       User     @relation(fields: [userId], references: [id])
   Product    Product  @relation(fields: [productId], references: [id])
+}
+
+model CheckoutSession {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId     String   @unique
+  userId        String   @db.ObjectId
+  products      Json
+  totalAmount   Int
+  shippingInfo  Json?
+  paymentMethod String?
+  createdAt     DateTime @default(now())
+  expiredAt     DateTime
+  isUpdate      Boolean  @default(false)
+  isPaid        Boolean  @default(false)
+  isCancelled   Boolean  @default(false)
+}
+
+model Orders {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId     String?         @db.ObjectId
+  userId        String?         @db.ObjectId
+  products      OrderProducts[]
+  totalAmount   Int
+  shippingInfo  ShippingInfo?
+  paymentStatus PaymentStatus   @default(SUCCESS)
+  orderStatus   OrderStatus     @default(PROCESSING)
+  isPaid        Boolean         @default(true)
+  User          User?           @relation(fields: [userId], references: [id])
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+type OrderProducts {
+  productId String @db.ObjectId
+  model     String
+  thumbnail String
+  quantity  Int
+  price     Int
+}
+
+type ShippingInfo {
+  delivery    String
+  shippingfee Int
+  fullName    String
+  phone       String
+  address     String
+  note        String?
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
 }

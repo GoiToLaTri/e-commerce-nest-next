@@ -233,7 +233,7 @@ export class ProductService {
     const skip = (page - 1) * limit;
     const where: any = { status: true };
 
-    console.log({ laptopBrand, cpuBrand, cpuSeries });
+    // console.log({ laptopBrand, cpuBrand, cpuSeries });
 
     if (laptopBrand && laptopBrand.length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -341,7 +341,7 @@ export class ProductService {
   }
 
   async findGpuByName(name: string) {
-    console.log('Finding GPU by name:', name);
+    // console.log('Finding GPU by name:', name);
     const cacheKey = `gpu-${name.replaceAll(' ', '_')}`;
     const data: string | null = await this.redis.get(cacheKey);
     if (data) return JSON.parse(data) as ICPU;
@@ -422,10 +422,10 @@ export class ProductService {
   }
 
   async transSaveGpu(tx: Prisma.TransactionClient, gpu: IGPUInfo) {
-    console.log('GPU modal', gpu);
+    // console.log('GPU modal', gpu);
     const existing = await this.findGpuByName(gpu.name);
     if (existing) return existing.id;
-    console.log('existing gpu', existing);
+    // console.log('existing gpu', existing);
     const created = await tx.videoGraphics.create({
       data: {
         manufacturer: gpu.manufacturer,
@@ -509,7 +509,7 @@ export class ProductService {
     laptopBrand?: string[],
     saleStatus?: string[],
   ) {
-    console.log(search);
+    // console.log(search);
     const pipeline: Record<string, any>[] = [
       {
         $search: {

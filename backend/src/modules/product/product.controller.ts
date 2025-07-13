@@ -64,7 +64,7 @@ export class ProductController {
     @Query('cpuBrands[]') cpuBrandsRaw: string | string[],
     @Query('cpuSeries[]') cpuSeriesRaw: string | string[],
   ) {
-    console.log({ cpuBrandsRaw, cpuSeriesRaw, laptopBrandRaw });
+    // console.log({ cpuBrandsRaw, cpuSeriesRaw, laptopBrandRaw });
     const laptopBrand = Array.isArray(laptopBrandRaw)
       ? laptopBrandRaw
       : laptopBrandRaw

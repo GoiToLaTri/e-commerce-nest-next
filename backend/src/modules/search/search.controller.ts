@@ -10,7 +10,7 @@ export class SearchController {
     page: number = 1,
     limit = 10,
   ) {
-    console.log(search);
+    // console.log(search);
     return this.searchService.searchProducts(search, +page, +limit);
   }
 }

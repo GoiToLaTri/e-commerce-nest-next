@@ -17,11 +17,11 @@ export function ClientSearch() {
   const { data: recommend_data, isLoading: recommendLoading } =
     useRecommendation();
   const onSearch: SearchProps["onSearch"] = (value) => setQuery(value);
-  console.log(recommend_data);
+  // console.log(recommend_data);
 
-  const hasData = !!data && Array.isArray(data.data) && data.data.length > 0;
+  const hasData = data && Array.isArray(data.data) && data.data.length > 0;
   const hasRecommend =
-    !!recommend_data &&
+    recommend_data &&
     Array.isArray(recommend_data) &&
     recommend_data.length > 0;
   const noResults = !hasData && !hasRecommend;
@@ -74,7 +74,7 @@ export function ClientSearch() {
             ))}
           </div>
         )}
-        {!isLoading && !recommendLoading && hasData && (
+        {!isLoading && !recommendLoading && !hasData && (
           <div className="search-product-result text-center">
             No results found. Please try a different search.
           </div>

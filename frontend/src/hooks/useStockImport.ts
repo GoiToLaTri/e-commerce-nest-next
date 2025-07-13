@@ -1,5 +1,5 @@
 // hooks/useStockImport.js
-import { inventoryApi } from "@/api-client/inventory.api";
+import { inventoryApi } from "@/api-client";
 import { queryKeys } from "@/common/enums";
 import { StockImportPayload } from "@/models";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

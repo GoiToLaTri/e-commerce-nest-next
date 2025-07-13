@@ -15,7 +15,7 @@ export class StockAdjustmentController {
   ) {}
   @Post()
   create(@Body() stockAdjustmentDto: StockAdjustmentDto) {
-    console.log(stockAdjustmentDto);
+    // console.log(stockAdjustmentDto);
     return this.stockAdjustmentService.create(stockAdjustmentDto);
   }
 }

@@ -1,4 +1,4 @@
-import { inventoryApi } from "@/api-client/inventory.api";
+import { inventoryApi } from "@/api-client";
 import { queryKeys } from "@/common/enums";
 import { IInventory } from "@/models";
 import { useQuery } from "@tanstack/react-query";

@@ -25,7 +25,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Req() req: Request, @Res() response: Response) {
-    console.log('Login request received:', req.user);
+    // console.log('Login request received:', req.user);
     const access_token = await this.authService.login(req.user as IUser);
     response.cookie('access_token', access_token.access_token, {
       httpOnly: true,
@@ -49,7 +49,7 @@ export class AuthController {
   @Post('logout')
   logout(@Req() req: { session_user: SessionData }) {
     // Implement your logout logic here
-    console.log(req.session_user);
+    // console.log(req.session_user);
     return this.authService.logout(req.session_user);
   }
 

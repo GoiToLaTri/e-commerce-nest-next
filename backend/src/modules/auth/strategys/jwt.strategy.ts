@@ -31,10 +31,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (sessionStr) {
       try {
         session = JSON.parse(sessionStr) as SessionData;
-        console.log(new Date(session.expires_at).getTime(), Date.now());
+        // console.log(new Date(session.expires_at).getTime(), Date.now());
         // Nếu session đã hết hạn thì xóa và trả về null
         if (new Date(session.expires_at).getTime() < Date.now()) {
-          console.log(`Session expired: ${payload.session_id}`);
+          // console.log(`Session expired: ${payload.session_id}`);
           await this.redis.del(payload.session_id);
           return null;
         }

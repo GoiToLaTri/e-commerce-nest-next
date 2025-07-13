@@ -39,13 +39,13 @@ export class RoleGuard implements CanActivate {
 
     if (!request.session_user || !request.session_user.user) return false; // No session user or user data available
     const user_role: Role = request.session_user.user.roleId as Role;
-    console.log(requiredRoles, user_role);
+    // console.log(requiredRoles, user_role);
     for (const role of requiredRoles) {
       const result = this.accessControlService.isAuthorized({
         requiredRole: role,
         currentRole: user_role,
       });
-      console.log(result);
+      // console.log(result);
       if (result) return true;
     }
 

@@ -5,3 +5,5 @@ export * from "./inventory-log.model";
 export * from "./image.model";
 export * from "./user-interaction.model";
 export * from "./cart.model";
+export * from "./checkout.model";
+export * from "./order.model";

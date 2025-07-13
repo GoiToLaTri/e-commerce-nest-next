@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkSession = async () => {
     try {
       const response = await authApi.getUserSession(); // Axios request
-      console.log("checkSession response", response);
+      // console.log("checkSession response", response);
 
       queryClient.setQueryData([queryKeys.USER_SESSION], response.data);
       setUserSession(response.data);
@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // const data = queryClient.getQueryData<{
     //   session_user: IUserSession;
     // }>([queryKeys.USER_SESSION]);
-    console.log("Get is access", data?.session_user);
+    // console.log("Get is access", data?.session_user);
     // const session_user = sessionData?.session_user;
     try {
       if (!data) {

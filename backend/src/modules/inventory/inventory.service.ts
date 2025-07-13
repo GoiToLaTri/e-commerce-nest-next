@@ -179,7 +179,7 @@ export class InventoryService {
     sortField?: string,
     sortOrder?: string,
   ) {
-    console.log(search);
+    // console.log(search);
     const pipeline: Record<string, any>[] = [
       {
         $search: {

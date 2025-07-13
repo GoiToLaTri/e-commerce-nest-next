@@ -7,7 +7,6 @@ import CartInformationCard from "../ui/cards/cart-information-card";
 
 export default function CartListProduct() {
   const { data, isLoading, isError } = useCartProducts();
-  console.log({ data, isLoading, isError });
   const hasData = data && Array.isArray(data.items) && data.items.length > 0;
   return (
     <div>
@@ -15,8 +14,12 @@ export default function CartListProduct() {
       <div className="flex gap-8">
         <div className="w-[50%]">
           {isLoading && <Skeleton className="!w-full" />}
-          {isError && <div className="error-loading-cart">Error loading cart</div>}
-          {!isLoading && !hasData && <div className="empty-cart">Cart is empty</div>}
+          {isError && (
+            <div className="error-loading-cart">Error loading cart</div>
+          )}
+          {!isLoading && !hasData && (
+            <div className="empty-cart">Cart is empty</div>
+          )}
           {hasData && (
             <div>
               {data.items.map((item) => (

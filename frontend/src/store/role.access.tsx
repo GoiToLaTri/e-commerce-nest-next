@@ -29,7 +29,7 @@ export function RoleAccess({ children, roles, routeAuth }: RoleAccessProps) {
   });
   const [isServerError, setIsServerError] = useState<boolean>(false);
 
-  console.log("isAccess", isAccess);
+  // console.log("isAccess", isAccess);
   // console.log("isServerError", isServerError);
 
   useEffect(() => {
@@ -79,9 +79,9 @@ export function RoleAccess({ children, roles, routeAuth }: RoleAccessProps) {
     ? routeAuthConditions
     : privateAccessConditions;
 
-  console.log("roleAccessConditions", roleAccessConditions);
-  console.log("routeAccessDeniedConditions", routeAccessDeniedConditions);
-  console.log("isServerError", isServerError);
+  // console.log("roleAccessConditions", roleAccessConditions);
+  // console.log("routeAccessDeniedConditions", routeAccessDeniedConditions);
+  // console.log("isServerError", isServerError);
 
   return (
     <>
