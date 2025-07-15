@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
@@ -55,5 +63,25 @@ export class OrdersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.ordersService.findOne(id);
+  }
+
+  @Roles(Role.ADMIN)
+  @Patch('status/:id')
+  updateStatus(
+    @Param('id') id: string,
+    @Query('orderStatus')
+    orderStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED',
+  ) {
+    if (!orderStatus) return;
+    const validOrderStatus = [
+      'PENDING',
+      'PROCESSING',
+      'COMPLETED',
+      'CANCELLED',
+    ];
+
+    if (!validOrderStatus.includes(orderStatus)) return;
+
+    return this.ordersService.updateStatus(id, orderStatus);
   }
 }

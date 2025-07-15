@@ -248,6 +248,17 @@ export class OrdersService {
     };
   }
 
+  updateStatus(
+    id: string,
+    orderStatus?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED',
+  ) {
+    if (!orderStatus) return;
+    return this.prisma.orders.update({
+      where: { id },
+      data: { orderStatus },
+    });
+  }
+
   private async atlasSearch(
     search: string,
     page: number,
