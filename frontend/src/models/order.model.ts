@@ -8,8 +8,8 @@ export interface IOrder {
   products: IOrderProduct[];
   shippingInfo: IShippingInfo;
   totalAmount: number;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: Date | string; // ISO date string
+  updatedAt: Date | string; // ISO date string
 }
 
 export interface IOrderProduct {

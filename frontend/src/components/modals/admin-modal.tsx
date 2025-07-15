@@ -120,6 +120,15 @@ export function AdminModal({ data }: AdminModalProps) {
               Stock history
             </Button>
           </Link>
+          <Link href={"/admin/orders/manage"}>
+            <Button
+              type="text"
+              className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
+              size="large"
+            >
+              Order management
+            </Button>
+          </Link>
           <Divider />
           <Button
             type="text"

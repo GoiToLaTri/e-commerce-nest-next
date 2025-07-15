@@ -24,4 +24,5 @@ export interface CartProduct {
     model: string;
     thumbnail: string;
   };
+  productId: string;
 }

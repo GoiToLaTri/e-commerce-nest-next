@@ -101,7 +101,7 @@ const columns: TableProps<IInventoryLogData>["columns"] = [
         <HistoryStockDetailModal id={record.id} />
       </div>
     ),
-  },
+  },  
 ];
 
 export default function StockHistoryTable() {

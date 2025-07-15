@@ -7,5 +7,6 @@ import { InventoryLogModule } from '../inventory-log/inventory-log.module';
   imports: [InventoryLogModule],
   controllers: [StockExportController],
   providers: [StockExportService],
+  exports: [StockExportService],
 })
 export class StockExportModule {}

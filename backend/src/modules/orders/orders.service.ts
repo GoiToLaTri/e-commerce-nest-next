@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { InventoryService } from '../inventory/inventory.service';
 import * as regionsJson from '../../json/region.json';
 import { ObjectId } from 'mongodb';
+import { StockExportService } from '../stock-export/stock-export.service';
 
 type District = {
   value: string;
@@ -25,6 +26,7 @@ export class OrdersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
+    private readonly stockExportService: StockExportService,
   ) {}
   async create(
     checkoutSession: ICheckoutSession,
@@ -136,6 +138,30 @@ export class OrdersService {
       }),
     ]);
 
+    if (
+      orders[0].paymentStatus === 'SUCCESS' &&
+      orders[0].orderStatus === 'PROCESSING'
+    ) {
+      await Promise.all(
+        orders[0].products.map((product) => {
+          const stockExportDto = {
+            product: product.model,
+            productId: product.productId,
+            quantity: product.quantity,
+            reason: 'ORDER_COMPLETED',
+            note: `Xuất kho cho đơn hàng: ${orders[0].id}`,
+          };
+          return this.stockExportService.create(stockExportDto);
+        }),
+      );
+
+      console.log('Stock export successful.');
+    } else {
+      console.log(
+        'Stock export not performed because the order conditions were not met.',
+      );
+    }
+
     console.log('Errors:', errors);
     if (errors.length > 0) throw new BadRequestException(errors[0]);
     return orders;
@@ -150,5 +176,182 @@ export class OrdersService {
   findOne(id: string) {
     if (!id || !ObjectId.isValid(id)) return null;
     return this.prisma.orders.findUnique({ where: { id } });
+  }
+
+  async findAll(
+    page: number,
+    limit: number,
+    sortField: string,
+    sortOrder: string,
+    paymentStatus?: string[],
+    orderStatus?: string[],
+    search?: string,
+  ) {
+    const skip = (page - 1) * limit;
+    if (search && search.trim()) {
+      const { data: searchData, total: searchTotal } = await this.atlasSearch(
+        search,
+        page,
+        limit,
+        sortField,
+        sortOrder,
+        paymentStatus,
+        orderStatus,
+      );
+
+      return {
+        data: searchData,
+        total: searchTotal,
+        page,
+        limit,
+      };
+    }
+
+    const where: any = {};
+
+    const orderBy =
+      sortField && sortOrder
+        ? { [sortField]: sortOrder as 'asc' | 'desc' }
+        : undefined;
+
+    if (paymentStatus && paymentStatus.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      where.paymentStatus = {
+        in: paymentStatus.map((st) => st.toUpperCase()),
+      };
+    }
+
+    if (orderStatus && orderStatus.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      where.orderStatus = {
+        in: orderStatus.map((st) => st.toUpperCase()),
+      };
+    }
+
+    const [orders, total] = await this.prisma.$transaction([
+      this.prisma.orders.findMany({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        where,
+        skip,
+        orderBy,
+        take: limit,
+      }),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      this.prisma.orders.count({ where }),
+    ]);
+
+    return {
+      data: orders,
+      total,
+      page,
+      limit,
+    };
+  }
+
+  private async atlasSearch(
+    search: string,
+    page: number,
+    limit: number,
+    sortField: string,
+    sortOrder: string,
+    paymentStatus?: string[],
+    orderStatus?: string[],
+  ) {
+    // console.log(search);
+    const pipeline: Record<string, any>[] = [
+      {
+        $search: {
+          index: 'order-search',
+          text: {
+            query: search,
+            path: ['shippingInfo.fullName', 'shippingInfo.address'],
+            fuzzy: {
+              maxEdits: 2,
+              prefixLength: 0,
+              // maxExpansions: 50,
+            },
+          },
+        },
+      },
+    ];
+
+    pipeline.push({
+      $addFields: {
+        id: { $toString: '$_id' },
+        sessionId: { $toString: 'sessionId' },
+        userId: { $toString: 'userId' },
+        createdAt: { $dateToString: { date: '$createdAt' } },
+        updatedAt: { $dateToString: { date: '$updatedAt' } },
+      },
+    });
+
+    // Lọc
+
+    if (paymentStatus && paymentStatus.length > 0) {
+      pipeline.push({
+        $match: {
+          'Orders.paymentStatus': {
+            $in: paymentStatus.map((st) => st.toUpperCase()),
+          },
+        },
+      });
+    }
+
+    if (orderStatus && orderStatus.length > 0) {
+      pipeline.push({
+        $match: {
+          'Orders.orderStatus': {
+            $in: orderStatus.map((st) => st.toUpperCase()),
+          },
+        },
+      });
+    }
+
+    // Thêm sắp xếp
+    const defaultSortField = 'createdAt'; // Hoặc field mặc định khác
+    const validSortFields = ['createdAt', 'updatedAt']; // Danh sách các field hợp lệ
+
+    // Validate sortField
+    const safeSortField =
+      sortField && validSortFields.includes(sortField)
+        ? sortField
+        : defaultSortField;
+    const safeSortOrder = sortOrder === 'desc' ? -1 : 1;
+    const sortStage = { $sort: { [safeSortField]: safeSortOrder } };
+    pipeline.push(sortStage);
+
+    // Thêm phân trang
+    // Validate pagination parameters
+    const safePage = Math.max(1, page || 1);
+    const safeLimit = Math.max(1, Math.min(100, limit || 10)); // Giới hạn tối đa 100
+
+    // Thêm phân trang
+    pipeline.push({ $skip: (safePage - 1) * safeLimit }, { $limit: safeLimit });
+    const data = await this.prisma.orders.aggregateRaw({ pipeline });
+    const totalPipeline = [
+      ...pipeline.filter((stage) => !('$skip' in stage || '$limit' in stage)),
+    ];
+    totalPipeline.push({ $count: 'total' });
+    const totalResult = await this.prisma.orders.aggregateRaw({
+      pipeline: totalPipeline,
+    });
+    let total = 0;
+    if (
+      Array.isArray(totalResult) &&
+      totalResult.length > 0 &&
+      typeof totalResult[0] === 'object' &&
+      totalResult[0] !== null &&
+      'total' in totalResult[0]
+    ) {
+      total = Number((totalResult[0] as { total: number }).total) || 0;
+    }
+    // Cuối cùng gọi aggregateRaw
+    console.log(data);
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 }

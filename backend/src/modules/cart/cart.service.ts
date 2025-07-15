@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 import { UpdateQuantityDto } from './dto/update-quantity.dto';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class CartService {
@@ -22,6 +23,17 @@ export class CartService {
           },
         },
         _count: true,
+      },
+    });
+    return cart;
+  }
+
+  async findOneCartItem(id: string) {
+    if (!id || !ObjectId.isValid(id)) return null;
+    const cart = await this.prisma.cartItem.findFirst({
+      where: { id },
+      include: {
+        product: { select: { model: true, thumbnail: true } },
       },
     });
     return cart;

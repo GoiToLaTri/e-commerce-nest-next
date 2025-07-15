@@ -1,27 +1,32 @@
-import { orderApi } from "@/api-client";
+"use client";
+
 import {
   NotFoundError,
   PaymentResultRefund,
   PaymentResultSuccess,
 } from "@/components/results";
 import PaymentResultCancelled from "@/components/results/payment-cancelled";
-import { IOrder } from "@/models";
+import { LoadingSpin } from "@/components/ui";
+import { useOrderBySession } from "@/hooks/useOrderBySession";
+import { use } from "react";
 
 export interface PaymentResultProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function PaymentResult({ params }: PaymentResultProps) {
-  const { id } = await params;
-  const res = await orderApi.findOne(id);
-  const data = (await res.data) as IOrder;
-  console.log(data);
+export default function PaymentResult({ params }: PaymentResultProps) {
+  const { id } = use(params);
+  const { data, isLoading } = useOrderBySession(id);
+
+  if (isLoading) return <LoadingSpin />;
+
+  // console.log(data);
   const conditionSuccess =
-    data.paymentStatus === "SUCCESS" && data.orderStatus === "PROCESSING";
+    data?.paymentStatus === "SUCCESS" && data?.orderStatus === "PROCESSING";
   const conditionRefund =
-    data.paymentStatus === "REFUNDED" && data.orderStatus === "CANCELLED";
+    data?.paymentStatus === "REFUNDED" && data?.orderStatus === "CANCELLED";
   const conditionCancelled =
-    data.paymentStatus === "FAILED" && data.orderStatus === "CANCELLED";
+    data?.paymentStatus === "FAILED" && data?.orderStatus === "CANCELLED";
   const conditionNotFound =
     !data || (!conditionSuccess && !conditionRefund && !conditionCancelled);
 

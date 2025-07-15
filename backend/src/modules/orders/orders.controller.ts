@@ -1,12 +1,59 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { OrdersService } from './orders.service';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 
+@UseGuards(JwtGuard, RoleGuard)
+@Roles(Role.USER)
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Get(':id')
-  findBySessionId(@Param('id') id: string) {
+  @Roles(Role.ADMIN)
+  @Get()
+  findAll(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Query('sortField') sortField: string,
+    @Query('sortOrder') sortOrder: string,
+    @Query('paymentStatus[]') paymentStatusRaw: string | string[],
+    @Query('orderStatus[]') orderStatusRaw: string | string[],
+    @Query('search') search: string,
+  ) {
+    const paymentStatus = Array.isArray(paymentStatusRaw)
+      ? paymentStatusRaw
+      : paymentStatusRaw
+        ? [paymentStatusRaw]
+        : undefined;
+
+    const orderStatus = Array.isArray(orderStatusRaw)
+      ? orderStatusRaw
+      : orderStatusRaw
+        ? [orderStatusRaw]
+        : undefined;
+
+    return this.ordersService.findAll(
+      +page || 1,
+      +limit || 4,
+      sortField,
+      sortOrder,
+      paymentStatus,
+      orderStatus,
+      search,
+    );
+  }
+
+  @Get('session/:sessionId')
+  findBySessionId(@Param('sessionId') id: string) {
+    console.log('call here');
     return this.ordersService.findBySessionId(id);
+  }
+
+  @Roles(Role.ADMIN, Role.USER)
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.ordersService.findOne(id);
   }
 }

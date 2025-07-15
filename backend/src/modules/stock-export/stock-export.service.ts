@@ -13,7 +13,6 @@ export class StockExportService {
   ) {}
   async create(stockExportDto: StockExportDto) {
     const { productId, quantity, reason, note, product } = stockExportDto;
-    await this.redis.del('inventory-*');
 
     const inventory = await this.prisma.inventory.findUnique({
       where: { productId },

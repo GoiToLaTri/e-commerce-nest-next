@@ -3,6 +3,8 @@ import axiosClient from "./axios-client";
 
 export const cartApi = {
   getUserCart: () => axiosClient.get(`proxy/cart/client`),
+  getUserProductCart: (id: string) =>
+    axiosClient.get(`proxy/cart/client/${id}`),
   addToCart: (addToCartPayload: AddToCartPayload) =>
     axiosClient.post("proxy/cart/add", addToCartPayload),
   updateQuantity: (cartItemId: string, quantity: number) =>

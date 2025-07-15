@@ -1,6 +1,7 @@
 "use client";
 
-import { sonnerLoading } from "@/components/sonner/sonner";
+import { sonnerError, sonnerLoading } from "@/components/sonner/sonner";
+import { useCreateCheckoutSession } from "@/hooks/useCreateCheckoutSession";
 import { useRemoveProductFromCart } from "@/hooks/useRemoveProductFromCart";
 import { useUpdateQuantityProductCart } from "@/hooks/useUpdateQuantityProductCart";
 import { CartProduct } from "@/models";
@@ -14,12 +15,17 @@ export interface CartItemCardProps {
 }
 
 export default function CartItemCard({ data }: CartItemCardProps) {
+  console.log(data);
+  const [btnCheckoutLoading, setBtnCheckoutLoading] = useState<boolean>(false);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(data.quantity);
   const updateQuantityMutation = useUpdateQuantityProductCart();
   const removeProductMutation = useRemoveProductFromCart();
+  const createCheckoutSessionMutation = useCreateCheckoutSession();
   const router = useRouter();
+
+  // console.log(cartItem);
 
   const onChange = (value: number | null) => {
     if (!value) {
@@ -64,8 +70,22 @@ export default function CartItemCard({ data }: CartItemCardProps) {
     );
   };
 
-  const checkOutOne = () => {
-    router.push(`/checkout/cart/${data.id}`);
+  const checkOutOne = async () => {
+    try {
+      setBtnCheckoutLoading(true);
+
+      // if (!isLoading && cartItem) {
+      await createCheckoutSessionMutation.mutateAsync({
+        products: [{ productId: data.productId, quantity: data.quantity }],
+      });
+      router.push(`/checkout/cart/${data.id}`);
+      // }
+      setBtnCheckoutLoading(false);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      sonnerError(error.response.data.message || "Create checkout failed");
+      setBtnCheckoutLoading(false);
+    }
   };
 
   return (
@@ -116,6 +136,7 @@ export default function CartItemCard({ data }: CartItemCardProps) {
                   type="primary"
                   className="!bg-[#924dff] hover:!bg-[#7b3edc]!text-white !font-medium  leading-[1.6] !py-[0.75rem]  transition-colors duration-300"
                   onClick={checkOutOne}
+                  loading={btnCheckoutLoading}
                 >
                   Check out
                 </Button>

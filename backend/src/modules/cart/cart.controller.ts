@@ -33,6 +33,14 @@ export class CartController {
     return this.cartService.findCartByUserId(session_user.user_id);
   }
 
+  @Get('client/:cartItemId')
+  getCartItems(@Param('cartItemId') id: string) {
+    // const { session_user } = request as unknown as {
+    //   session_user: SessionData;
+    // };
+    return this.cartService.findOneCartItem(id);
+  }
+
   @Post('add')
   addToCart(@Req() request: Request, @Body() dto: AddToCartDto) {
     const { session_user } = request as unknown as {

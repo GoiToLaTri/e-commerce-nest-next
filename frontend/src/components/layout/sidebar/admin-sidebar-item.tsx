@@ -3,6 +3,7 @@ import {
   AppstoreOutlined,
   HistoryOutlined,
   InboxOutlined,
+  OrderedListOutlined,
   ProductOutlined,
 } from "@ant-design/icons";
 
@@ -33,5 +34,10 @@ export const adminSideBarItem = [
     label: "Stock history",
     icon: <HistoryOutlined style={{ fontSize: icon_size }} />,
     href: "/admin/stock-history",
+  },
+  {
+    label: "Order management",
+    icon: <OrderedListOutlined style={{ fontSize: icon_size }} />,
+    href: "/admin/orders/manage",
   },
 ];

@@ -8,6 +8,7 @@ import CartInformationCard from "../ui/cards/cart-information-card";
 export default function CartListProduct() {
   const { data, isLoading, isError } = useCartProducts();
   const hasData = data && Array.isArray(data.items) && data.items.length > 0;
+  
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4 text-white">Shopping cart</h2>

@@ -7,8 +7,9 @@ import { Button, Descriptions } from "antd";
 import DescriptionsItem from "antd/es/descriptions/Item";
 import { convertNumberToCurrency } from "@/utils/currency.util";
 import { useClearCart } from "@/hooks/useClearCart";
-import { sonnerLoading } from "@/components/sonner/sonner";
+import { sonnerError, sonnerLoading } from "@/components/sonner/sonner";
 import { useRouter } from "next/navigation";
+import { useCreateCheckoutSession } from "@/hooks/useCreateCheckoutSession";
 
 export interface CartInformationCardProps {
   data?: ICart;
@@ -20,6 +21,9 @@ export default function CartInformationCard({
   hasData,
 }: CartInformationCardProps) {
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+  const createCheckoutSessionMutation = useCreateCheckoutSession();
+  const clearCartMutation = useClearCart();
+  const [btnCheckoutLoading, setBtnCheckoutLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +34,6 @@ export default function CartInformationCard({
     setBtnDisabled(false);
   }, [hasData]);
 
-  const clearCartMutation = useClearCart();
   const handleClearCart = () => {
     sonnerLoading(
       clearCartMutation
@@ -44,8 +47,27 @@ export default function CartInformationCard({
     );
   };
 
-  const checkOutAll = () => {
-    router.push("/checkout/cart");
+  // const  = () => {
+  //   router.push("/checkout/cart");
+  // };
+
+  const checkOutAll = async () => {
+    try {
+      if (!hasData) return;
+      setBtnCheckoutLoading(true);
+      await createCheckoutSessionMutation.mutateAsync({
+        products: data!.items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      });
+      router.push("/checkout/cart");
+      setBtnCheckoutLoading(false);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      sonnerError(error.response.data.message || "Create checkout failed");
+      setBtnCheckoutLoading(false);
+    }
   };
 
   return (
@@ -95,6 +117,7 @@ export default function CartInformationCard({
                       : "!bg-[#924dff] hover:!bg-[#7b3edc] !text-white"
                   }`}
                   onClick={checkOutAll}
+                  loading={btnCheckoutLoading}
                 >
                   Check out
                 </Button>

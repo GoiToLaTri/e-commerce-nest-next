@@ -122,9 +122,9 @@ export class ProductService {
     saleStatus?: string[],
     search?: string,
   ) {
-    const cacheKey = `list:page-${page}:limit-${limit}:${sortField || 'field-default'}:${sortOrder || 'order-default'}:${laptopBrand?.join(',') || 'brand-all'}:${saleStatus?.join(',') || 'status-all'}:${search || ''}`;
-    const data: string | null = await this.redis.get(cacheKey);
-    if (data) return JSON.parse(data) as IProduct[];
+    // const cacheKey = `list:page-${page}:limit-${limit}:${sortField || 'field-default'}:${sortOrder || 'order-default'}:${laptopBrand?.join(',') || 'brand-all'}:${saleStatus?.join(',') || 'status-all'}:${search || ''}`;
+    // const data: string | null = await this.redis.get(cacheKey);
+    // if (data) return JSON.parse(data) as IProduct[];
 
     const skip = (page - 1) * limit;
     if (search && search.trim()) {
@@ -138,11 +138,11 @@ export class ProductService {
         saleStatus,
       );
 
-      await this.redis.set(
-        cacheKey,
-        JSON.stringify({ data: searchData, total: searchTotal, page, limit }),
-        appConfig.REDIS_TTL_CACHE,
-      );
+      // await this.redis.set(
+      //   cacheKey,
+      //   JSON.stringify({ data: searchData, total: searchTotal, page, limit }),
+      //   appConfig.REDIS_TTL_CACHE,
+      // );
       return {
         data: searchData,
         total: searchTotal,
@@ -200,16 +200,16 @@ export class ProductService {
       this.prisma.product.count({ where }),
     ]);
 
-    await this.redis.set(
-      cacheKey,
-      JSON.stringify({
-        data: listProduct,
-        total,
-        page,
-        limit,
-      }),
-      appConfig.REDIS_TTL_CACHE,
-    );
+    // await this.redis.set(
+    //   cacheKey,
+    //   JSON.stringify({
+    //     data: listProduct,
+    //     total,
+    //     page,
+    //     limit,
+    //   }),
+    //   appConfig.REDIS_TTL_CACHE,
+    // );
 
     return {
       data: listProduct,

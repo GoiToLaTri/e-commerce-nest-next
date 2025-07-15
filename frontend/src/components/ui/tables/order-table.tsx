@@ -1,38 +1,35 @@
 "use client";
 
-import { IProduct } from "@/models";
+import { IOrder } from "@/models";
 import { formatDate } from "@/utils/date.util";
 import {
   TableProps,
   Table,
-  Image,
   Button,
-  Switch,
   TablePaginationConfig,
   Input,
+  Tag,
 } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
 import "@/styles/table.style.css";
-import { useProducts } from "@/hooks/useProducts";
 import { SearchProps } from "antd/es/input";
 import { FilterValue } from "antd/es/table/interface";
-import { useBrands } from "@/hooks/useBrands";
+import { useOrders } from "@/hooks/useOrders";
+import OrderDetailModal from "@/components/modals/order-detail-modal";
 
 const { Search } = Input;
 
-export function ProductTable() {
+export function OrderTable() {
   const [params, setParams] = useState({
     page: 1,
-    limit: 4,
-    sortField: "created_at",
+    limit: 6,
+    sortField: "createdAt",
     sortOrder: "asc",
     filters: {},
   });
-  const { data, isLoading } = useProducts({ ...params });
-  const { data: brands } = useBrands();
-
-  const columns: TableProps<IProduct>["columns"] = [
+  const { data, isLoading } = useOrders({ ...params });
+  const columns: TableProps<IOrder>["columns"] = [
     {
       title: "#",
       key: "index",
@@ -40,60 +37,87 @@ export function ProductTable() {
       // render: (_text, _record, index) => (page - 1) * pageSize + index + 1,
     },
     {
-      title: "Thumbnail",
-      dataIndex: "thumbnail",
-      key: "thumbnail",
-      render: (url) => <Image src={url} alt="thumbnail" width={64} />,
+      title: "Client",
+      dataIndex: "shippingInfo",
+      key: "shipping-info-fullname",
+      render: (_, record) => record.shippingInfo.fullName,
     },
     {
-      title: "Model",
-      dataIndex: "model",
-      key: "model",
+      title: "Phone",
+      dataIndex: "shippingInfo",
+      key: "shipping-info-phone",
+      render: (_, record) => record.shippingInfo.phone,
     },
     {
-      title: "Brand",
-      dataIndex: "LaptopBrand",
-      key: "laptopbrand",
-      filters: brands?.map((brand: { name: string }) => ({
-        text: brand.name,
-        value: brand.name,
-      })),
-      render: (_, record) => record.LaptopBrand.name ?? "N/A",
+      title: "Payment status",
+      dataIndex: "paymentStatus",
+      key: "paymentStatus",
+      filters: [
+        { text: "SUCCESS", value: "SUCCESS" },
+        { text: "FAILED", value: "FAILED" },
+        { text: "PENDING", value: "PENDING" },
+        { text: "REFUNDED", value: "REFUNDED" },
+      ],
+      render: (status: string) => {
+        const colorMap: Record<string, string> = {
+          SUCCESS: "green",
+          FAILED: "red",
+          PENDING: "orange",
+          REFUNDED: "blue",
+        };
+        return <Tag color={colorMap[status] || "default"}>{status}</Tag>;
+      },
+    },
+    {
+      title: "Order status",
+      dataIndex: "orderStatus",
+      key: "orderStatus",
+      filters: [
+        { text: "PENDING", value: "PENDING" },
+        { text: "PROCESSING", value: "PROCESSING" },
+        { text: "COMPLETED", value: "COMPLETED" },
+        { text: "CANCELLED", value: "CANCELLED" },
+      ],
+      render: (status: string) => {
+        const colorMap: Record<string, string> = {
+          PENDING: "orange",
+          PROCESSING: "gold",
+          COMPLETED: "green",
+          CANCELLED: "red",
+        };
+        return <Tag color={colorMap[status] || "default"}>{status}</Tag>;
+      },
     },
     {
       title: "Created at",
-      dataIndex: "created_at",
-      key: "created_at",
+      dataIndex: "createdAt",
+      key: "createdAt",
       sorter: true,
       render: (date) => formatDate(date),
     },
     {
       title: "Updated at",
-      dataIndex: "updated_at",
-      key: "updated_at",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
       sorter: true,
       render: (date) => formatDate(date),
-    },
-    {
-      title: "Sale status",
-      dataIndex: "sale_status",
-      key: "sale_status",
-      filters: [
-        { text: "Active", value: "true" },
-        { text: "Disable", value: "false" },
-      ],
-      render: (_, record) => <Switch defaultValue={record.status} />,
     },
     {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
         <div style={{ display: "flex", gap: 8 }}>
-          <Link href={`/product/laptop/${record.id}`}>
-            <Button type="primary">View</Button>
-          </Link>
-          <Link href={`/product/${record.id}/edit`}>
-            <Button>Sale</Button>
+          <OrderDetailModal id={record.id} />
+          <Link
+            href={
+              record.paymentStatus === "REFUNDED"
+                ? `/product/${record.id}/edit`
+                : "#"
+            }
+          >
+            <Button disabled={record.paymentStatus === "REFUNDED"}>
+              Refund
+            </Button>
           </Link>
         </div>
       ),
@@ -126,7 +150,7 @@ export function ProductTable() {
   const onSearch: SearchProps["onSearch"] = (value) =>
     setParams((prev) => ({ ...prev, search: value }));
 
-  // console.log(data);
+  console.log(data);
   return (
     <div>
       <div className="flex justify-center mb-4">
@@ -138,7 +162,7 @@ export function ProductTable() {
           size="large"
         />
       </div>
-      <Table<IProduct>
+      <Table<IOrder>
         rowKey="id"
         columns={columns}
         pagination={{
