@@ -17,6 +17,7 @@ import { SearchProps } from "antd/es/input";
 import { FilterValue } from "antd/es/table/interface";
 import { useOrders } from "@/hooks/useOrders";
 import OrderDetailModal from "@/components/modals/order-detail-modal";
+import UpdateOrderStatusModal from "@/components/modals/update-orders-status-modal";
 
 const { Search } = Input;
 
@@ -119,6 +120,7 @@ export function OrderTable() {
               Refund
             </Button>
           </Link>
+          <UpdateOrderStatusModal id={record.id} />
         </div>
       ),
     },

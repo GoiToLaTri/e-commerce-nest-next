@@ -23,4 +23,10 @@ export const orderApi = {
         search: query.search,
       },
     }),
+  updateStatus: (
+    id: string,
+    payload: {
+      orderStatus?: "PENDING" | "PROCESSING" | "COMPLETED" | "CANCELLED";
+    }
+  ) => axiosClient.patch(`proxy/orders/status/${id}`, payload),
 };
