@@ -69,10 +69,13 @@ export class OrdersController {
   @Patch('status/:id')
   updateStatus(
     @Param('id') id: string,
-    @Query('orderStatus')
-    orderStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED',
+    @Body()
+    updateDto: {
+      orderStatus?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED';
+    },
   ) {
-    if (!orderStatus) return;
+    console.log(updateDto);
+    if (!updateDto.orderStatus) return;
     const validOrderStatus = [
       'PENDING',
       'PROCESSING',
@@ -80,8 +83,8 @@ export class OrdersController {
       'CANCELLED',
     ];
 
-    if (!validOrderStatus.includes(orderStatus)) return;
+    if (!validOrderStatus.includes(updateDto.orderStatus)) return;
 
-    return this.ordersService.updateStatus(id, orderStatus);
+    return this.ordersService.updateStatus(id, updateDto.orderStatus);
   }
 }
