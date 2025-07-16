@@ -18,7 +18,7 @@ export * from "./cards/cart-information-card";
 // exporting all table components
 export * from "./tables/product-table";
 export * from "./tables/inventory-table";
-
+export * from "./tables/order-client-table";
 // exporting all button components
 export * from "./button/purple-button";
 

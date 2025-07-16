@@ -74,11 +74,11 @@ export function ClientSearch() {
             ))}
           </div>
         )}
-        {!isLoading && !recommendLoading && !hasData && (
+        {/* {!isLoading && !recommendLoading && !hasData && (
           <div className="search-product-result text-center">
             No results found. Please try a different search.
           </div>
-        )}
+        )} */}
         {data &&
           data.data.map((product) => (
             <Link key={product.id} href={`/product/laptop/${product.id}`}>

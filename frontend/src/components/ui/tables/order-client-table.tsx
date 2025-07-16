@@ -2,18 +2,17 @@
 
 import { IOrder } from "@/models";
 import { formatDate } from "@/utils/date.util";
-import { TableProps, Table, TablePaginationConfig, Input, Tag } from "antd";
+import { TableProps, Table, TablePaginationConfig, Tag } from "antd";
 import React, { useState } from "react";
 import "@/styles/table.style.css";
-import { SearchProps } from "antd/es/input";
+// import { SearchProps } from "antd/es/input";
 import { FilterValue } from "antd/es/table/interface";
-import { useOrders } from "@/hooks/useOrders";
 import OrderDetailModal from "@/components/modals/order-detail-modal";
-import UpdateOrderStatusModal from "@/components/modals/update-orders-status-modal";
+import { useClientOrders } from "@/hooks/useClientOrders";
 
-const { Search } = Input;
+// const { Search } = Input;
 
-export function OrderTable() {
+export function OrderClientTable() {
   const [params, setParams] = useState({
     page: 1,
     limit: 6,
@@ -21,7 +20,9 @@ export function OrderTable() {
     sortOrder: "asc",
     filters: {},
   });
-  const { data, isLoading } = useOrders({ ...params });
+  const { data, isLoading } = useClientOrders({
+    ...params,
+  });
 
   const columns: TableProps<IOrder>["columns"] = [
     {
@@ -102,7 +103,6 @@ export function OrderTable() {
       render: (_, record) => (
         <div style={{ display: "flex", gap: 8 }}>
           <OrderDetailModal id={record.id} />
-          <UpdateOrderStatusModal id={record.id} />
         </div>
       ),
     },
@@ -131,13 +131,13 @@ export function OrderTable() {
     }));
   };
 
-  const onSearch: SearchProps["onSearch"] = (value) =>
-    setParams((prev) => ({ ...prev, search: value }));
+  // const onSearch: SearchProps["onSearch"] = (value) =>
+  //   setParams((prev) => ({ ...prev, search: value }));
 
-  console.log(data);
+  // console.log(data);
   return (
     <div>
-      <div className="flex justify-center mb-4">
+      {/* <div className="flex justify-center mb-4">
         <Search
           placeholder="Enter your text"
           allowClear
@@ -145,7 +145,7 @@ export function OrderTable() {
           style={{ width: 400 }}
           size="large"
         />
-      </div>
+      </div> */}
       <Table<IOrder>
         rowKey="id"
         columns={columns}

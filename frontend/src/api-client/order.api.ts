@@ -23,6 +23,21 @@ export const orderApi = {
         search: query.search,
       },
     }),
+  findByUserId: (
+    query: { search?: string; status?: boolean } & QueryParams &
+      PaginationParams
+  ) =>
+    axiosClient.get("proxy/orders/client", {
+      params: {
+        page: query.page,
+        limit: query.limit,
+        sortField: query.sortField,
+        sortOrder: query.sortOrder,
+        paymentStatus: query.filters.paymentStatus,
+        orderStatus: query.filters.orderStatus,
+        search: query.search,
+      },
+    }),
   updateStatus: (
     id: string,
     payload: {
