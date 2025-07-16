@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
@@ -12,6 +13,8 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
+import { Request } from 'express';
+import { SessionData } from '../session/interfaces';
 
 @UseGuards(JwtGuard, RoleGuard)
 @Roles(Role.USER)
@@ -53,6 +56,45 @@ export class OrdersController {
     );
   }
 
+  @Get('client')
+  findByClientId(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Query('sortField') sortField: string,
+    @Query('sortOrder') sortOrder: string,
+    @Query('paymentStatus[]') paymentStatusRaw: string | string[],
+    @Query('orderStatus[]') orderStatusRaw: string | string[],
+    @Query('search') search: string,
+    @Req() request: Request,
+  ) {
+    const { session_user } = request as unknown as {
+      session_user: SessionData;
+    };
+
+    const paymentStatus = Array.isArray(paymentStatusRaw)
+      ? paymentStatusRaw
+      : paymentStatusRaw
+        ? [paymentStatusRaw]
+        : undefined;
+
+    const orderStatus = Array.isArray(orderStatusRaw)
+      ? orderStatusRaw
+      : orderStatusRaw
+        ? [orderStatusRaw]
+        : undefined;
+
+    return this.ordersService.findByClientId(
+      +page || 1,
+      +limit || 4,
+      sortField,
+      sortOrder,
+      session_user.user_id,
+      paymentStatus,
+      orderStatus,
+      search,
+    );
+  }
+
   @Get('session/:sessionId')
   findBySessionId(@Param('sessionId') id: string) {
     console.log('call here');
@@ -74,7 +116,6 @@ export class OrdersController {
       orderStatus?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELLED';
     },
   ) {
-    console.log(updateDto);
     if (!updateDto.orderStatus) return;
     const validOrderStatus = [
       'PENDING',
