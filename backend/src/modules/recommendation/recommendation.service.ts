@@ -297,23 +297,23 @@ export class RecommendationService {
     this.analyzeUserPreferences(userId);
 
     // Get recommendations
-    console.log(`\n=== Recommendations for User ${userId} ===`);
+    // console.log(`\n=== Recommendations for User ${userId} ===`);
     const recommendations = this.getRecommendations(userId, topK);
 
-    recommendations.forEach((rec, index) => {
-      const product = rec.product;
-      console.log(`\n${index + 1}. Product ID: ${rec.productId}`);
-      console.log(`   Score: ${rec.score.toFixed(4)}`);
-      console.log(`   Brand: ${product.brand_name}`);
-      console.log(
-        `   CPU: ${product.cpu_brand} ${product.cpu_family} ${product.cpu_series}`,
-      );
-      console.log(`   GPU: ${product.gpu_manufacturer} ${product.gpu_model}`);
-      console.log(`   RAM: ${product.ram_capacity} ${product.ram_type}`);
-      console.log(
-        `   Display: ${product.display_resolution} ${product.display_refresh_rate}`,
-      );
-    });
+    // recommendations.forEach((rec, index) => {
+    //   const product = rec.product;
+    //   console.log(`\n${index + 1}. Product ID: ${rec.productId}`);
+    //   console.log(`   Score: ${rec.score.toFixed(4)}`);
+    //   console.log(`   Brand: ${product.brand_name}`);
+    //   console.log(
+    //     `   CPU: ${product.cpu_brand} ${product.cpu_family} ${product.cpu_series}`,
+    //   );
+    //   console.log(`   GPU: ${product.gpu_manufacturer} ${product.gpu_model}`);
+    //   console.log(`   RAM: ${product.ram_capacity} ${product.ram_type}`);
+    //   console.log(
+    //     `   Display: ${product.display_resolution} ${product.display_refresh_rate}`,
+    //   );
+    // });
 
     return recommendations.map((pd) => ({
       id: pd.productId,

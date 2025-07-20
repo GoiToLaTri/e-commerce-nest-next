@@ -396,11 +396,11 @@ export class OrdersService {
         }[];
       };
     };
-    // console.log(result.cursor.firstBatch[0].data);
+    console.log(result.cursor.firstBatch[0].data);
 
     return {
       data: result.cursor.firstBatch[0].data,
-      total: result.cursor.firstBatch[0].total[0].total,
+      total: result.cursor.firstBatch[0]?.total[0]?.total || 0,
       page,
       limit,
     };
