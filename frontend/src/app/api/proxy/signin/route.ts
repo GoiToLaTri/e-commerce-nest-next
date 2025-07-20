@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         sameSite: "lax",
         path: "/",
       });
-      console.log("Token:", access_token);
+      // console.log("Token:", access_token);
     }
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });

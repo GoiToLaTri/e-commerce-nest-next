@@ -334,6 +334,82 @@ export class OrdersService {
     });
   }
 
+  async clientPurchased(userId: string, page: number = 1, limit: number = 4) {
+    const pipeline = [
+      {
+        $match: {
+          // Chuyển userId trong DB sang string để so sánh với userId (string) từ input
+          $expr: { $eq: [{ $toString: '$userId' }, userId] },
+        },
+      },
+      { $unwind: '$products' },
+      {
+        $group: {
+          _id: '$products.productId',
+          model: { $first: '$products.model' },
+          thumbnail: { $first: '$products.thumbnail' },
+          price: { $first: '$products.price' },
+          shippingInfo: { $first: '$shippingInfo' },
+        },
+      },
+      {
+        // sort A-Z (ascending). Dùng -1 nếu muốn Z-A.
+        $sort: { model: 1 },
+      },
+      {
+        $facet: {
+          data: [
+            {
+              $project: {
+                _id: 0,
+                id: { $toString: '$_id' },
+                // productId: 1,
+                model: 1,
+                thumbnail: 1,
+                price: 1,
+                shippingInfo: 1,
+              },
+            },
+            { $skip: (page - 1) * limit },
+            { $limit: limit },
+          ],
+          total: [{ $count: 'total' }],
+        },
+      },
+    ];
+
+    // Correct way to use $runCommandRaw for an aggregation pipeline
+    const result = (await this.prisma.$runCommandRaw({
+      aggregate: 'Orders', // <--- REPLACE WITH YOUR ACTUAL COLLECTION NAME
+      pipeline: pipeline,
+      cursor: {}, // Required for aggregation commands
+    })) as {
+      cursor: {
+        firstBatch: {
+          data: {
+            model: string;
+            thumbnail: string;
+            price: number;
+            productId: string;
+          }[];
+          total: { total: number }[];
+        }[];
+      };
+    };
+    // console.log(result.cursor.firstBatch[0].data);
+
+    return {
+      data: result.cursor.firstBatch[0].data,
+      total: result.cursor.firstBatch[0].total[0].total,
+      page,
+      limit,
+    };
+    // const data = first.data;
+    // const total = first.total[0]?.total || 0;
+
+    // return { data, total, page, limit };
+  }
+
   private async atlasSearch(
     search: string,
     page: number,

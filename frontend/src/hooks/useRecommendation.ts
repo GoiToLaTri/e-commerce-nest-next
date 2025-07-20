@@ -3,7 +3,7 @@ import { queryKeys } from "@/common/enums";
 import { useQuery } from "@tanstack/react-query";
 
 export const useRecommendation = () => {
-  return useQuery({
+  return useQuery<{ id: string; thumbnail: string; model: string }[]>({
     queryKey: [queryKeys.GET_RECOMMENDATION],
     queryFn: async () => {
       const res = await recommendationApi.getRecommendation();

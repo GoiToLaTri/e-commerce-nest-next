@@ -31,6 +31,7 @@ model User {
   Customer     Customer?
   Cart         Cart?
   orders       Orders[]
+  reviews      Review[]
 }
 
 model Admin {
@@ -99,6 +100,7 @@ model Product {
   Admin            Admin?            @relation(fields: [adminId], references: [id])
   adminId          String?           @db.ObjectId
   CartItem         CartItem[]
+  Review           Review[]
 }
 
 model Cart {
@@ -344,4 +346,51 @@ enum OrderStatus {
   PROCESSING
   COMPLETED
   CANCELLED
+}
+
+model Review {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  productId    String       @db.ObjectId
+  userId       String       @db.ObjectId
+  customerName String
+  productName  String
+  rating       Float
+  title        String?
+  content      String
+  images       Json?
+  status       ReviewStatus @default(PENDING)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  replies ReviewReply[] @relation("ReviewToReplies")
+  Product Product       @relation(fields: [productId], references: [id])
+  User    User?         @relation(fields: [userId], references: [id])
+
+  @@index([productId])
+  @@index([status])
+}
+
+model ReviewReply {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  reviewId  String       @db.ObjectId
+  userId    String       @db.ObjectId
+  userName  String
+  userRole  ERole
+  content   String
+  status    ReviewStatus @default(PENDING)
+  images    Json?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  review Review @relation("ReviewToReplies", fields: [reviewId], references: [id])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ERole {
+  ADMIN
 }

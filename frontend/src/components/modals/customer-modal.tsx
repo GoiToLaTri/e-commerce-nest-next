@@ -100,7 +100,16 @@ export function CustomerModal({ data }: CustomerModalProps) {
               className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
               size="large"
             >
-              Order
+              Order management
+            </Button>
+          </Link>
+          <Link href={"/customer/purchased-product"}>
+            <Button
+              type="text"
+              className="!bg-transparent w-full !border-0 !rounded-lg !text-base !font-medium hover:!bg-[rgba(255,255,255,.04)] hover:!text-blue-600 hover:!border-0 transition"
+              size="large"
+            >
+              Purchased product
             </Button>
           </Link>
           <Divider />

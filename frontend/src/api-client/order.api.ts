@@ -44,4 +44,19 @@ export const orderApi = {
       orderStatus?: "PENDING" | "PROCESSING" | "COMPLETED" | "CANCELLED";
     }
   ) => axiosClient.patch(`proxy/orders/status/${id}`, payload),
+  clientPruchased: (
+    query: { search?: string; status?: boolean } & QueryParams &
+      PaginationParams
+  ) =>
+    axiosClient.get("proxy/orders/client/purchased", {
+      params: {
+        page: query.page,
+        limit: query.limit,
+        sortField: query.sortField,
+        sortOrder: query.sortOrder,
+        paymentStatus: query.filters.paymentStatus,
+        orderStatus: query.filters.orderStatus,
+        search: query.search,
+      },
+    }),
 };

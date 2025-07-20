@@ -21,4 +21,6 @@ export enum queryKeys {
   GET_ALL_ORDER = "get-all-order",
   GET_ORDER = "get-order",
   GET_ORDER_BY_SESSIONID = "get-order-by-sessionid",
+  GET_ALL_CLIENT_PURCHASED = "get-all-client-purchased",
+  GET_REVIEW_BY_PRODUCT_ID = "get-review-by-product-id",
 }

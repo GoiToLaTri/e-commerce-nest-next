@@ -95,6 +95,22 @@ export class OrdersController {
     );
   }
 
+  @Get('client/purchased')
+  clientPurchased(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Req() request: Request,
+  ) {
+    const { session_user } = request as unknown as {
+      session_user: SessionData;
+    };
+    return this.ordersService.clientPurchased(
+      session_user.user_id,
+      +page || 1,
+      +limit || 4,
+    );
+  }
+
   @Get('session/:sessionId')
   findBySessionId(@Param('sessionId') id: string) {
     console.log('call here');

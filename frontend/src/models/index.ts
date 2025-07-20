@@ -7,3 +7,4 @@ export * from "./user-interaction.model";
 export * from "./cart.model";
 export * from "./checkout.model";
 export * from "./order.model";
+export * from "./review.model";

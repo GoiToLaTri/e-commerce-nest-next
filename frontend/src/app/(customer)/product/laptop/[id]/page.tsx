@@ -1,4 +1,5 @@
 import { productApi } from "@/api-client";
+import ProductDetailFooter from "@/components/layout/footer/product-detail-footer";
 import ProductDetailTracker from "@/components/trackers/product-detail-tracker";
 import { ProductDetailAction } from "@/components/ui";
 import ProductImagePreview from "@/components/ui/preview/product-image-preview";
@@ -19,89 +20,92 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
   if (!data) notFound();
 
   return (
-    <div className="flex gap-4 mb-[8rem]">
-      <div className="product-images">
-        <div>
-          <Image src={data.thumbnail} alt="thumbnail" width={400} />
+    <div className="mb-[8rem]">
+      <div className="flex gap-4 mb-8 ">
+        <div className="product-images">
+          <div>
+            <Image src={data.thumbnail} alt="thumbnail" width={400} />
+          </div>
+          <div className="max-w-[400px]">
+            <ProductImagePreview images={data.images} />
+          </div>
         </div>
-        <div className="max-w-[400px]">
-          <ProductImagePreview images={data.images} />
-        </div>
-      </div>
-      <div className="product-info">
-        <div className="w-full border-[1px] border-solid border-[rgba(160,145,184,.4784313725)] rounded-[12px]">
-          <div className="flex justify-between p-8">
-            <div className="w-[60%]">
-              <h2 className="font-semibold text-xl mb-1 text-white">
-                {data.model}
-              </h2>
-              <p className="text-balance text-[#7a7990] mt-[4px] leading-6">
-                {data.description}
-              </p>
-            </div>
-            <div className="flex items-end flex-col gap-4">
-              <div className="font-semibold text-4xl">
-                {convertNumberToCurrency(data.price)}
+        <div className="product-info">
+          <div className="w-full border-[1px] border-solid border-[rgba(160,145,184,.4784313725)] rounded-[12px]">
+            <div className="flex justify-between p-8">
+              <div className="w-[60%]">
+                <h2 className="font-semibold text-xl mb-1 text-white">
+                  {data.model}
+                </h2>
+                <p className="text-balance text-[#7a7990] mt-[4px] leading-6">
+                  {data.description}
+                </p>
               </div>
-              <ProductDetailAction productId={data.id} />
+              <div className="flex items-end flex-col gap-4">
+                <div className="font-semibold text-4xl">
+                  {convertNumberToCurrency(data.price)}
+                </div>
+                <ProductDetailAction productId={data.id} />
+              </div>
+            </div>
+            <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
+              <Descriptions
+                column={3}
+                styles={{
+                  title: {
+                    fontSize: "20px",
+                    lineHeight: "1.75rem",
+                    fontWeight: 600,
+                    color: "#fff",
+                  },
+                  label: { fontSize: "16px" },
+                  content: { fontSize: "16px" },
+                }}
+              >
+                <Descriptions.Item label="Rate">
+                  <Rate allowHalf disabled defaultValue={4} />
+                </Descriptions.Item>
+                <Descriptions.Item label="View">40.4k</Descriptions.Item>
+                <Descriptions.Item label="Saled">20.4k</Descriptions.Item>
+              </Descriptions>
+            </div>
+            <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
+              <Descriptions
+                title="Product Specification"
+                column={1}
+                styles={{
+                  title: {
+                    fontSize: "20px",
+                    lineHeight: "1.75rem",
+                    fontWeight: 600,
+                    color: "#fff",
+                  },
+                  label: { fontSize: "16px" },
+                  content: { fontSize: "16px" },
+                }}
+              >
+                <Descriptions.Item label="Processor">
+                  {data.Processor.model || "-"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Video Graphics">
+                  {data.VideoGraphics.name || "-"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Display">
+                  {data.Display.info || "-"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Memory">
+                  {data.Memory.info || "-"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Storage">
+                  {data.Storage.info || "-"}
+                </Descriptions.Item>
+              </Descriptions>
             </div>
           </div>
-          <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
-            <Descriptions
-              column={3}
-              styles={{
-                title: {
-                  fontSize: "20px",
-                  lineHeight: "1.75rem",
-                  fontWeight: 600,
-                  color: "#fff",
-                },
-                label: { fontSize: "16px" },
-                content: { fontSize: "16px" },
-              }}
-            >
-              <Descriptions.Item label="Rate">
-                <Rate allowHalf disabled defaultValue={4} />
-              </Descriptions.Item>
-              <Descriptions.Item label="View">40.4k</Descriptions.Item>
-              <Descriptions.Item label="Saled">20.4k</Descriptions.Item>
-            </Descriptions>
-          </div>
-          <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
-            <Descriptions
-              title="Product Specification"
-              column={1}
-              styles={{
-                title: {
-                  fontSize: "20px",
-                  lineHeight: "1.75rem",
-                  fontWeight: 600,
-                  color: "#fff",
-                },
-                label: { fontSize: "16px" },
-                content: { fontSize: "16px" },
-              }}
-            >
-              <Descriptions.Item label="Processor">
-                {data.Processor.model || "-"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Video Graphics">
-                {data.VideoGraphics.name || "-"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Display">
-                {data.Display.info || "-"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Memory">
-                {data.Memory.info || "-"}
-              </Descriptions.Item>
-              <Descriptions.Item label="Storage">
-                {data.Storage.info || "-"}
-              </Descriptions.Item>
-            </Descriptions>
-          </div>
         </div>
+        {id && <ProductDetailTracker productId={id} />}
       </div>
-      {id && <ProductDetailTracker productId={id} />}
+      <ProductDetailFooter productId={id} />
     </div>
   );
 }

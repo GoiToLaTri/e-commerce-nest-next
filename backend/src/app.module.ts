@@ -31,6 +31,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { CheckoutModule } from './modules/checkout/checkout.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     CheckoutModule,
     PaymentModule,
     OrdersModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],
