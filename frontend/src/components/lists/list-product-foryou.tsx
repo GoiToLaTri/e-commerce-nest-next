@@ -1,7 +1,7 @@
 "use client";
 
 import { useRecommendation } from "@/hooks/useRecommendation";
-import { Skeleton, Spin } from "antd";
+import { Skeleton } from "antd";
 import ProductRecommenderCard from "../ui/cards/product-recommender-card";
 
 export default function ListProductForyou() {
