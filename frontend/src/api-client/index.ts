@@ -11,3 +11,4 @@ export * from "./cart.api";
 export * from "./checkout.api";
 export * from "./checkout-session.api";
 export * from "./order.api";
+export * from "./statistics.api";

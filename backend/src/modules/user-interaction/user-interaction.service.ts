@@ -24,6 +24,9 @@ export class UserInteractionService {
       JSON.stringify(data),
       appConfig.REDIS_TTL_CACHE,
     );
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const interaction = await this.prisma.userInteraction.create({ data });
     return interaction;
   }

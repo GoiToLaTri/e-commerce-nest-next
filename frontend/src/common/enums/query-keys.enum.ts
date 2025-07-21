@@ -23,4 +23,5 @@ export enum queryKeys {
   GET_ORDER_BY_SESSIONID = "get-order-by-sessionid",
   GET_ALL_CLIENT_PURCHASED = "get-all-client-purchased",
   GET_REVIEW_BY_PRODUCT_ID = "get-review-by-product-id",
+  GET_PRODUCT_STATISTICS = "get-product-statistics",
 }

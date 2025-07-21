@@ -24,11 +24,15 @@ export default function ProductDetailTracker({
 
     hasRun.current = true;
 
-    addUserInteractionMutation.mutate({
-      productId,
-      userId: sessionData?.session_user.user_id,
-      action: "VIEW",
-    });
+    const timerId = setTimeout(() => {
+      addUserInteractionMutation.mutate({
+        productId,
+        userId: sessionData.session_user.user_id,
+        action: "VIEW",
+      });
+    }, 5000);
+
+    return () => clearTimeout(timerId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId, sessionData]);
 

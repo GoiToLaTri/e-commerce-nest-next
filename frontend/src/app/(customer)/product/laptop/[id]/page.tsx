@@ -1,11 +1,12 @@
 import { productApi } from "@/api-client";
 import ProductDetailFooter from "@/components/layout/footer/product-detail-footer";
+import ProductStatistics from "@/components/lists/product-statistics";
 import ProductDetailTracker from "@/components/trackers/product-detail-tracker";
 import { ProductDetailAction } from "@/components/ui";
 import ProductImagePreview from "@/components/ui/preview/product-image-preview";
 import { IProduct } from "@/models";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import { Descriptions, Image, Rate } from "antd";
+import { Descriptions, Image } from "antd";
 import { notFound } from "next/navigation";
 
 export interface ProductDetailProps {
@@ -49,7 +50,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
               </div>
             </div>
             <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
-              <Descriptions
+              {/* <Descriptions
                 column={3}
                 styles={{
                   title: {
@@ -67,7 +68,8 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
                 </Descriptions.Item>
                 <Descriptions.Item label="View">40.4k</Descriptions.Item>
                 <Descriptions.Item label="Saled">20.4k</Descriptions.Item>
-              </Descriptions>
+              </Descriptions> */}
+              <ProductStatistics id={id} />
             </div>
             <div className="border-t-[1px] border-solid border-[rgba(160,145,184,.4784313725)]  p-8">
               <Descriptions

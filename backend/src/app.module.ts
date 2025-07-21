@@ -32,6 +32,7 @@ import { CheckoutModule } from './modules/checkout/checkout.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ReviewModule } from './modules/review/review.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { ReviewModule } from './modules/review/review.module';
     PaymentModule,
     OrdersModule,
     ReviewModule,
+    StatisticsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppConfig],
