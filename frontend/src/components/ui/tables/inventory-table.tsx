@@ -7,7 +7,6 @@ import {
   Image,
   Button,
   Tag,
-  Input,
   TablePaginationConfig,
 } from "antd";
 import Link from "next/link";
@@ -19,7 +18,7 @@ import { FilterValue } from "antd/es/table/interface";
 import { DropdownMenu } from "../menu/dropdown-menu";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { SearchProps } from "antd/es/input";
-const { Search } = Input;
+import { SearchInput } from "../input/search-input";
 
 export function InventoryTable() {
   const [params, setParams] = useState({
@@ -194,12 +193,10 @@ export function InventoryTable() {
   return (
     <div>
       <div className="flex justify-center mb-4">
-        <Search
+        <SearchInput
           placeholder="Enter your text"
-          allowClear
           onSearch={onSearch}
           style={{ width: 400 }}
-          size="large"
         />
       </div>
       <Table<IInventory>

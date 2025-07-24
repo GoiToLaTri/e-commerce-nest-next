@@ -2,16 +2,15 @@
 
 import { IOrder } from "@/models";
 import { formatDate } from "@/utils/date.util";
-import { TableProps, Table, TablePaginationConfig, Input, Tag } from "antd";
-import React, { useState } from "react";
+import { TableProps, Table, TablePaginationConfig, Tag } from "antd";
+import { useState } from "react";
 import "@/styles/table.style.css";
 import { SearchProps } from "antd/es/input";
 import { FilterValue } from "antd/es/table/interface";
 import { useOrders } from "@/hooks/useOrders";
 import OrderDetailModal from "@/components/modals/order-detail-modal";
 import UpdateOrderStatusModal from "@/components/modals/update-orders-status-modal";
-
-const { Search } = Input;
+import { SearchInput } from "../input/search-input";
 
 export function OrderTable() {
   const [params, setParams] = useState({
@@ -134,16 +133,15 @@ export function OrderTable() {
   const onSearch: SearchProps["onSearch"] = (value) =>
     setParams((prev) => ({ ...prev, search: value }));
 
-  console.log(data);
+  // console.log(data);
   return (
     <div>
       <div className="flex justify-center mb-4">
-        <Search
+        <SearchInput
           placeholder="Enter your text"
-          allowClear
           onSearch={onSearch}
           style={{ width: 400 }}
-          size="large"
+          name="order-search"
         />
       </div>
       <Table<IOrder>

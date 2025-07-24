@@ -62,6 +62,13 @@ export function ProductDetailAction({ productId }: ProductDetailActionProps) {
       await createCheckoutSessionMutation.mutateAsync({
         products: [{ productId, quantity: 1 }],
       });
+      if (data) {
+        await addUserInteractionMutation.mutateAsync({
+          productId,
+          userId: data.session_user.user_id,
+          action: "PURCHASE",
+        });
+      }
       router.push("/checkout/buynow");
       setBuyNowLoading(false);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -14,11 +14,13 @@ export * from "./menu/dropdown-menu";
 export * from "./cards/card";
 export * from "./cards/inventory-card";
 export * from "./cards/cart-information-card";
+export * from "./cards/stat-card";
 
 // exporting all table components
 export * from "./tables/product-table";
 export * from "./tables/inventory-table";
 export * from "./tables/order-client-table";
+export * from "./tables/top-spending-user-table";
 // exporting all button components
 export * from "./button/purple-button";
 

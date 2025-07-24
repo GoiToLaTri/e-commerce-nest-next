@@ -4,12 +4,12 @@ import HistoryStockDetailModal from "@/components/modals/history-stock-detail-mo
 import { useStockHistory } from "@/hooks/useStockHistory";
 import { IInventoryLogData } from "@/models";
 import { formatDate } from "@/utils/date.util";
-import { Input, Table, TablePaginationConfig, TableProps, Tag } from "antd";
+import { Table, TablePaginationConfig, TableProps, Tag } from "antd";
 import { SearchProps } from "antd/es/input";
 import { FilterValue } from "antd/es/table/interface";
 import { useState } from "react";
+import { SearchInput } from "../input/search-input";
 
-const { Search } = Input;
 // export interface StockHistoryTableProps {}
 
 const columns: TableProps<IInventoryLogData>["columns"] = [
@@ -101,7 +101,7 @@ const columns: TableProps<IInventoryLogData>["columns"] = [
         <HistoryStockDetailModal id={record.id} />
       </div>
     ),
-  },  
+  },
 ];
 
 export default function StockHistoryTable() {
@@ -144,12 +144,11 @@ export default function StockHistoryTable() {
   return (
     <div>
       <div className="flex justify-center mb-4">
-        <Search
+        <SearchInput
           placeholder="Enter your text"
-          allowClear
           onSearch={onSearch}
           style={{ width: 400 }}
-          size="large"
+          name="stock-history-search"
         />
       </div>
       <Table<IInventoryLogData>

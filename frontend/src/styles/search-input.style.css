@@ -1,0 +1,22 @@
+.search-input .ant-input-wrapper .ant-input-affix-wrapper {
+    background-color: rgba(255, 255, 255, .05) !important;
+    outline: 0 !important;
+    border: 0 !important;
+}
+
+.search-input {
+    border-radius: 8px !important;
+}
+
+.search-input .ant-input-outlined:focus {
+    box-shadow: none !important;
+}
+
+.search-input .ant-input-outlined:focus-within {
+    box-shadow: none !important;
+}
+
+.search-input .ant-input-group-addon button {
+    background: rgba(255, 255, 255, .05) !important;
+    border: none !important;
+}

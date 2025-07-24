@@ -6,10 +6,9 @@ import type { GetProps } from "antd";
 import { useState } from "react";
 import Link from "next/link";
 import { useRecommendation } from "@/hooks/useRecommendation";
+import { SearchInput } from "../ui/input/search-input";
 
 type SearchProps = GetProps<typeof Input.Search>;
-
-const { Search: AntdSearch } = Input;
 
 export function ClientSearch() {
   const [query, setQuery] = useState("");
@@ -28,13 +27,14 @@ export function ClientSearch() {
 
   return (
     <div className="client-search flex items-center flex-col gap-8">
-      <AntdSearch
+      <SearchInput
         placeholder="Enter your text"
         onSearch={onSearch}
         allowClear
         enterButton
         size="large"
         className="max-w-[40rem]"
+        name="client-search"
       />
       <div className="block w-full">
         {(isLoading || recommendLoading) && (

@@ -24,4 +24,10 @@ export enum queryKeys {
   GET_ALL_CLIENT_PURCHASED = "get-all-client-purchased",
   GET_REVIEW_BY_PRODUCT_ID = "get-review-by-product-id",
   GET_PRODUCT_STATISTICS = "get-product-statistics",
+  GET_DASHBOARD_OVERVIEW = "get-dashboard-overview",
+  GET_INVENTORY_STATS_BY_PERIOD = "get-inventory-stats-by-period",
+  GET_INVENTORY_FLOWS = "get-inventory-flows",
+  GET_LAPTOP_BRAND_CHART = "get-laptop-brand-chart",
+  GET_ORDER_STATUS_CHART = "get-order-status-chart",
+  GET_TOP_SPENDING_USER = "get-top-spending-user",
 }

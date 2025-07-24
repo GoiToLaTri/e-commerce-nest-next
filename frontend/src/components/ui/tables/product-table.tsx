@@ -9,7 +9,6 @@ import {
   Button,
   Switch,
   TablePaginationConfig,
-  Input,
 } from "antd";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -18,8 +17,7 @@ import { useProducts } from "@/hooks/useProducts";
 import { SearchProps } from "antd/es/input";
 import { FilterValue } from "antd/es/table/interface";
 import { useBrands } from "@/hooks/useBrands";
-
-const { Search } = Input;
+import { SearchInput } from "../input/search-input";
 
 export function ProductTable() {
   const [params, setParams] = useState({
@@ -130,12 +128,11 @@ export function ProductTable() {
   return (
     <div>
       <div className="flex justify-center mb-4">
-        <Search
+        <SearchInput
           placeholder="Enter your text"
-          allowClear
           onSearch={onSearch}
           style={{ width: 400 }}
-          size="large"
+          name="product-search"
         />
       </div>
       <Table<IProduct>
