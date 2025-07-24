@@ -37,14 +37,38 @@ export function SigninForm() {
   return (
     <div className="signin-form w-full max-w-md py-8 px-16 rounded-[24px] backdrop-blur-xl bg-white/10 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.2)] text-white mx-auto select-none">
       <h2 className="text-xl font-semibold mb-4">Sign in</h2>
+      <style jsx global>
+        {`
+          .signup-info-textbox {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px) !important;
+            border: none !important;
+            color: #fff !important;
+            transition: 0.3s !important;
+          }
 
+          .signup-info-textbox:focus {
+            outline: none !important;
+            border-color: #a970ff !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+          }
+
+          .signup-info-textbox::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+          }
+
+          .signup-password-textbox input::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+          }
+        `}
+      </style>
       <Form layout="vertical" onFinish={onFinish} size={"large"}>
         <Form.Item
           label="Email"
           name="email"
           rules={[{ required: true, message: "Please input your email!" }]}
         >
-          <Input placeholder="username@gmail.com" className="py-2" />
+          <Input placeholder="username@gmail.com" className="py-2 signup-info-textbox" />
         </Form.Item>
 
         <Form.Item
@@ -52,7 +76,7 @@ export function SigninForm() {
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
-          <Input.Password placeholder="Password" className="py-2" />
+          <Input.Password placeholder="Password" className="py-2 signup-info-textbox signup-password-textbox" />
         </Form.Item>
 
         <div className="mb-4">

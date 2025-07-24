@@ -8,7 +8,7 @@ interface TextInputProps {
 export function TextInput({ placeholder, className }: TextInputProps) {
   return (
     <Input
-      className={`!bg-[rgba(255,255,255,.05)] !outline-0 !border-0 ${className}`}
+      className={`!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04)] ${className}`}
       placeholder={placeholder}
     />
   );

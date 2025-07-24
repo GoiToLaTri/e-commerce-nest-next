@@ -1,7 +1,7 @@
 .search-input .ant-input-wrapper .ant-input-affix-wrapper {
     background-color: rgba(255, 255, 255, .05) !important;
     outline: 0 !important;
-    border: 0 !important;
+    border: rgba(255, 255, 255, .04)  !important;
 }
 
 .search-input {

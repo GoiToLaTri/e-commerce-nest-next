@@ -193,7 +193,14 @@ export function CheckoutForm({
   return (
     <div className="w-full select-none">
       <h2 className="text-xl font-semibold mb-4">Payment information</h2>
-
+      <style jsx global>
+        {`
+          .country-select .ant-select-selector {
+            background: transparent !important;
+            border-color: rgba(255, 255, 255, 0.04) !important;
+          }
+        `}
+      </style>
       <Form layout="vertical" onFinish={onFinish} form={form} size={"large"}>
         <Form.Item name="delivery" initialValue={"shipping"}>
           <Radio.Group
@@ -219,7 +226,10 @@ export function CheckoutForm({
             { min: 2, message: "Full name must be at least 2 characters" },
           ]}
         >
-          <Input placeholder="Please input full name" />
+          <Input
+            placeholder="Please input full name"
+            className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] rounded-md"
+          />
         </Form.Item>
         <Form.Item
           label="Shipping address"
@@ -231,6 +241,7 @@ export function CheckoutForm({
             onChange={onChange}
             placeholder="Please select region"
             popupRender={popupRender}
+            className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] country-select rounded-md"
           />
         </Form.Item>
 
@@ -251,6 +262,7 @@ export function CheckoutForm({
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
+                className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] country-select rounded-md"
               />
             </Form.Item>
             <Form.Item
@@ -261,7 +273,11 @@ export function CheckoutForm({
                 { pattern: /^[0-9]{6,15}$/, message: "Invalid phone number" },
               ]}
             >
-              <Input placeholder="Phone number" style={{ width: "100%" }} />
+              <Input
+                placeholder="Phone number"
+                style={{ width: "100%" }}
+                className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] rounded-md"
+              />
             </Form.Item>
           </Space.Compact>
         </Form.Item>
@@ -285,7 +301,10 @@ export function CheckoutForm({
         </Form.Item>
 
         <Form.Item label="Note" name="note">
-          <Input.TextArea placeholder="Optional notes..." className="py-2" />
+          <Input.TextArea
+            placeholder="Optional notes..."
+            className="py-2 !bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] rounded-md"
+          />
         </Form.Item>
 
         <div className="flex gap-4">

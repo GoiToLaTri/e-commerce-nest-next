@@ -4,9 +4,10 @@ import { CheckoutForm } from "@/components/forms/checkout-form";
 import { GoneError } from "@/components/results/gone-error";
 import { LoadingSpin } from "@/components/ui";
 import Card from "@/components/ui/cards/card";
+import { TextInput } from "@/components/ui/input/text-input";
 import { useGetCheckOutSession } from "@/hooks/useGetCheckoutSession";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import { Button, Descriptions, Divider, Form, FormProps, Input } from "antd";
+import { Button, Descriptions, Divider, Form, FormProps } from "antd";
 import { notFound } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -175,7 +176,7 @@ export default function BuyNowPage() {
               }}
             >
               <Form.Item style={{ flexGrow: "1" }} name="couponcode">
-                <Input placeholder="Please input coupon code" />
+                <TextInput placeholder="Please input coupon code" />
               </Form.Item>
               <Form.Item style={{ marginRight: 0 }}>
                 <Button

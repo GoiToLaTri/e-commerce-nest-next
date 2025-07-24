@@ -108,7 +108,7 @@ export default function OrderStatusChart() {
   };
 
   return (
-    <div className="bg-[#1b1428] border-[1px] border-solid border-[#564373] rounded-2xl p-6 shadow-lg w-[400px]">
+    <div className="bg-[#1b1428] border-[1px] border-solid border-[#564373] rounded-2xl p-6 shadow-lg w-[400px] h-[400px]">
       <div className="flex justify-between mb-4">
         <div>
           <h4 className="font-semibold">Order status overview</h4>

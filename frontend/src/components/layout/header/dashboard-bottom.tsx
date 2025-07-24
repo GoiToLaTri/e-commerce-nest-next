@@ -11,7 +11,7 @@ export function DashboardBottom() {
       <div>
         <OrderStatusChart />
       </div>
-      <div className="h-">
+      <div>
         <TopSpendingUserTable />
       </div>
     </div>

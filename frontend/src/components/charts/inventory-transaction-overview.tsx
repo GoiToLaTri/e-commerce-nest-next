@@ -75,7 +75,14 @@ export function InventoryTransactionOverview() {
   const loading = Boolean(isFetching || isLoading);
 
   return (
-    <div className="bg-[#1b1428] border-[1px] border-solid border-[#564373] rounded-2xl p-6 shadow-lg w-[760px]">
+    <div className="bg-[#1b1428] border-[1px] border-solid border-[#564373] rounded-2xl p-6 shadow-lg w-[760px] h-[475.2px]">
+      <style jsx global>
+        {`
+          .select-time .ant-select-selector {
+            background: transparent !important;
+          }
+        `}
+      </style>
       <div className="flex justify-between">
         <div>
           <h4 className="font-semibold">Inventory transaction overview</h4>
@@ -93,6 +100,7 @@ export function InventoryTransactionOverview() {
             { value: "6months", label: "6 Months" },
             { value: "year", label: "1 Year" },
           ]}
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-0 select-time !rounded-md"
         />
       </div>
       <div>{loading && <Spin />}</div>

@@ -3,17 +3,10 @@
 import { CheckoutForm } from "@/components/forms/checkout-form";
 import { GoneError } from "@/components/results/gone-error";
 import { LoadingSpin } from "@/components/ui";
+import Card from "@/components/ui/cards/card";
 import { useGetCheckOutSession } from "@/hooks/useGetCheckoutSession";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import {
-  FormProps,
-  Card,
-  Descriptions,
-  Divider,
-  Form,
-  Button,
-  Input,
-} from "antd";
+import { FormProps, Descriptions, Divider, Form, Button, Input } from "antd";
 import { notFound } from "next/navigation";
 import { useState, useEffect } from "react";
 
