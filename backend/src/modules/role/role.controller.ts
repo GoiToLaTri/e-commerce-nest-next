@@ -24,6 +24,11 @@ export class RoleController {
     return this.roleService.save();
   }
 
+  @Delete('del')
+  del() {
+    return this.roleService.del();
+  }
+
   @Patch('grant/:id')
   grantRole(@Param('id') id: string, @Body() roleData: { role: string }) {
     return this.roleService.grantRole(id, roleData.role);

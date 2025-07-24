@@ -46,7 +46,7 @@ import { StatisticsModule } from './modules/statistics/statistics.module';
     AuthModule,
     SessionModule,
     RedisModule,
-    RoleModule,
+    // RoleModule,
     SharedModule,
     CloudinaryModule,
     ProductModule,

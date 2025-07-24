@@ -63,4 +63,16 @@ export class RoleService {
   remove(id: number) {
     return `This action removes a #${id} role`;
   }
+
+  del() {
+    return this.prisma.user.deleteMany({
+      where: {
+        // userId: '6881fa68446c44903647813b',
+
+        created_at: {
+          gt: new Date('2025-07-24T09:18:33.043'),
+        },
+      },
+    });
+  }
 }
