@@ -79,7 +79,7 @@ export function InventoryTransactionOverview() {
       <div className="flex justify-between">
         <div>
           <h4 className="font-semibold">Inventory transaction overview</h4>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-gray-400 mb-[1em]">
             All general information appears in this page
           </p>
         </div>
