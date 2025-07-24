@@ -197,6 +197,7 @@ export function InventoryTable() {
           placeholder="Enter your text"
           onSearch={onSearch}
           style={{ width: 400 }}
+          enterButton
         />
       </div>
       <Table<IInventory>

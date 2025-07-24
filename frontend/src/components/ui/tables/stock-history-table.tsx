@@ -149,6 +149,7 @@ export default function StockHistoryTable() {
           onSearch={onSearch}
           style={{ width: 400 }}
           name="stock-history-search"
+          enterButton
         />
       </div>
       <Table<IInventoryLogData>

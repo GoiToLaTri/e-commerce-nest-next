@@ -133,6 +133,7 @@ export function ProductTable() {
           onSearch={onSearch}
           style={{ width: 400 }}
           name="product-search"
+          enterButton
         />
       </div>
       <Table<IProduct>

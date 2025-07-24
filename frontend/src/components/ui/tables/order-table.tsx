@@ -142,6 +142,7 @@ export function OrderTable() {
           onSearch={onSearch}
           style={{ width: 400 }}
           name="order-search"
+          enterButton
         />
       </div>
       <Table<IOrder>
