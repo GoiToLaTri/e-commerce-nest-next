@@ -340,6 +340,7 @@ export class OrdersService {
         $match: {
           // Chuyển userId trong DB sang string để so sánh với userId (string) từ input
           $expr: { $eq: [{ $toString: '$userId' }, userId] },
+          paymentStatus: { $in: ['SUCCESS'] },
         },
       },
       { $unwind: '$products' },

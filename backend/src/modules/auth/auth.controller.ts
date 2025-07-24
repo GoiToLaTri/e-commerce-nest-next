@@ -58,7 +58,6 @@ export class AuthController {
     const { session_user } = request as unknown as {
       session_user: SessionData;
     };
-    console.log(session_user);
     return { session_user };
   }
 }
