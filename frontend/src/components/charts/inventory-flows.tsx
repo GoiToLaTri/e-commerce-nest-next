@@ -43,10 +43,10 @@ function renderInventoryStat(
       <div className={`border-l-2 border-b-8 ${getBorderColor(type)} px-4`}>
         <div className="text-xl font-semibold text-white mb-1">{current}</div>
         <div className="flex justify-between">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-gray-400 mb-[1em]">
             Compared to {previous} {label.toLowerCase()} last month
           </p>
-          <p className={`text-sm ${getArrowColor(Number(percent))}`}>
+          <p className={`text-sm ${getArrowColor(Number(percent))} mb-[1em]`}>
             {percent !== "N/A" ? (
               <>
                 {percent}%
