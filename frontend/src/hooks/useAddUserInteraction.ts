@@ -20,7 +20,7 @@ export function useAddUserInteraction() {
         queryKey: [queryKeys.GET_RECOMMENDATION],
       });
 
-      console.log("Add user interaction success");
+      // console.log("Add user interaction success");
     },
     onError: (error) => {
       console.error("Add user interaction failed:", error);

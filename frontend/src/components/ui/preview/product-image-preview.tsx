@@ -13,10 +13,10 @@ export default function ProductImagePreview({
 }: ProductImagePreviewProps) {
   return (
     <Image.PreviewGroup
-      preview={{
-        onChange: (current, prev) =>
-          console.log(`current index: ${current}, prev index: ${prev}`),
-      }}
+      // preview={{
+      //   onChange: (current, prev) =>
+      //     console.log(`current index: ${current}, prev index: ${prev}`),
+      // }}
     >
       {images.map((image) => (
         <Image

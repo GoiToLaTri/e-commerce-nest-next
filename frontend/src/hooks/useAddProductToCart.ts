@@ -18,7 +18,7 @@ export function useAddProductToCart() {
       queryClient.refetchQueries({
         queryKey: [queryKeys.GET_PRODUCTS_IN_CART],
       });
-      console.log("Add to cart success");
+      // console.log("Add to cart success");
     },
     onError: (error) => {
       console.error("Add to cart failed:", error);

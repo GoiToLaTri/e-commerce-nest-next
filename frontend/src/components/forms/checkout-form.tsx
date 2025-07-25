@@ -5,7 +5,6 @@ import { CheckoutPayload } from "@/models";
 import {
   Button,
   Cascader,
-  CascaderProps,
   Form,
   Input,
   Radio,
@@ -115,7 +114,7 @@ export function CheckoutForm({
 
   useEffect(() => {
     (async () => {
-      console.log("env", envConfig.FRONTEND_URL);
+      // console.log("env", envConfig.FRONTEND_URL);
 
       const data = await fetchRegionJson(
         `${envConfig.FRONTEND_URL}/json/region.json`
@@ -132,9 +131,9 @@ export function CheckoutForm({
     router.back();
   };
 
-  const onChange: CascaderProps<Option>["onChange"] = (value) => {
-    console.log(value);
-  };
+  // const onChange: CascaderProps<Option>["onChange"] = (value) => {
+  //   console.log(value);
+  // };
 
   const deliveryChange: RadioProps["onChange"] = (event) => {
     const delivery: "shipping" | "pickup" = event.target.value;
@@ -238,7 +237,7 @@ export function CheckoutForm({
         >
           <Cascader
             options={regions}
-            onChange={onChange}
+            // onChange={onChange}
             placeholder="Please select region"
             popupRender={popupRender}
             className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] country-select rounded-md"

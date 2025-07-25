@@ -15,7 +15,7 @@ export interface CartItemCardProps {
 }
 
 export default function CartItemCard({ data }: CartItemCardProps) {
-  console.log(data);
+  // console.log(data);
   const [btnCheckoutLoading, setBtnCheckoutLoading] = useState<boolean>(false);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [btnLoading, setBtnLoading] = useState<boolean>(false);

@@ -59,7 +59,7 @@ const CustomChartTooltip = ({
 export function LaptopbrandChart() {
   const { data, isLoading, isFetching } = useGetLaptopBrandChart();
   const loading = Boolean(isFetching || isLoading);
-  console.log(data);
+  // console.log(data);
   return (
     <div className="bg-[#1b1428] border-[1px] border-solid border-[#564373] rounded-2xl p-6 shadow-lg w-full h-[510]">
       <div className="flex justify-between">

@@ -7,13 +7,13 @@ import Card from "@/components/ui/cards/card";
 import { TextInput } from "@/components/ui/input/text-input";
 import { useGetCheckOutSession } from "@/hooks/useGetCheckoutSession";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import { Button, Descriptions, Divider, Form, FormProps } from "antd";
+import { Button, Descriptions, Divider, Form } from "antd";
 import { notFound } from "next/navigation";
 import { useState, useEffect } from "react";
 
-type FieldType = {
-  couponcode?: string;
-};
+// type FieldType = {
+//   couponcode?: string;
+// };
 
 export default function BuyNowPage() {
   const { data, isLoading, isError, error, refetch } = useGetCheckOutSession();
@@ -71,15 +71,15 @@ export default function BuyNowPage() {
   if (!isLoading && isError && (error as { status?: number })?.status === 404)
     notFound();
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
-  };
+  // const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+  //   console.log("Success:", values);
+  // };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  //   errorInfo
+  // ) => {
+  //   console.log("Failed:", errorInfo);
+  // };
 
   const handleSetShippingFee = (value: number) => {
     setShippingFee(value);
@@ -166,8 +166,8 @@ export default function BuyNowPage() {
             <Divider />
             <Form
               name="basic"
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
+              // onFinish={onFinish}
+              // onFinishFailed={onFinishFailed}
               autoComplete="off"
               layout="inline"
               size="large"

@@ -109,9 +109,9 @@ export function ClientProductFilter({
     },
   ];
 
-  const onChange = (key: string | string[]) => {
-    console.log(key);
-  };
+  // const onChange = (key: string | string[]) => {
+  //   console.log(key);
+  // };
 
   if (isLoading) return <Skeleton />;
 
@@ -119,7 +119,7 @@ export function ClientProductFilter({
     <Collapse
       items={items}
       defaultActiveKey={["1"]}
-      onChange={onChange}
+      // onChange={onChange}
       bordered={false}
       className="!w-full !bg-transparent"
       size="large"

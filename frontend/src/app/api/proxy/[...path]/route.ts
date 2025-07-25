@@ -7,7 +7,7 @@ async function handleProxy(
   req: NextRequest,
   context: { params: Promise<{ path: string[] }> }
 ) {
-  console.log("Matching request to /api/proxy/[...path]");
+  // console.log("Matching request to /api/proxy/[...path]");
   const { path } = await context.params;
   const query = req.nextUrl.search;
   const url = `${BACKEND_URL}/${path.join("/")}${query}`;

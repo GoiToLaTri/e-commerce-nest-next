@@ -80,7 +80,7 @@ export default function UploadThumbnail({
       onProgress?.({ percent: 100 }, file);
       onSuccess?.(response.data, file);
       getThumbnail?.(response.data.images || []);
-      console.log("response.data.images", response.data.images);
+      // console.log("response.data.images", response.data.images);
     } catch (err) {
       onError?.(err as Error);
     }

@@ -5,7 +5,7 @@ const BACKEND_URL = envConfig.BACKEND_URL;
 
 export async function GET(req: NextRequest) {
   try {
-    console.log("Matching GET request to /api/proxy/checkout");
+    // console.log("Matching GET request to /api/proxy/checkout");
     const headers = new Headers(req.headers);
     headers.delete("host");
     headers.delete("cookie");

@@ -6,13 +6,13 @@ import { LoadingSpin } from "@/components/ui";
 import Card from "@/components/ui/cards/card";
 import { useGetCheckOutSession } from "@/hooks/useGetCheckoutSession";
 import { convertNumberToCurrency } from "@/utils/currency.util";
-import { Button, Descriptions, Divider, Form, FormProps, Input } from "antd";
+import { Button, Descriptions, Divider, Form, Input } from "antd";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type FieldType = {
-  couponcode?: string;
-};
+// type FieldType = {
+//   couponcode?: string;
+// };
 
 export default function CheckoutCartPage() {
   const { data, isLoading, isError, error, refetch } = useGetCheckOutSession();
@@ -70,15 +70,15 @@ export default function CheckoutCartPage() {
   if (!isLoading && isError && (error as { status?: number })?.status === 404)
     notFound();
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
-  };
+  // const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+  //   console.log("Success:", values);
+  // };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  //   errorInfo
+  // ) => {
+  //   console.log("Failed:", errorInfo);
+  // };
 
   const handleSetShippingFee = (value: number) => {
     setShippingFee(value);
@@ -165,8 +165,8 @@ export default function CheckoutCartPage() {
             <Divider />
             <Form
               name="basic"
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
+              // onFinish={onFinish}
+              // onFinishFailed={onFinishFailed}
               autoComplete="off"
               layout="inline"
               size="large"

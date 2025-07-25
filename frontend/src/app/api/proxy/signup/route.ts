@@ -5,7 +5,7 @@ const BACKEND_URL = envConfig.BACKEND_URL;
 
 export async function POST(req: NextRequest) {
   try {
-    console.log("Matching POST request to /api/proxy/signup");
+    // console.log("Matching POST request to /api/proxy/signup");
     const body = await req.json();
     const response = await fetch(`${BACKEND_URL}/auth/register`, {
       method: "POST",

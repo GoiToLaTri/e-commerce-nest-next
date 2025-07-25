@@ -43,7 +43,7 @@ const CustomChartTooltip = ({
 export default function OrderStatusChart() {
   const { data, isLoading, isFetching } = useGetOrderStatusChart();
   const loading = Boolean(isFetching || isLoading);
-  console.log(data);
+  // console.log(data);
 
   const renderCustomizedLabel = ({
     cx,

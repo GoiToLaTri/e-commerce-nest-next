@@ -53,7 +53,7 @@ export function AddReviewModal({ data }: AddReviewModalProps) {
       productId: data.productId,
       productName: data.productName,
     };
-    console.log("Received values of form: ", payload);
+    // console.log("Received values of form: ", payload);
     sonnerLoading(
       createReviewMutation
         .mutateAsync({ payload })

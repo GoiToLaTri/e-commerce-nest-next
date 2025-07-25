@@ -23,7 +23,7 @@ export function useUpdateQuantityProductCart() {
       queryClient.refetchQueries({
         queryKey: [queryKeys.GET_PRODUCTS_IN_CART],
       });
-      console.log("Update quantity success");
+      // console.log("Update quantity success");
     },
     onError: (error) => {
       console.error("Update quantity failed:", error);

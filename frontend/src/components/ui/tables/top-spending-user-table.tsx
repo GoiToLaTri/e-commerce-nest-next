@@ -8,7 +8,7 @@ import "@/styles/top-spending-user-table.style.css";
 export default function TopSpendingUserTable() {
   const { data, isLoading, isFetching } = useGetTopSpendingUser();
   const loading = Boolean(isFetching || isLoading);
-  console.log(data);
+  // console.log(data);
 
   const columns: TableProps<TopSpendingUser>["columns"] = [
     {

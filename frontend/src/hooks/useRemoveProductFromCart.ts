@@ -17,7 +17,7 @@ export function useRemoveProductFromCart() {
       queryClient.refetchQueries({
         queryKey: [queryKeys.GET_PRODUCTS_IN_CART],
       });
-      console.log("Remove product from cart success");
+      // console.log("Remove product from cart success");
     },
     onError: (error) => {
       console.error("Remove product from cart failed:", error);

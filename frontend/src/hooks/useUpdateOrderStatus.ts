@@ -25,7 +25,7 @@ export function useUpdateOrderStatus() {
       queryClient.refetchQueries({
         queryKey: [queryKeys.GET_ORDER],
       });
-      console.log("Update status success");
+      // console.log("Update status success");
     },
     onError: (error) => {
       console.error("Update status failed:", error);

@@ -27,7 +27,7 @@ export default function OrderDetailModal({ id }: OrderDetailModalModalProps) {
     setIsModalClose(true);
   };
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <>

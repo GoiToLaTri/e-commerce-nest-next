@@ -21,7 +21,7 @@ export function useProductInventoryLog({
       { id, page, limit, sortField, sortOrder, filters },
     ],
     queryFn: async () => {
-      console.log("filter", filters);
+      // console.log("filter", filters);
       const res = await inventoryLogApi.findByProduct({
         id,
         page,
