@@ -4,7 +4,6 @@ import { Button, Form, Input } from "antd";
 import { SigninPayload } from "@/models";
 import { sonnerLoading } from "../sonner/sonner";
 import { useSignin } from "@/hooks/useSignin";
-import { useRouter } from "next/navigation";
 import "@/styles/signin-form.style.css";
 import { GoogleIcon } from "../icon";
 import Link from "next/link";
@@ -15,7 +14,6 @@ import { FacebookIcon } from "../icon/facebook-icon";
 export function SigninForm() {
   const signinMutation = useSignin();
 
-  const router = useRouter();
   const onFinish = (values: SigninPayload) => {
     sonnerLoading(
       signinMutation
@@ -23,7 +21,6 @@ export function SigninForm() {
           ...values,
         })
         .then((message) => {
-          router.back();
           return { message };
         })
         .catch((error) => {
@@ -68,7 +65,10 @@ export function SigninForm() {
           name="email"
           rules={[{ required: true, message: "Please input your email!" }]}
         >
-          <Input placeholder="username@gmail.com" className="py-2 signup-info-textbox" />
+          <Input
+            placeholder="username@gmail.com"
+            className="py-2 signup-info-textbox"
+          />
         </Form.Item>
 
         <Form.Item
@@ -76,7 +76,10 @@ export function SigninForm() {
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
-          <Input.Password placeholder="Password" className="py-2 signup-info-textbox signup-password-textbox" />
+          <Input.Password
+            placeholder="Password"
+            className="py-2 signup-info-textbox signup-password-textbox"
+          />
         </Form.Item>
 
         <div className="mb-4">

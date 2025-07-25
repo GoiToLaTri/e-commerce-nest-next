@@ -19,7 +19,7 @@ const pathLoginSuccess = "/";
 export function RoleAccess({ children, roles, routeAuth }: RoleAccessProps) {
   const authData = AuthData();
   const router = useRouter();
-
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [isAccess, setIsAccess] = useState<{
     isLogin: boolean | null;
     isPermission: boolean | null;
@@ -53,13 +53,18 @@ export function RoleAccess({ children, roles, routeAuth }: RoleAccessProps) {
       routeAuth !== true &&
       isAccess.isLogin === false &&
       isAccess.isPermission === false
-    )
+    ) {
+      setIsRedirecting(true);
       router.push(pathLogin);
+    }
   }, [isAccess, authData, routeAuth, router]);
 
   useEffect(() => {
-    if (routeAuth === true && isAccess.isLogin === true)
+    if (routeAuth === true && isAccess.isLogin === true) {
+      setIsRedirecting(true);
       router.push(pathLoginSuccess);
+      // router.back();
+    }
   }, [isAccess, authData, routeAuth, router]);
 
   const isAccessNull =
@@ -83,12 +88,19 @@ export function RoleAccess({ children, roles, routeAuth }: RoleAccessProps) {
   // console.log("routeAccessDeniedConditions", routeAccessDeniedConditions);
   // console.log("isServerError", isServerError);
 
-  return (
-    <>
-      {roleAccessConditions && children}
-      {!isServerError && isAccessNull && <GlobalLoading />}
-      {isServerError && <ServerError />}
-      {routeAccessDeniedConditions && <AccessDenied />}
-    </>
-  );
+  if (isRedirecting || isAccessNull) return <GlobalLoading />;
+  if (isServerError) return <ServerError />;
+  if (routeAccessDeniedConditions) return <AccessDenied />;
+
+  return <>{children}</>;
+
+  // return (
+  //   <>
+  //     {/* {roleAccessConditions && children}
+  //     {!isServerError && isAccessNull && <GlobalLoading />}
+  //     {isServerError && <ServerError />}
+  //     {routeAccessDeniedConditions && <AccessDenied />} */}
+
+  //   </>
+  // );
 }
