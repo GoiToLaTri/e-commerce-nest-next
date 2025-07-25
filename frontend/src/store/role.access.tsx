@@ -73,16 +73,16 @@ export function RoleAccess({ children, roles, routeAuth }: RoleAccessProps) {
   const routeAccessDeniedConditions =
     isAccess.isLogin === true && isAccess.isPermission === false;
 
-  const privateAccessConditions =
-    isAccess.isPermission === true && isAccess.isLogin === true;
+  // const privateAccessConditions =
+  //   isAccess.isPermission === true && isAccess.isLogin === true;
 
-  const routeAuthConditions =
-    isAccess.isLogin === false && isAccess.isPermission === false;
+  // const routeAuthConditions =
+  //   isAccess.isLogin === false && isAccess.isPermission === false;
 
   //---------------------------------------------
-  const roleAccessConditions = routeAuth
-    ? routeAuthConditions
-    : privateAccessConditions;
+  // const roleAccessConditions = routeAuth
+  //   ? routeAuthConditions
+  //   : privateAccessConditions;
 
   // console.log("roleAccessConditions", roleAccessConditions);
   // console.log("routeAccessDeniedConditions", routeAccessDeniedConditions);
