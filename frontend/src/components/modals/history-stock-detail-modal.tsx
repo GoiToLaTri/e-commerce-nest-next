@@ -28,7 +28,7 @@ export default function HistoryStockDetailModal({
     setIsModalClose(true);
   };
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <>

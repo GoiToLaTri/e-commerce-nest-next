@@ -80,6 +80,16 @@ export function InventoryTransactionOverview() {
         {`
           .select-time .ant-select-selector {
             background: transparent !important;
+            border: 1px solid #3f66fb !important; /* viền xanh neon */
+            color: white !important;
+          }
+
+          .select-time .ant-select-selection-item {
+            color: white !important;
+          }
+
+          .select-time .ant-select-arrow {
+            color: white !important;
           }
         `}
       </style>

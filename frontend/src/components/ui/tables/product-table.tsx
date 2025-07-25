@@ -88,10 +88,20 @@ export function ProductTable() {
       render: (_, record) => (
         <div style={{ display: "flex", gap: 8 }}>
           <Link href={`/product/laptop/${record.id}`}>
-            <Button type="primary">View</Button>
+            <Button
+              type="text"
+              className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+            >
+              View
+            </Button>
           </Link>
           <Link href={`/product/${record.id}/edit`}>
-            <Button>Sale</Button>
+            <Button
+              type="text"
+              className="!bg-[#924dff] leading-[1.6] !py-[0.75rem] hover:!bg-[#7b3edc] transition-colors duration-300"
+            >
+              Sale
+            </Button>
           </Link>
         </div>
       ),

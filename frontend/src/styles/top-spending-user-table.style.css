@@ -1,0 +1,9 @@
+.top-spending-user-table .ant-table-thead > tr > th, .top-spending-user-table .ant-table-tbody > tr > td, .top-spending-user-table .ant-table-footer {
+    background: #241932 !important;
+    border-radius: 0 !important;
+}
+
+.top-spending-user-table .ant-table {
+    border: none !important;
+    border-radius: 0 !important;
+}

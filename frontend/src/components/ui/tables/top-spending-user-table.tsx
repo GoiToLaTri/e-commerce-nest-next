@@ -3,6 +3,7 @@
 import { useGetTopSpendingUser } from "@/hooks/useGetTopSpendingUser";
 import { TopSpendingUser } from "@/models";
 import { Image, Spin, Table, TableProps } from "antd";
+import "@/styles/top-spending-user-table.style.css";
 
 export default function TopSpendingUserTable() {
   const { data, isLoading, isFetching } = useGetTopSpendingUser();
@@ -26,6 +27,7 @@ export default function TopSpendingUserTable() {
           alt="Avatar"
           width={40}
           className="!rounded-full !bg-white"
+          preview={false}
         />
       ),
     },
@@ -69,7 +71,7 @@ export default function TopSpendingUserTable() {
       <div>{loading && <Spin />}</div>
       {!loading && (!data || data.length === 0) && <div>No content</div>}
       {!loading && data && (
-        <div>
+        <div className="bg-[#241932] p-2 rounded-xl">
           <Table<TopSpendingUser>
             rowKey="id"
             columns={columns}
@@ -77,6 +79,7 @@ export default function TopSpendingUserTable() {
             showSorterTooltip={{ target: "sorter-icon" }}
             pagination={false}
             dataSource={data}
+            className="top-spending-user-table"
           />
         </div>
       )}
