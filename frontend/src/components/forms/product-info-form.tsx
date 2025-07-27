@@ -8,7 +8,6 @@ import { sonnerError, sonnerLoading } from "../sonner/sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/common/enums";
 import { useRouter } from "next/navigation";
-import { TextInput } from "../ui/input/text-input";
 
 export interface ProductInfoFormProps {
   thumbnail?: Pick<IImage, "public_id" | "url" | "is_temp">[];
@@ -89,7 +88,10 @@ export default function ProductInfoForm({
         rules={[{ required: true, message: "Please input the brand!" }]}
         tooltip="Enter the product's brand, e.g., GIGABYTE"
       >
-        <TextInput placeholder="GIGABYTE" className="py-2" />
+        <Input
+          placeholder="GIGABYTE"
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04) py-2"
+        />
       </Form.Item>
 
       <Form.Item
@@ -98,7 +100,10 @@ export default function ProductInfoForm({
         rules={[{ required: true, message: "Please input the model!" }]}
         tooltip="Enter the product's model name or number"
       >
-        <TextInput placeholder="GIGABYTE GAMING A16 PRO DYH" className="py-2" />
+        <Input
+          placeholder="GIGABYTE GAMING A16 PRO DYH"
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04) py-2"
+        />
       </Form.Item>
 
       <Form.Item
@@ -120,7 +125,10 @@ export default function ProductInfoForm({
         rules={[{ required: true, message: "Please input the CPU!" }]}
         tooltip="Specify the CPU model, e.g., AMD Ryzen 7 7840HS"
       >
-        <TextInput placeholder="AMD Ryzen 7 7840HS" className="py-2" />
+        <Input
+          placeholder="AMD Ryzen 7 7840HS"
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04) py-2"
+        />
       </Form.Item>
 
       <Form.Item
@@ -129,7 +137,10 @@ export default function ProductInfoForm({
         rules={[{ required: true, message: "Please input the GPU!" }]}
         tooltip="Specify the GPU model, e.g., AMD Radeon RX 9060 XT 16GB"
       >
-        <TextInput placeholder="AMD Radeon RX 9060 XT 16GB" className="py-2" />
+        <Input
+          placeholder="AMD Radeon RX 9060 XT 16GB"
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04) py-2"
+        />
       </Form.Item>
 
       <Form.Item
@@ -138,9 +149,9 @@ export default function ProductInfoForm({
         rules={[{ required: true, message: "Please input the display!" }]}
         tooltip='Describe the display, e.g., 16.1" 16:9 IPS (1920x1080) 144Hz, 3ms, sRGB 100%, 250nits'
       >
-        <TextInput
+        <Input
           placeholder='16" 16:10 IPS (2560×1600) 165Hz, 3ms, sRGB 100%, 400nits'
-          className="py-2"
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04) py-2"
         />
       </Form.Item>
 
@@ -150,9 +161,9 @@ export default function ProductInfoForm({
         rules={[{ required: true, message: "Please input the RAM!" }]}
         tooltip="Specify RAM details, e.g., 2x 32GB LPDDR5x 7500MHz"
       >
-        <TextInput
+        <Input
           placeholder="2x 32GB LPDDR5x 7500MHz, up to 64GB"
-          className="py-2"
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04) py-2"
         />
       </Form.Item>
 
@@ -162,9 +173,9 @@ export default function ProductInfoForm({
         rules={[{ required: true, message: "Please input the storage!" }]}
         tooltip="Specify storage details, e.g., 1x 512GB PCIe Gen4 NVMe TLC M.2 SSD, up to 2TB, 2x M.2 slots"
       >
-        <TextInput
+        <Input
           placeholder="2x 256GB PCIe Gen4x4 M.2 slot, up to 4TB PCIe NVMe M.2 SSD, 2x M.2 slots"
-          className="py-2"
+          className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04) py-2"
         />
       </Form.Item>
 

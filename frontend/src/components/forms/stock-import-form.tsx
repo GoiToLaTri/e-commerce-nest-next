@@ -7,7 +7,6 @@ import { Button, Form, Input, InputNumber } from "antd";
 import { useInventory } from "@/hooks/useInventory";
 import { useRouter } from "next/navigation";
 import { useStockImport } from "@/hooks/useStockImport";
-import { TextInput } from "../ui/input/text-input";
 
 export function StockImportForm({ id }: { id: string }) {
   const [form] = Form.useForm();
@@ -77,7 +76,10 @@ export function StockImportForm({ id }: { id: string }) {
           name="supplier"
           rules={[{ required: true, message: "Please enter a supplier!" }]}
         >
-          <TextInput placeholder="Enter a supplier" />
+          <Input
+            placeholder="Enter a supplier"
+            className="!bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,.04)]"
+          />
         </Form.Item>
 
         <Form.Item
