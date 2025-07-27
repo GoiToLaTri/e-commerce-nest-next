@@ -10,6 +10,17 @@
     }
 }
 
+@keyframes enterFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes enterFromLeft {
     from {
         opacity: 0;
@@ -138,4 +149,14 @@
 .order-summary {
     opacity: 0;
     animation: enterFromTop .6s .2s forwards;
+}
+
+.about-image {
+    opacity: 0;
+    animation: enterFromTop .6s .2s forwards;
+}
+
+.overlay-content-bg {
+    opacity: 0;
+    animation: enterFromBottom .6s .3s forwards;
 }
