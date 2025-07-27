@@ -78,13 +78,16 @@ export function StockAdjustmentForm({ id }: { id: string }) {
         >
           <InputNumber
             placeholder="Enter actual stock"
-            className="py-2 !w-full"
+            className="py-2 !w-full !bg-[rgba(255,255,255,.05)] !outline-0 !border-0"
             min={1}
           />
         </Form.Item>
 
         <Form.Item label="Note" name="note">
-          <Input.TextArea placeholder="Optional notes..." className="py-2" />
+          <Input.TextArea
+            placeholder="Optional notes..."
+            className="py-2 !bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] rounded-md"
+          />
         </Form.Item>
 
         <Button

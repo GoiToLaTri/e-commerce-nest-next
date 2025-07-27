@@ -7,6 +7,7 @@ import { Button, Form, Input, InputNumber } from "antd";
 import { useInventory } from "@/hooks/useInventory";
 import { useRouter } from "next/navigation";
 import { useStockImport } from "@/hooks/useStockImport";
+import { TextInput } from "../ui/input/text-input";
 
 export function StockImportForm({ id }: { id: string }) {
   const [form] = Form.useForm();
@@ -76,7 +77,7 @@ export function StockImportForm({ id }: { id: string }) {
           name="supplier"
           rules={[{ required: true, message: "Please enter a supplier!" }]}
         >
-          <Input placeholder="Enter a supplier" className="py-2" />
+          <TextInput placeholder="Enter a supplier" />
         </Form.Item>
 
         <Form.Item
@@ -86,7 +87,7 @@ export function StockImportForm({ id }: { id: string }) {
         >
           <InputNumber
             placeholder="Enter quantity"
-            className="py-2 !w-full"
+            className="py-2 !w-full !bg-[rgba(255,255,255,.05)] !outline-0 !border-0"
             min={1}
           />
         </Form.Item>
@@ -98,11 +99,17 @@ export function StockImportForm({ id }: { id: string }) {
             { required: true, message: "Please enter the purchase price!" },
           ]}
         >
-          <InputNumber placeholder="Enter price" className="py-2 !w-full" />
+          <InputNumber
+            placeholder="Enter price"
+            className="py-2 !w-full !bg-[rgba(255,255,255,.05)] !outline-0 !border-0"
+          />
         </Form.Item>
 
         <Form.Item label="Note" name="note">
-          <Input.TextArea placeholder="Optional notes..." className="py-2" />
+          <Input.TextArea
+            placeholder="Optional notes... "
+            className="py-2 !bg-[rgba(255,255,255,.05)] !outline-0 !border-[rgba(255,255,255,0.04)] rounded-md"
+          />
         </Form.Item>
 
         <Button
