@@ -30,9 +30,10 @@ export default function ProductStatistics({ id }: { id: string }) {
             {data?.ratingCount || 0}
           </Descriptions.Item>
           <Descriptions.Item label="View">
-            {data.interactions.filter((item) => item.action === "VIEW")[0]
-              .count || 0}
+            {data?.interactions?.filter((item) => item?.action === "VIEW")?.[0]
+              ?.count || 0}
           </Descriptions.Item>
+
           <Descriptions.Item label="Saled">
             {data.totalSold || 0}
           </Descriptions.Item>
