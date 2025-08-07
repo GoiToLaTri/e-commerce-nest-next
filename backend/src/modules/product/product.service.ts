@@ -108,7 +108,7 @@ export class ProductService {
       },
       {
         maxWait: 5000, // default: 2000
-        timeout: 10000, // default: 5000
+        timeout: 24000, // default: 5000
       },
     );
   }
